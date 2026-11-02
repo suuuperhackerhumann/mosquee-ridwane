@@ -177,17 +177,30 @@ function hasAdminPermission($permission) {
 function requireAdminPermission($permission) {
     requireAdmin();
     if (!hasAdminPermission($permission)) {
-        http_response_code(403);
-        exit('Accès interdit : vous n’avez pas la permission nécessaire.');
+        renderSiteError(403, 'Accès refusé', 'Votre compte ne dispose pas de l’autorisation nécessaire pour consulter cette page.');
     }
 }
 
 function requireFullAdmin() {
     requireAdmin();
     if (!isFullAdmin()) {
-        http_response_code(403);
-        exit('Accès interdit : cette action est réservée à l’administrateur.');
+        renderSiteError(403, 'Accès réservé', 'Cette page est accessible uniquement à l’administrateur du site.');
     }
+}
+
+function renderSiteError($code, $title, $message, $returnUrl = null, $returnLabel = null) {
+    if (!in_array($code, [403, 404], true)) {
+        throw new InvalidArgumentException('Code de page d’erreur non pris en charge.');
+    }
+
+    http_response_code($code);
+    $errorCode = $code;
+    $errorTitle = $title;
+    $errorMessage = $message;
+    $errorReturnUrl = $returnUrl;
+    $errorReturnLabel = $returnLabel;
+    require __DIR__ . '/error-page.php';
+    exit;
 }
 
 function csrfToken() {

@@ -2,6 +2,80 @@
 // $page_titre, $page_description et $fil_ariane (optionnel) sont définis par la page appelante
 $page_titre = $page_titre ?? SITE_NOM;
 $page_description = $page_description ?? SITE_DESCRIPTION;
+$pageDescriptionSeo = mb_substr(trim(strip_tags($page_description)), 0, 300);
+$siteUrlSeo = rtrim(SITE_URL, '/');
+$pageScript = basename(parse_url($_SERVER['SCRIPT_NAME'] ?? '/index.php', PHP_URL_PATH) ?: 'index.php');
+$canonicalUrl = $pageScript === 'index.php' ? $siteUrlSeo . '/' : $siteUrlSeo . '/' . rawurlencode($pageScript);
+if (in_array($pageScript, ['actualite.php', 'evenement.php'], true) && isset($_GET['slug']) && is_string($_GET['slug'])) {
+    $canonicalUrl .= '?slug=' . rawurlencode($_GET['slug']);
+} elseif ($pageScript === 'actualites.php' && isset($_GET['page']) && filter_var($_GET['page'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 2]])) {
+    $canonicalUrl .= '?page=' . (int) $_GET['page'];
+}
+$fallbackSocialImage = '/assets/img/social-share.png';
+$pageSocialImage = isset($page_og_image) && is_string($page_og_image) ? $page_og_image : $fallbackSocialImage;
+$socialImagePath = ltrim($pageSocialImage, '/');
+if (
+    strpos($pageSocialImage, '//') === 0
+    || !preg_match('~^assets/[A-Za-z0-9._/-]+$~', $socialImagePath)
+    || strpos($socialImagePath, '..') !== false
+    || !is_file(dirname(__DIR__) . '/' . $socialImagePath)
+) {
+    $socialImagePath = ltrim($fallbackSocialImage, '/');
+}
+$socialImageUrl = $siteUrlSeo . '/' . implode('/', array_map('rawurlencode', explode('/', $socialImagePath)));
+$socialImageAlt = isset($page_og_image_alt) && is_string($page_og_image_alt)
+    ? $page_og_image_alt
+    : 'Emblème de la Communauté Musulmane de la Riviera Abatta';
+$socialImageSize = getimagesize(dirname(__DIR__) . '/' . $socialImagePath);
+$socialImageWidth = $socialImageSize[0] ?? 1200;
+$socialImageHeight = $socialImageSize[1] ?? 630;
+$ogType = isset($page_og_type) && $page_og_type === 'article' ? 'article' : 'website';
+$structuredData = [[
+    '@type' => 'PlaceOfWorship',
+    '@id' => $siteUrlSeo . '/#mosquee',
+    'name' => SITE_NOM,
+    'url' => $siteUrlSeo . '/',
+    'image' => $socialImageUrl,
+    'logo' => [
+        '@type' => 'ImageObject',
+        'url' => $siteUrlSeo . '/assets/img/logo-mosquee.png',
+    ],
+    'description' => SITE_DESCRIPTION,
+    'telephone' => SITE_TELEPHONE,
+    'hasMap' => 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode(SITE_LAT . ',' . SITE_LNG),
+    'address' => [
+        '@type' => 'PostalAddress',
+        'streetAddress' => SITE_ADRESSE,
+        'addressLocality' => 'Abidjan',
+        'addressRegion' => 'Abidjan',
+        'addressCountry' => 'CI',
+    ],
+    'geo' => [
+        '@type' => 'GeoCoordinates',
+        'latitude' => (float) SITE_LAT,
+        'longitude' => (float) SITE_LNG,
+    ],
+    'sameAs' => array_values(array_filter([SITE_FACEBOOK, SITE_INSTAGRAM !== '#' ? SITE_INSTAGRAM : null, SITE_YOUTUBE !== '#' ? SITE_YOUTUBE : null])),
+]];
+if (!empty($page_structured_data) && is_array($page_structured_data)) {
+    $structuredData = array_merge($structuredData, $page_structured_data);
+}
+$graphData = [
+    $structuredData[0],
+    [
+        '@type' => 'WebSite',
+        '@id' => $siteUrlSeo . '/#website',
+        'url' => $siteUrlSeo . '/',
+        'name' => SITE_NOM,
+        'inLanguage' => 'fr-CI',
+        'publisher' => ['@id' => $siteUrlSeo . '/#mosquee'],
+    ],
+];
+$graphData = array_merge($graphData, array_slice($structuredData, 1));
+$donneesStructurees = [
+    '@context' => 'https://schema.org',
+    '@graph' => $graphData,
+];
 
 $liens_nav = [
     'index.php'          => 'Accueil',
@@ -22,7 +96,34 @@ $liens_nav = [
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= h($page_titre) ?> — <?= h(SITE_NOM) ?></title>
-<meta name="description" content="<?= h($page_description) ?>">
+<meta name="description" content="<?= h($pageDescriptionSeo) ?>">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="canonical" href="<?= h($canonicalUrl) ?>">
+<meta name="theme-color" content="#0e2d29">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
+<link rel="shortcut icon" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="<?= BASE_URL ?>/site.webmanifest">
+<link rel="sitemap" type="application/xml" href="<?= h($siteUrlSeo . '/sitemap.php') ?>">
+<meta property="og:type" content="<?= h($ogType) ?>">
+<meta property="og:locale" content="fr_CI">
+<meta property="og:site_name" content="<?= h(SITE_NOM) ?>">
+<meta property="og:title" content="<?= h($page_titre . ' — ' . SITE_NOM) ?>">
+<meta property="og:description" content="<?= h($pageDescriptionSeo) ?>">
+<meta property="og:url" content="<?= h($canonicalUrl) ?>">
+<meta property="og:image" content="<?= h($socialImageUrl) ?>">
+<meta property="og:image:secure_url" content="<?= h($socialImageUrl) ?>">
+<meta property="og:image:alt" content="<?= h($socialImageAlt) ?>">
+<meta property="og:image:type" content="image/<?= strtolower(pathinfo($socialImagePath, PATHINFO_EXTENSION)) === 'jpg' ? 'jpeg' : strtolower(pathinfo($socialImagePath, PATHINFO_EXTENSION)) ?>">
+<meta property="og:image:width" content="<?= (int) $socialImageWidth ?>">
+<meta property="og:image:height" content="<?= (int) $socialImageHeight ?>">
+<?php if ($ogType === 'article' && !empty($page_publication_date)): ?><meta property="article:published_time" content="<?= h(date(DATE_W3C, strtotime($page_publication_date))) ?>"><?php endif; ?>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<?= h($page_titre . ' — ' . SITE_NOM) ?>">
+<meta name="twitter:description" content="<?= h($pageDescriptionSeo) ?>">
+<meta name="twitter:image" content="<?= h($socialImageUrl) ?>">
+<meta name="twitter:image:alt" content="<?= h($socialImageAlt) ?>">
+<script type="application/ld+json"><?= json_encode($donneesStructurees, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Karla:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -53,9 +154,7 @@ main > .section .media-infos p { margin: 4px 0 0; font-size: .92rem; line-height
 <header class="site-header" id="entete">
     <div class="conteneur header-bar">
         <a href="<?= BASE_URL ?>/index.php" class="logo">
-            <span class="logo-marque logo-emplacement" aria-label="Emplacement du logo de la mosquée">
-                <i class="fa-solid fa-mosque" aria-hidden="true"></i>
-            </span>
+            <img class="logo-marque logo-emplacement" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Communauté Musulmane de la Riviera Abatta">
             <span>
                 Mosquée Ridwane
                 <span class="logo-sub">Foi · Savoir · Communauté</span>

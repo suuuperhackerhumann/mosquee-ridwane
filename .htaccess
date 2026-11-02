@@ -1,0 +1,2 @@
+ErrorDocument 403 /mosquee-ridwane/403.php
+ErrorDocument 404 /mosquee-ridwane/404.php

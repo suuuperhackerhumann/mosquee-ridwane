@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 $page_titre = 'Services';
+$page_description = 'Découvrez les services religieux de la Mosquée Ridwane à Riviera Abatta, Abidjan et contactez-nous directement sur WhatsApp.';
 $services = $pdo->query("SELECT * FROM services ORDER BY ordre ASC")->fetchAll();
 require_once __DIR__ . '/includes/header.php';
 ?>

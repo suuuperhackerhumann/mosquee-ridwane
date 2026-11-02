@@ -64,6 +64,7 @@ if ($discussions) {
 }
 
 $page_titre = 'Discussions';
+$page_description = 'Posez une question et échangez avec la communauté musulmane de la Mosquée Ridwane à Riviera Abatta, Abidjan.';
 require_once __DIR__ . '/includes/header.php';
 ?>
 

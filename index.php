@@ -2,6 +2,7 @@
 require_once __DIR__ . '/config/config.php';
 
 $page_titre = 'Accueil';
+$page_description = 'Découvrez la Mosquée Ridwane à Riviera Abatta, Abidjan : horaires de prière, actualités, événements, enseignements coraniques et services à la communauté.';
 $horaires = getHorairesDuJour();
 
 $stmt = $pdo->query("SELECT a.*, c.nom AS categorie FROM actualites a LEFT JOIN categories c ON a.categorie_id = c.id WHERE a.statut='publie' ORDER BY a.date_publication DESC LIMIT 3");

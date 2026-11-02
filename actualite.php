@@ -7,16 +7,33 @@ $stmt->execute([$slug]);
 $actu = $stmt->fetch();
 
 if (!$actu) {
-    http_response_code(404);
-    $page_titre = 'Actualité introuvable';
-    require_once __DIR__ . '/includes/header.php';
-    echo '<section class="section conteneur"><h1>Actualité introuvable</h1><p><a href="' . h(BASE_URL) . '/actualites.php" class="carte-lien">Retour aux actualités →</a></p></section>';
-    require_once __DIR__ . '/includes/footer.php';
-    exit;
+    renderSiteError(404, 'Actualité introuvable', 'Cette actualité n’existe pas ou n’est plus disponible.', BASE_URL . '/actualites.php', 'Voir les actualités');
 }
 
 $page_titre = $actu['titre'];
-$page_description = extraitTexte($actu['contenu'], 160);
+$page_description = extraitTexte(
+    $actu['resume'] ?: ($actu['contenu'] ?: 'Actualité de la Mosquée Ridwane à Riviera Abatta, Abidjan : ' . $actu['titre']),
+    160
+);
+if (mb_strlen($page_description) < 40) {
+    $page_description = 'Actualité de la Mosquée Ridwane à Riviera Abatta, Abidjan : '
+        . $actu['titre']
+        . ($page_description !== '' ? ' — ' . $page_description : '.');
+}
+$page_og_type = 'article';
+$page_og_image = $actu['image'] ?: '/assets/img/social-share.png';
+$page_og_image_alt = $actu['titre'];
+$page_publication_date = $actu['date_publication'];
+$articleImageUrl = rtrim(SITE_URL, '/') . '/' . ltrim($page_og_image, '/');
+$page_structured_data = [[
+    '@type' => 'NewsArticle',
+    'headline' => $actu['titre'],
+    'description' => $page_description,
+    'image' => $articleImageUrl,
+    'datePublished' => date(DATE_W3C, strtotime($actu['date_publication'])),
+    'mainEntityOfPage' => $canonicalUrl ?? rtrim(SITE_URL, '/') . '/actualite.php?slug=' . rawurlencode($actu['slug']),
+    'publisher' => ['@id' => rtrim(SITE_URL, '/') . '/#mosquee'],
+]];
 require_once __DIR__ . '/includes/header.php';
 ?>
 

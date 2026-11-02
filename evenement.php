@@ -7,15 +7,30 @@ $stmt->execute([$slug]);
 $ev = $stmt->fetch();
 
 if (!$ev) {
-    http_response_code(404);
-    $page_titre = 'Événement introuvable';
-    require_once __DIR__ . '/includes/header.php';
-    echo '<section class="section conteneur"><h1>Événement introuvable</h1><p><a href="' . h(BASE_URL) . '/evenements.php" class="carte-lien">Retour aux événements →</a></p></section>';
-    require_once __DIR__ . '/includes/footer.php';
-    exit;
+    renderSiteError(404, 'Événement introuvable', 'Cet événement n’existe pas ou n’est plus disponible.', BASE_URL . '/evenements.php', 'Voir les événements');
 }
 
 $page_titre = $ev['titre'];
+$page_description = extraitTexte($ev['description'] ?: $ev['titre'], 160);
+$page_og_image = $ev['image'] ?: '/assets/img/social-share.png';
+$page_og_image_alt = $ev['titre'];
+$evenementImageUrl = rtrim(SITE_URL, '/') . '/' . ltrim($page_og_image, '/');
+$dateDebutEvenement = $ev['date_evenement'] . ' ' . ($ev['heure_evenement'] ?: '00:00:00');
+$page_structured_data = [[
+    '@type' => 'Event',
+    'name' => $ev['titre'],
+    'description' => $page_description,
+    'image' => $evenementImageUrl,
+    'startDate' => date(DATE_W3C, strtotime($dateDebutEvenement)),
+    'eventStatus' => 'https://schema.org/EventScheduled',
+    'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+    'location' => [
+        '@type' => 'Place',
+        'name' => $ev['lieu'] ?: SITE_NOM,
+        'address' => SITE_ADRESSE,
+    ],
+    'organizer' => ['@id' => rtrim(SITE_URL, '/') . '/#mosquee'],
+]];
 require_once __DIR__ . '/includes/header.php';
 ?>
 

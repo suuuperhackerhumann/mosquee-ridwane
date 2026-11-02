@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 $page_titre = 'Actualités';
+$page_description = 'Suivez les actualités, annonces et informations de la Mosquée Ridwane à Riviera Abatta, Abidjan.';
 
 $page = max(1, (int)($_GET['page'] ?? 1));
 $parPage = 9;

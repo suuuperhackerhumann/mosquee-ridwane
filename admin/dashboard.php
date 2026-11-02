@@ -13,7 +13,7 @@ require_once __DIR__ . '/includes/admin-header.php';
 ?>
 
 <div class="admin-entete">
-    <h1>Bonjour, <?= h($_SESSION['admin_nom']) ?> 👋</h1>
+    <h1>Bonjour, <?= h($_SESSION['admin_nom']) ?> <i class="fa-regular fa-face-smile" aria-hidden="true"></i></h1>
 </div>
 
 <div class="admin-stats">
@@ -26,10 +26,10 @@ require_once __DIR__ . '/includes/admin-header.php';
 <div class="admin-carte">
     <h3 style="margin-top:0;">Accès rapides</h3>
     <div style="display:flex; gap:12px; flex-wrap:wrap;">
-        <?php if (hasAdminPermission('actualites')): ?><a href="<?= BASE_URL ?>/admin/actualite-form.php" class="bouton bouton-emeraude">+ Nouvelle actualité</a><?php endif; ?>
-        <?php if (hasAdminPermission('evenements')): ?><a href="<?= BASE_URL ?>/admin/evenement-form.php" class="bouton bouton-emeraude">+ Nouvel événement</a><?php endif; ?>
-        <?php if (hasAdminPermission('horaires')): ?><a href="<?= BASE_URL ?>/admin/horaires.php" class="bouton bouton-emeraude">Mettre à jour les horaires</a><?php endif; ?>
-        <?php if (hasAdminPermission('pages')): ?><a href="<?= BASE_URL ?>/admin/pages.php" class="bouton bouton-emeraude">Modifier les textes du site</a><?php endif; ?>
+        <?php if (hasAdminPermission('actualites')): ?><a href="<?= BASE_URL ?>/admin/actualite-form.php" class="bouton bouton-emeraude"><i class="fa-solid fa-plus" aria-hidden="true"></i> Nouvelle actualité</a><?php endif; ?>
+        <?php if (hasAdminPermission('evenements')): ?><a href="<?= BASE_URL ?>/admin/evenement-form.php" class="bouton bouton-emeraude"><i class="fa-solid fa-plus" aria-hidden="true"></i> Nouvel événement</a><?php endif; ?>
+        <?php if (hasAdminPermission('horaires')): ?><a href="<?= BASE_URL ?>/admin/horaires.php" class="bouton bouton-emeraude"><i class="fa-regular fa-clock" aria-hidden="true"></i> Mettre à jour les horaires</a><?php endif; ?>
+        <?php if (hasAdminPermission('pages')): ?><a href="<?= BASE_URL ?>/admin/pages.php" class="bouton bouton-emeraude"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier les textes du site</a><?php endif; ?>
     </div>
 </div>
 

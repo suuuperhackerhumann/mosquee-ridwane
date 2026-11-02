@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 $page_titre = 'Enseignements';
+$page_description = 'Découvrez les cours de Coran, d’arabe, l’école coranique et les enseignements religieux de la Mosquée Ridwane à Abidjan.';
 $enseignements = $pdo->query("SELECT * FROM enseignements ORDER BY ordre ASC")->fetchAll();
 require_once __DIR__ . '/includes/header.php';
 ?>

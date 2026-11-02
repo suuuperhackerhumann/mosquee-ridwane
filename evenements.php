@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 $page_titre = 'Événements';
+$page_description = 'Retrouvez les événements, conférences, cours religieux et rencontres de la Mosquée Ridwane à Riviera Abatta, Abidjan.';
 
 $stmt = $pdo->query("SELECT e.*, c.nom AS categorie FROM evenements e LEFT JOIN categories c ON e.categorie_id = c.id WHERE e.statut='publie' AND e.date_evenement >= CURDATE() ORDER BY e.date_evenement ASC");
 $avenir = $stmt->fetchAll();

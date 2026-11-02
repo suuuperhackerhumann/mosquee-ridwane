@@ -34,13 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Connexion — Espace admin — Mosquée Ridwane</title>
+<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Karla:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
 </head>
 <body class="admin-body">
 <div class="login-page">
     <div class="login-carte">
+        <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Mosquée Ridwane">
         <h2 style="text-align:center;">Espace d'administration</h2>
         <p style="text-align:center; color:var(--encre-600); font-size:0.9rem; margin-bottom:24px;">Mosquée Ridwane</p>
 
@@ -58,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="mot_de_passe">Mot de passe</label>
                 <input type="password" id="mot_de_passe" name="mot_de_passe" required>
             </div>
-            <button type="submit" class="bouton bouton-emeraude" style="width:100%;">Se connecter</button>
+            <button type="submit" class="bouton bouton-emeraude" style="width:100%;"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Se connecter</button>
         </form>
-        <p style="text-align:center; margin-top:20px;"><a href="<?= BASE_URL ?>/index.php" style="font-size:0.85rem; color:var(--encre-600);">← Retour au site</a></p>
+        <p style="text-align:center; margin-top:20px;"><a href="<?= BASE_URL ?>/index.php" style="font-size:0.85rem; color:var(--encre-600);"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au site</a></p>
     </div>
 </div>
 </body>

@@ -13,12 +13,27 @@ body.admin-body {
     color: var(--plâtre-100);
     padding: 24px 16px;
 }
+.admin-marque {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    color: inherit;
+    text-decoration: none;
+}
+.admin-logo {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: var(--plâtre-50);
+}
 .admin-sidebar .marque {
     font-family: var(--police-titre);
     font-size: 1.1rem;
     color: var(--plâtre-50);
     display: block;
-    margin-bottom: 4px;
 }
 .admin-sidebar .sous-marque {
     font-family: var(--police-donnee);
@@ -29,7 +44,9 @@ body.admin-body {
 }
 .admin-nav { list-style: none; padding: 0; margin: 28px 0 0; }
 .admin-nav li a, .admin-deconnexion {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 10px 12px;
     border-radius: var(--rayon);
     font-size: 0.9rem;
@@ -43,6 +60,13 @@ body.admin-body {
     cursor: pointer;
     font-family: inherit;
 }
+.admin-nav li a > i, .admin-deconnexion > i {
+    width: 18px;
+    flex: 0 0 18px;
+    text-align: center;
+}
+.admin-nav li a > i { color: var(--laiton-300); }
+.admin-nav li a:hover > i, .admin-nav li a.actif > i { color: var(--eucalyptus-400); }
 .admin-nav li a:hover, .admin-nav li a.actif, .admin-deconnexion:hover {
     background: rgba(126, 201, 168, 0.14);
     color: var(--eucalyptus-400);
@@ -149,6 +173,16 @@ body.admin-body {
     width: 100%;
     max-width: 380px;
 }
+.login-logo {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 18px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #fff;
+}
+.login-carte .bouton i { margin-right: 6px; }
 
 @media (max-width: 800px) {
     .admin-layout { flex-direction: column; }

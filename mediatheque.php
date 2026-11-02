@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 $page_titre = 'Médiathèque';
+$page_description = 'Photos et vidéos des événements et de la vie de la communauté de la Mosquée Ridwane à Riviera Abatta, Abidjan.';
 
 $albumFiltre = $_GET['album'] ?? '';
 if (!is_string($albumFiltre)) $albumFiltre = '';
@@ -46,6 +47,12 @@ require_once __DIR__ . '/includes/header.php';
                 $titreMedia = trim($m['titre'] ?? '') ?: ($m['type'] === 'photo' ? 'Photo sans titre' : 'Vidéo sans titre');
                 $fichierMedia = siteAssetUrl($m['fichier']);
                 $videoValide = $m['type'] === 'video' && preg_match('~^https?://~i', $m['fichier']);
+                $extensionVideo = strtolower(pathinfo($m['fichier'], PATHINFO_EXTENSION));
+                $typesVideo = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'ogv' => 'video/ogg', 'ogg' => 'video/ogg'];
+                $videoLocale = $m['type'] === 'video'
+                    && strpos($m['fichier'], '/assets/uploads/') === 0
+                    && isset($typesVideo[$extensionVideo])
+                    && is_file(__DIR__ . '/assets/uploads/' . basename($m['fichier']));
             ?>
             <article class="media-carte">
                 <div class="carte-media">
@@ -55,6 +62,11 @@ require_once __DIR__ . '/includes/header.php';
                     </a>
                     <?php elseif ($videoValide): ?>
                     <a class="media-video-lien" href="<?= h($fichierMedia) ?>" target="_blank" rel="noopener noreferrer" aria-label="Voir la vidéo : <?= h($titreMedia) ?> (nouvel onglet)"><span aria-hidden="true">▶</span> Voir la vidéo</a>
+                    <?php elseif ($videoLocale): ?>
+                    <video controls preload="metadata" playsinline aria-label="<?= h($titreMedia) ?>">
+                        <source src="<?= h($fichierMedia) ?>" type="<?= h($typesVideo[$extensionVideo]) ?>">
+                        Votre navigateur ne prend pas en charge la lecture de cette vidéo.
+                    </video>
                     <?php else: ?>
                     <span class="media-video-lien" style="height:100%;">Vidéo indisponible</span>
                     <?php endif; ?>

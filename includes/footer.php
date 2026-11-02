@@ -7,10 +7,7 @@
             </svg>
             <div class="footer-grille">
                 <div>
-                    <div class="footer-logo-emplacement" aria-label="Emplacement du logo de la mosquée">
-                        <i class="fa-solid fa-mosque" aria-hidden="true"></i>
-                        <span>Logo de la mosquée</span>
-                    </div>
+                    <img class="footer-mosquee-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Communauté Musulmane de la Riviera Abatta" loading="lazy">
                     <h4 style="margin-top:0;">Mosquée Ridwane</h4>
                     <p style="font-size:0.92rem; max-width:280px;"><?= h(SITE_DESCRIPTION) ?></p>
                     <div class="footer-social">
@@ -55,7 +52,13 @@
             </div>
             <div class="footer-bas">
                 <span>© <?= date('Y') ?> Mosquée Ridwane. Tous droits réservés.</span>
-                <span>Site conçu pour servir la communauté. · Made by <a href="https://cd-solutions.freedev.app/?i=3" target="_blank" rel="noopener noreferrer">CDsolutions</a></span>
+                <span class="footer-signature">
+                    <span>Site conçu pour servir la communauté. · Made by</span>
+                    <a href="https://cd-solutions.freedev.app/?i=3" target="_blank" rel="noopener noreferrer" aria-label="CDsolutions — ouvrir le site">
+                        <img src="<?= h(siteAssetUrl('/assets/img/logo-cd.jpeg')) ?>" alt="CDsolutions">
+                        <span>CDsolutions</span>
+                    </a>
+                </span>
             </div>
         </div>
     </footer>

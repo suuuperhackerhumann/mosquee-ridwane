@@ -12,8 +12,8 @@ if ($adminPath !== false) {
     $basePath = substr($basePath, 0, $adminPath);
 }
 define('BASE_URL', rtrim($basePath, '/'));
-define('SITE_URL', 'https://www.mosquee-ridwane.org'); // à adapter au domaine réel
-define('SITE_DESCRIPTION', "La Mosquée Ridwane — horaires de prière, actualités, événements, enseignements et services pour toute la communauté.");
+define('SITE_URL', 'https://www.mosquee-ridwane.com'); // à adapter au domaine réel
+define('SITE_DESCRIPTION', "La Mosquée Ridwane à Riviera Abatta, Abidjan : horaires de prière, actualités, événements, enseignements coraniques et services pour la communauté musulmane.");
 
 // --- Coordonnées (modifiables aussi via l'admin > Pages > Contact) ---
 define('SITE_ADRESSE', 'Côte d\'Ivoire,ABIDJAN,RIVIERA ABATTA  non loin du carrefour BCEAO ');

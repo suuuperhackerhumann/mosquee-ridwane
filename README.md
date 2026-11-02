@@ -9,6 +9,17 @@ Site institutionnel en **PHP + MySQL**, sans framework, pensé pour être simple
 3. **Informations générales** : ouvre `config/config.php` et adapte `SITE_URL`, `SITE_ADRESSE`, `SITE_TELEPHONE`, `SITE_EMAIL`, les réseaux sociaux et les coordonnées GPS (`SITE_LAT` / `SITE_LNG`, pour la carte de la page Contact).
 4. **Mise en ligne** : dépose tout le contenu de ce dossier à la racine de ton hébergement (souvent `htdocs/` ou `public_html/`). Vérifie que `assets/uploads/` est accessible en écriture par PHP (droits 755 ou 775).
 5. Passe `MODE_DEBUG` à `false` dans `config/config.php` une fois le site en ligne.
+6. Vérifie que `SITE_URL` dans `config/config.php` correspond au domaine public canonique avant l’indexation par les moteurs de recherche. Le logo partagé par Open Graph, les données structurées, le sitemap et les URL canoniques utilisent cette valeur ; adapte aussi l’URL du sitemap dans `robots.txt` si le domaine change.
+7. Après la mise en ligne, vérifie le domaine dans **Google Search Console**, soumets `https://ton-domaine.tld/sitemap.php`, puis inspecte les pages principales et les images de partage avec les validateurs de résultats enrichis et d’aperçus sociaux.
+8. Les chemins `ErrorDocument` de [.htaccess](./.htaccess) sont réglés pour XAMPP sous `/mosquee-ridwane/`. Si tu déploies le site à la racine du domaine, remplace-les par `/403.php` et `/404.php`. Dans un autre sous-dossier, adapte-les avec le chemin public correspondant.
+
+### Référencement et visibilité locale
+
+- Les pages partagées utilisent une image Open Graph horizontale ; les fiches d’actualités et d’événements reprennent leur propre image quand elle existe.
+- Le balisage structuré décrit la mosquée, sa localisation GPS et les fiches d’actualité et d’événement. Les URLs canoniques, `robots.txt` et le sitemap doivent tous employer la même URL `SITE_URL`. Le dossier `/admin/` est exclu de l’exploration.
+- Pour développer la visibilité locale, crée ou revendique la fiche **Google Business Profile**, complète-la avec la même adresse et le même téléphone que le site, ajoute des photos réelles, les horaires vérifiés et un lien vers le site. Encourage les visiteurs à laisser des avis honnêtes, sans contrepartie.
+- Publie régulièrement des annonces utiles et originales, avec un titre précis, une date, une image représentative et un texte alternatif descriptif. Vérifie aussi les horaires et coordonnées avant publication.
+- Les données structurées améliorent la compréhension du site, mais ne garantissent pas une meilleure position ni l’affichage d’un résultat enrichi.
 
 ## 2. Se connecter à l'espace d'administration
 
@@ -32,7 +43,7 @@ Colle le résultat dans la colonne `mot_de_passe` de la table `admins` (via phpM
 - Créer / modifier / supprimer des **événements**
 - Mettre à jour les **horaires de prière** jour par jour (+ textes Jumu'ah et Ramadan)
 - Modifier les **textes des pages** (Accueil, À propos, Horaires, Dons, Contact)
-- Ajouter / supprimer des **photos et vidéos** dans la médiathèque
+- Ajouter / supprimer des **photos et vidéos** dans la médiathèque, y compris des vidéos MP4, WebM ou OGG téléversées depuis l’administration
 - Gérer les **discussions publiques** et retirer les sujets ou réponses inappropriés
 - Consulter les **messages envoyés depuis le formulaire de contact**
 - Créer des **rôles** avec des permissions par rubrique et des **utilisateurs** associés (réservé à l’administrateur)
@@ -48,6 +59,8 @@ Pour une base déjà installée, importer une seule fois `database/migration-rol
 La page d’accueil affiche également un verset coranique en français et en arabe, renouvelé automatiquement chaque jour.
 
 La rubrique « Discussion » est accessible sans compte : les visiteurs peuvent publier un sujet et y répondre sous leur nom, un pseudonyme ou anonymement. Les publications apparaissent immédiatement. Les administrateurs disposant de la permission « Gérer les discussions » peuvent supprimer les sujets et réponses inappropriés.
+
+Les vidéos locales de la médiathèque sont lues directement sur le site. La taille maximale dépend de `upload_max_filesize` et `post_max_size` dans la configuration PHP ; elle est affichée dans le formulaire d’administration. Sur cette installation XAMPP, la limite actuelle est de **2 Mo**. Pour envoyer des vidéos plus lourdes, règle par exemple `upload_max_filesize = 100M` et `post_max_size = 110M` dans le `php.ini` utilisé par Apache, puis redémarre Apache. Vérifie également les limites de ton hébergeur en production.
 
 ## 4. Structure du projet
 
