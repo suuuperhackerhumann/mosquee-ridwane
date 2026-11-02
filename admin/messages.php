@@ -2,15 +2,19 @@
 require_once __DIR__ . '/../config/config.php';
 requireAdminPermission('messages');
 
-if (isset($_GET['lu'])) {
-    $stmt = $pdo->prepare("UPDATE messages_contact SET lu = 1 WHERE id = ?");
-    $stmt->execute([(int)$_GET['lu']]);
-    redirect('/admin/messages.php');
-}
-if (isset($_GET['supprimer'])) {
-    $stmt = $pdo->prepare("DELETE FROM messages_contact WHERE id = ?");
-    $stmt->execute([(int)$_GET['supprimer']]);
-    redirect('/admin/messages.php?suppr=1');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    checkCsrf();
+    $messageId = (int) ($_POST['message_id'] ?? 0);
+    if (isset($_POST['marquer_lu'])) {
+        $stmt = $pdo->prepare("UPDATE messages_contact SET lu = 1 WHERE id = ?");
+        $stmt->execute([$messageId]);
+        redirect('/admin/messages.php');
+    }
+    if (isset($_POST['supprimer'])) {
+        $stmt = $pdo->prepare("DELETE FROM messages_contact WHERE id = ?");
+        $stmt->execute([$messageId]);
+        redirect('/admin/messages.php?suppr=1');
+    }
 }
 
 $messages = $pdo->query("SELECT * FROM messages_contact ORDER BY date_envoi DESC")->fetchAll();
@@ -33,8 +37,18 @@ require_once __DIR__ . '/includes/admin-header.php';
             <p style="color:var(--encre-600); font-size:0.85rem; margin:6px 0;"><?= h(formatDateFr($m['date_envoi'], true)) ?><?php if ($m['sujet']): ?> · Sujet : <?= h($m['sujet']) ?><?php endif; ?></p>
         </div>
         <div class="actions">
-            <?php if (!$m['lu']): ?><a href="?lu=<?= $m['id'] ?>">Marquer comme lu</a><?php endif; ?>
-            <a href="?supprimer=<?= $m['id'] ?>" class="lien-suppr" onclick="return confirm('Supprimer ce message ?');">Supprimer</a>
+            <?php if (!$m['lu']): ?>
+            <form method="post">
+                <input type="hidden" name="csrf_token" value="<?= h(csrfToken()) ?>">
+                <input type="hidden" name="message_id" value="<?= (int) $m['id'] ?>">
+                <button type="submit" name="marquer_lu" class="bouton-lien">Marquer comme lu</button>
+            </form>
+            <?php endif; ?>
+            <form method="post" onsubmit="return confirm('Supprimer ce message ?');">
+                <input type="hidden" name="csrf_token" value="<?= h(csrfToken()) ?>">
+                <input type="hidden" name="message_id" value="<?= (int) $m['id'] ?>">
+                <button type="submit" name="supprimer" class="lien-suppr bouton-lien">Supprimer</button>
+            </form>
         </div>
     </div>
     <p style="margin-top:10px; white-space:pre-line;"><?= h($m['message']) ?></p>

@@ -12,6 +12,7 @@ $liens_nav = [
     'enseignements.php'  => 'Enseignements',
     'services.php'       => 'Services',
     'mediatheque.php'    => 'Médiathèque',
+    'discussions.php'    => 'Discussion',
     'contact.php'        => 'Contact',
 ];
 ?>
@@ -50,9 +51,6 @@ $liens_nav = [
                 <li><a href="<?= BASE_URL ?>/<?= $fichier ?>" class="<?= trim(estActif($fichier)) ?: null ?>"<?= estActif($fichier) ? ' aria-current="page"' : '' ?>><?= h($libelle) ?></a></li>
                 <?php endforeach; ?>
             </ul>
-            <a href="<?= BASE_URL ?>/dons.php" class="bouton bouton-dore">
-                <i class="fa-solid fa-hand-holding-heart icone" aria-hidden="true"></i> Faire un don
-            </a>
         </nav>
 
         <button class="menu-toggle" aria-label="Ouvrir le menu" aria-controls="nav-principale" aria-expanded="false">
@@ -61,5 +59,9 @@ $liens_nav = [
         </button>
     </div>
 </header>
+
+<a href="<?= BASE_URL ?>/dons.php" class="bouton bouton-dore don-flottant">
+    <i class="fa-solid fa-hand-holding-heart icone" aria-hidden="true"></i> Faire un don
+</a>
 
 <main id="contenu-principal">

@@ -321,12 +321,57 @@ p { margin: 0 0 1em; }
     background: radial-gradient(circle at 15% 85%, rgba(126, 201, 168, 0.22), transparent 55%);
     pointer-events: none;
 }
+.hero-accueil-grille {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 48px;
+    align-items: center;
+}
 .hero-contenu { position: relative; max-width: 640px; }
 .hero-contenu .eyebrow { color: var(--laiton-300); }
 .hero-contenu .eyebrow::before { background: var(--laiton-300); }
 .hero-contenu h1#test { color: var(--laiton-300); }
 .hero-contenu p.intro { font-size: 1.1rem; color: var(--plâtre-100); max-width: 540px; }
 .hero-actions { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+.verset-du-jour {
+    position: relative;
+    padding: 26px 28px;
+    border: 1px solid rgba(216, 184, 116, 0.38);
+    border-radius: 8px;
+    background: rgba(250, 247, 240, 0.06);
+    backdrop-filter: blur(2px);
+    animation: entree-hero 620ms 180ms var(--ease-doux) both;
+}
+.verset-etiquette {
+    color: var(--laiton-300);
+    font-family: var(--police-donnee);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.verset-arabe {
+    margin: 20px 0;
+    color: var(--plâtre-50);
+    font-family: var(--police-titre);
+    font-size: 1.8rem;
+    line-height: 1.9;
+    text-align: center;
+}
+.verset-traduction {
+    color: var(--plâtre-100);
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: center;
+}
+.verset-reference {
+    display: block;
+    margin-top: 18px;
+    color: var(--eucalyptus-400);
+    font-family: var(--police-donnee);
+    font-size: 0.8rem;
+    text-align: right;
+}
 
 /* Moment d'entrée unique de la page : le hero apparaît en cascade légère */
 @keyframes entree-hero {
@@ -340,7 +385,7 @@ p { margin: 0 0 1em; }
 .hero-contenu .hero-actions { animation-delay: 210ms; }
 .hero-horaires { animation: entree-hero 620ms 280ms var(--ease-doux) both; }
 @media (prefers-reduced-motion: reduce) {
-    .hero-contenu > *, .hero-horaires { animation: none; }
+    .hero-contenu > *, .verset-du-jour, .hero-horaires { animation: none; }
 }
 
 .hero-horaires {
@@ -600,6 +645,15 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 .vers-haut.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .vers-haut:hover { background: var(--mint-800); }
 
+.don-flottant {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 90;
+    box-shadow: var(--ombre);
+}
+.don-flottant:hover { background: var(--laiton-300); box-shadow: var(--ombre-forte); }
+
 /* ==========================================================================
    Divers : pages intérieures, table admin
    ========================================================================== */
@@ -618,8 +672,26 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
     gap: 18px;
 }
 
-.carte-media { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 4/3; }
-.carte-media img { width: 100%; height: 100%; object-fit: cover; }
+.carte-media { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 4/3; background: var(--plâtre-100); }
+.carte-media img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+
+.discussions-conteneur { display: grid; grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.25fr); gap: 36px; align-items: start; }
+.discussion-formulaire { padding: 24px; border: 1px solid var(--plâtre-200); border-radius: 8px; background: #fff; }
+.discussion-formulaire h2, .discussions-liste > h2 { margin-top: 0; }
+.discussion-formulaire > p { color: var(--encre-600); }
+.discussion-formulaire .champ label span, .discussion-repondre .champ label span { color: var(--encre-600); font-weight: 400; }
+.discussion-piege { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.discussion-sujet { padding: 24px 0; border-bottom: 1px solid var(--plâtre-200); scroll-margin-top: 100px; }
+.discussion-sujet h3 { margin-bottom: 4px; }
+.discussion-meta { color: var(--encre-600); font-size: 0.84rem; margin-bottom: 12px; }
+.discussion-message { white-space: pre-line; overflow-wrap: anywhere; }
+.discussion-reponse { margin: 18px 0 0 20px; padding: 16px 18px; border-left: 3px solid var(--eucalyptus-400); background: #fff; }
+.discussion-repondre { margin: 18px 0 0 20px; }
+.discussion-repondre summary { color: var(--mint-700); font-weight: 700; cursor: pointer; }
+.discussion-repondre form { padding-top: 14px; }
+.discussion-admin-entete { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+.discussion-admin-entete h2 { margin: 0 0 4px; }
+.discussion-reponse-admin { margin-left: 0; }
 
 .barre-progression { background: var(--plâtre-200); border-radius: 100px; height: 8px; overflow: hidden; }
 .barre-progression span { display: block; height: 100%; background: var(--eucalyptus-600); }
@@ -627,23 +699,12 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 /* ==========================================================================
    Responsive
    ========================================================================== */
-/* Desktop moyen : resserrer la nav pour que les 9 liens + le bouton tiennent sans déborder */
-@media (max-width: 1180px) and (min-width: 761px) {
-    .nav-principale { gap: 10px; }
-    .nav-principale a { padding: 9px 9px; font-size: 0.82rem; }
-    .header-bar .bouton-dore { padding: 10px 16px; font-size: 0.82rem; }
-}
-
-@media (max-width: 900px) {
-    .grille-3, .grille-4 { grid-template-columns: repeat(2, 1fr); }
-    .footer-grille { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 760px) {
+/* Passer au menu compact avant que la navigation ne déborde sur tablette. */
+@media (max-width: 1360px) {
     .menu-toggle { display: flex; }
     .nav-principale {
         position: fixed;
-        inset: 62px 0 0 0;
+        inset: 70px 0 0 0;
         background: var(--mint-950);
         transform: translateX(100%);
         transition: transform var(--duree-panneau) var(--ease-doux);
@@ -658,19 +719,34 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
     .nav-principale a { display: block; padding: 14px 12px; font-size: 1.05rem; }
     .nav-principale a.actif::after { display: none; }
     .nav-principale a.actif { background: rgba(126, 201, 168, 0.14); border-radius: var(--rayon); }
-    .header-bar .bouton-dore { display: none; }
-    .nav-principale .bouton-dore { display: flex; justify-content: center; margin-top: 14px; }
+}
 
+@media (max-width: 900px) {
+    .grille-3, .grille-4 { grid-template-columns: repeat(2, 1fr); }
+    .footer-grille { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
     .grille-3, .grille-4, .grille-2 { grid-template-columns: 1fr; }
     .grille-horaires-hero { grid-template-columns: repeat(3, 1fr); row-gap: 16px; }
     .footer-grille { grid-template-columns: 1fr; }
     .footer-bas { flex-direction: column; }
     .hero { padding: 64px 0 56px; }
+    .hero-accueil-grille { grid-template-columns: 1fr; gap: 32px; }
     .section { padding: 52px 0; }
     .vers-haut { right: 14px; bottom: 14px; width: 40px; height: 40px; }
+    .don-flottant { left: 14px; bottom: 14px; padding: 10px 14px; }
+    .discussions-conteneur { grid-template-columns: 1fr; gap: 28px; }
+    .discussion-admin-entete { flex-direction: column; }
 }
 
 @media (max-width: 420px) {
     .grille-horaires-hero { grid-template-columns: repeat(3, 1fr); }
     .logo-sub { display: none; }
+    .conteneur { padding-left: 16px; padding-right: 16px; }
+    .verset-du-jour { padding: 22px 18px; }
+    .verset-arabe { font-size: 1.55rem; }
+    .tableau-horaires th, .tableau-horaires td { padding: 12px 10px; }
+    .discussion-formulaire { padding: 18px 16px; }
+    .discussion-reponse, .discussion-repondre { margin-left: 8px; }
 }

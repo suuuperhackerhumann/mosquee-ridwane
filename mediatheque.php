@@ -46,7 +46,7 @@ require_once __DIR__ . '/includes/header.php';
                 <img src="<?= h(siteAssetUrl($m['fichier'])) ?>" alt="<?= h($m['titre']) ?>" loading="lazy">
                 <?php else: ?>
                 <a href="<?= h(siteAssetUrl($m['fichier'])) ?>" target="_blank" rel="noopener noreferrer" style="position:relative; display:block; height:100%;">
-                    <img src="<?= h(siteAssetUrl($m['fichier'])) ?>" alt="<?= h($m['titre']) ?>" style="height:100%; object-fit:cover;">
+                    <img src="<?= h(siteAssetUrl($m['fichier'])) ?>" alt="<?= h($m['titre']) ?>" loading="lazy">
                     <span style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(13,43,38,0.35); color:#fff; font-size:2rem;">▶</span>
                 </a>
                 <?php endif; ?>

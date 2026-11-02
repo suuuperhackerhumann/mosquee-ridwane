@@ -25,9 +25,16 @@ $page_admin = $page_admin ?? '';
             <?php if (hasAdminPermission('pages')): ?><li><a href="<?= BASE_URL ?>/admin/pages.php" class="<?= $page_admin === 'pages' ? 'actif' : '' ?>">Contenu des pages</a></li><?php endif; ?>
             <?php if (hasAdminPermission('media')): ?><li><a href="<?= BASE_URL ?>/admin/media.php" class="<?= $page_admin === 'media' ? 'actif' : '' ?>">Médiathèque</a></li><?php endif; ?>
             <?php if (hasAdminPermission('messages')): ?><li><a href="<?= BASE_URL ?>/admin/messages.php" class="<?= $page_admin === 'messages' ? 'actif' : '' ?>">Messages de contact</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('discussions')): ?><li><a href="<?= BASE_URL ?>/admin/discussions.php" class="<?= $page_admin === 'discussions' ? 'actif' : '' ?>">Discussions</a></li><?php endif; ?>
             <?php if (isFullAdmin()): ?><li><a href="<?= BASE_URL ?>/admin/roles.php" class="<?= $page_admin === 'roles' ? 'actif' : '' ?>">Utilisateurs et rôles</a></li><?php endif; ?>
+            <li><a href="<?= BASE_URL ?>/admin/mot-de-passe.php" class="<?= $page_admin === 'mot-de-passe' ? 'actif' : '' ?>">Changer mon mot de passe</a></li>
             <li class="voir-site"><a href="<?= BASE_URL ?>/index.php" target="_blank">↗ Voir le site</a></li>
-            <li><a href="<?= BASE_URL ?>/admin/logout.php">Se déconnecter</a></li>
+            <li>
+                <form method="post" action="<?= BASE_URL ?>/admin/logout.php">
+                    <input type="hidden" name="csrf_token" value="<?= h(csrfToken()) ?>">
+                    <button type="submit" class="admin-deconnexion">Se déconnecter</button>
+                </form>
+            </li>
         </ul>
     </aside>
     <main class="admin-main">

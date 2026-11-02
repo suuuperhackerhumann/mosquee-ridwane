@@ -28,7 +28,7 @@ body.admin-body {
     color: var(--laiton-300);
 }
 .admin-nav { list-style: none; padding: 0; margin: 28px 0 0; }
-.admin-nav li a {
+.admin-nav li a, .admin-deconnexion {
     display: block;
     padding: 10px 12px;
     border-radius: var(--rayon);
@@ -36,8 +36,14 @@ body.admin-body {
     font-weight: 600;
     color: var(--plâtre-100);
     margin-bottom: 2px;
+    background: none;
+    border: 0;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
 }
-.admin-nav li a:hover, .admin-nav li a.actif {
+.admin-nav li a:hover, .admin-nav li a.actif, .admin-deconnexion:hover {
     background: rgba(126, 201, 168, 0.14);
     color: var(--eucalyptus-400);
 }
@@ -47,11 +53,13 @@ body.admin-body {
     padding-top: 16px;
 }
 
-.admin-main { flex: 1; padding: 32px 40px; max-width: 1100px; }
-.admin-entete { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+.admin-main { flex: 1; min-width: 0; width: 100%; padding: 32px 40px; max-width: 1100px; }
+.admin-entete { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
 .admin-entete h1 { margin: 0; }
 
 .admin-carte {
+    min-width: 0;
+    overflow-x: auto;
     background: var(--plâtre-50);
     border: 1px solid var(--plâtre-200);
     border-radius: 6px;
@@ -75,12 +83,53 @@ body.admin-body {
 .admin-stat .valeur { font-family: var(--police-donnee); font-size: 1.8rem; font-weight: 700; color: var(--mint-800); }
 .admin-stat .libelle { font-family: var(--police-donnee); font-size: 0.78rem; color: var(--encre-600); text-transform: uppercase; letter-spacing: 0.05em; }
 
-.table-admin { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.table-admin { width: 100%; min-width: 600px; border-collapse: collapse; font-size: 0.92rem; }
 .table-admin th, .table-admin td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--plâtre-200); }
 .table-admin th { font-family: var(--police-donnee); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--encre-600); }
-.table-admin .actions { display: flex; gap: 10px; }
+.table-admin .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.apercu-media { width: 72px; height: 56px; object-fit: contain; object-position: center; border-radius: 4px; background: var(--plâtre-100); }
+.media-albums { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
+.media-album { min-width: 0; padding: 14px; border: 1px solid var(--plâtre-200); border-radius: 6px; background: #fff; }
+.media-album-apercus { height: 120px; display: flex; gap: 4px; overflow: hidden; border-radius: 4px; background: var(--plâtre-100); }
+.media-album-apercus img { flex: 1; min-width: 0; height: 100%; object-fit: contain; }
+.media-album h4 { margin: 12px 0 2px; overflow-wrap: anywhere; }
+.media-album p { margin: 0 0 12px; color: var(--encre-600); font-size: 0.9rem; }
+.media-video-apercu { display: flex; min-height: 100px; flex: 1; align-items: center; justify-content: center; color: var(--mint-800); background: var(--plâtre-100); }
+.media-dialogue { width: min(900px, calc(100% - 32px)); max-width: 900px; max-height: min(85vh, 800px); padding: 24px; border: 1px solid var(--plâtre-200); border-radius: 8px; color: var(--encre-900); background: var(--plâtre-50); box-shadow: var(--ombre-forte); }
+.media-dialogue::backdrop { background: rgba(14, 45, 41, 0.72); }
+.media-dialogue-entete, .media-dialogue-pied, .media-selection-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.media-dialogue-entete { margin-bottom: 18px; }
+.media-dialogue-entete h3, .media-dialogue-entete p { margin: 0; }
+.media-dialogue-entete p, .media-selection-actions span { color: var(--encre-600); font-size: 0.9rem; }
+.media-dialogue-entete .fermer-album { font-size: 1.3rem; padding: 8px; }
+.media-suppression-form { display: flex; flex-direction: column; min-height: 0; }
+.media-selection-actions { justify-content: flex-start; margin-bottom: 14px; }
+.media-selection-actions label { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.media-selection-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; max-height: 55vh; overflow-y: auto; padding: 2px 4px 12px 2px; }
+.media-selection-element { min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 8px; border: 1px solid var(--plâtre-200); border-radius: 5px; background: #fff; cursor: pointer; }
+.media-selection-element img { width: 100%; height: 120px; object-fit: contain; background: var(--plâtre-100); }
+.media-selection-element > span:last-child { overflow-wrap: anywhere; font-size: 0.88rem; }
+.media-selection-element input, .media-selection-actions input { accent-color: var(--mint-700); }
+.media-dialogue-pied { justify-content: flex-end; border-top: 1px solid var(--plâtre-200); padding-top: 16px; }
+.media-dialogue-pied button:disabled { opacity: 0.5; cursor: not-allowed; }
 .table-admin .actions a { font-weight: 700; font-size: 0.85rem; }
 .lien-suppr { color: var(--rouge-alerte) !important; }
+.bouton-lien {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--mint-800);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.bouton-lien:hover { text-decoration: underline; }
+.bouton-danger {
+    background: var(--rouge-alerte);
+    color: #fff;
+    border: 1px solid var(--rouge-alerte);
+}
+.bouton-danger:hover { background: #84251f; border-color: #84251f; }
 
 .statut-pastille { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.72rem; font-family: var(--police-donnee); font-weight: 700; text-transform: uppercase; }
 .statut-publie { background: var(--eucalyptus-100); color: #205a2c; }
@@ -106,4 +155,15 @@ body.admin-body {
     .admin-sidebar { width: 100%; }
     .admin-main { padding: 24px 20px; }
     .admin-stats { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 420px) {
+    .admin-main { padding: 20px 14px; }
+    .admin-carte { padding: 18px 16px; }
+    .admin-stats { gap: 10px; }
+    .admin-stat { padding: 14px 12px; }
+    .admin-stat .valeur { font-size: 1.5rem; }
+    .media-dialogue { padding: 18px 14px; }
+    .media-selection-grille { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .media-dialogue-pied { align-items: stretch; flex-direction: column-reverse; }
 }

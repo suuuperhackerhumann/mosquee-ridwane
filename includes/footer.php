@@ -37,6 +37,7 @@
                         <li><a href="<?= BASE_URL ?>/actualites.php">Actualités</a></li>
                         <li><a href="<?= BASE_URL ?>/dons.php">Faire un don</a></li>
                         <li><a href="<?= BASE_URL ?>/mediatheque.php">Médiathèque</a></li>
+                        <li><a href="<?= BASE_URL ?>/discussions.php">Discussion</a></li>
                     </ul>
                 </div>
                 <div>

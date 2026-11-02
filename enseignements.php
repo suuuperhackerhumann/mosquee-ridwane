@@ -24,6 +24,10 @@ require_once __DIR__ . '/includes/header.php';
                 <?php if ($ens['horaires']): ?>
                 <p class="meta-icone" style="font-family:var(--police-donnee); font-weight:600; color:var(--mint-700); margin-top:auto;"><i class="fa-solid fa-clock icone" aria-hidden="true"></i> <?= h($ens['horaires']) ?></p>
                 <?php endif; ?>
+                <?php $messageWhatsApp = 'Bonjour, je souhaite avoir des informations sur l’enseignement « ' . $ens['titre'] . ' » à la Mosquée Ridwane.'; ?>
+                <a href="<?= h(whatsappMessageUrl($messageWhatsApp)) ?>" class="carte-lien" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Demander des informations sur WhatsApp
+                </a>
             </div>
         </div>
         <?php endforeach; ?>
@@ -36,7 +40,9 @@ require_once __DIR__ . '/includes/header.php';
         <div class="carte-corps" style="text-align:center;">
             <h3>Une question sur nos programmes ?</h3>
             <p class="resume">Contactez-nous pour connaître les modalités d'inscription et les places disponibles.</p>
-            <a href="<?= BASE_URL ?>/contact.php" class="bouton bouton-emeraude" style="align-self:center;">Nous contacter</a>
+            <a href="<?= h(whatsappMessageUrl('Bonjour, je souhaite obtenir des informations sur les programmes d’enseignement de la Mosquée Ridwane.')) ?>" class="bouton bouton-emeraude" style="align-self:center;" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Nous contacter sur WhatsApp
+            </a>
         </div>
     </div>
 </section>

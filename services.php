@@ -20,7 +20,10 @@ require_once __DIR__ . '/includes/header.php';
             <div class="carte-corps">
                 <h3><?= h($s['titre']) ?></h3>
                 <p class="resume"><?= h($s['description']) ?></p>
-                <a href="<?= BASE_URL ?>/contact.php" class="carte-lien">Contacter la mosquée pour ce service →</a>
+                <?php $messageWhatsApp = 'Bonjour, je souhaite avoir des informations sur le service « ' . $s['titre'] . ' » de la Mosquée Ridwane.'; ?>
+                <a href="<?= h(whatsappMessageUrl($messageWhatsApp)) ?>" class="carte-lien" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Contacter sur WhatsApp pour ce service
+                </a>
             </div>
         </div>
         <?php endforeach; ?>
@@ -28,7 +31,7 @@ require_once __DIR__ . '/includes/header.php';
     <?php if (!$services): ?>
     <p>Les informations sur les services seront bientôt disponibles.</p>
     <?php endif; ?>
-    <p style="margin-top:28px; color:var(--encre-600); font-size:0.9rem;">Les demandes de rendez-vous se font actuellement par téléphone ou par le formulaire de contact — un système de prise de rendez-vous en ligne est prévu pour une prochaine version du site.</p>
+    <p style="margin-top:28px; color:var(--encre-600); font-size:0.9rem;">Choisissez un service pour ouvrir WhatsApp avec un message déjà préparé. Vous pourrez le modifier avant de l’envoyer.</p>
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -102,6 +102,14 @@ function siteAssetUrl($path) {
     return rtrim(BASE_URL, '/') . '/' . ltrim($path, '/');
 }
 
+function whatsappMessageUrl($message) {
+    if (!defined('SITE_WHATSAPP') || !preg_match('~^https://wa\.me/\d+$~', SITE_WHATSAPP)) {
+        return '';
+    }
+
+    return SITE_WHATSAPP . '?text=' . rawurlencode($message);
+}
+
 // --- Authentification admin ---
 function isAdminLoggedIn() {
     return isset($_SESSION['admin_id']);
@@ -112,18 +120,20 @@ function requireAdmin() {
         redirect('/admin/index.php');
     }
 
-    if (!isset($_SESSION['admin_role_id'], $_SESSION['admin_role_key'])) {
-        global $pdo;
-        $stmt = $pdo->prepare('SELECT a.role_id, r.role_key FROM admins a JOIN roles r ON r.id = a.role_id WHERE a.id = ?');
-        $stmt->execute([(int) $_SESSION['admin_id']]);
-        $role = $stmt->fetch();
-        if (!$role) {
-            unset($_SESSION['admin_id'], $_SESSION['admin_nom'], $_SESSION['admin_role']);
-            redirect('/admin/index.php');
-        }
-        $_SESSION['admin_role_id'] = (int) $role['role_id'];
-        $_SESSION['admin_role_key'] = $role['role_key'];
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT a.nom, a.role, a.role_id, r.role_key FROM admins a JOIN roles r ON r.id = a.role_id WHERE a.id = ?');
+    $stmt->execute([(int) $_SESSION['admin_id']]);
+    $admin = $stmt->fetch();
+    if (!$admin) {
+        $_SESSION = [];
+        session_destroy();
+        redirect('/admin/index.php');
     }
+
+    $_SESSION['admin_nom'] = $admin['nom'];
+    $_SESSION['admin_role'] = $admin['role'];
+    $_SESSION['admin_role_id'] = (int) $admin['role_id'];
+    $_SESSION['admin_role_key'] = $admin['role_key'];
 }
 
 function adminPermissions() {
@@ -134,6 +144,7 @@ function adminPermissions() {
         'pages' => 'Modifier le contenu des pages',
         'media' => 'Gérer la médiathèque',
         'messages' => 'Consulter les messages de contact',
+        'discussions' => 'Gérer les discussions',
     ];
 }
 
@@ -187,7 +198,7 @@ function csrfToken() {
 }
 
 function checkCsrf() {
-    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])) {
+    if (!isset($_POST['csrf_token']) || !is_string($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])) {
         die('Requête invalide (jeton de sécurité manquant ou expiré). Merci de recharger la page.');
     }
 }

@@ -2,9 +2,10 @@
 require_once __DIR__ . '/../config/config.php';
 requireAdminPermission('evenements');
 
-if (isset($_GET['supprimer'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer'])) {
+    checkCsrf();
     $stmt = $pdo->prepare("DELETE FROM evenements WHERE id = ?");
-    $stmt->execute([(int)$_GET['supprimer']]);
+    $stmt->execute([(int) $_POST['supprimer']]);
     redirect('/admin/evenements.php?suppr=1');
 }
 
@@ -35,7 +36,11 @@ require_once __DIR__ . '/includes/admin-header.php';
                 <td><span class="statut-pastille statut-<?= $e['statut'] ?>"><?= $e['statut'] === 'publie' ? 'Publié' : 'Brouillon' ?></span></td>
                 <td class="actions">
                     <a href="<?= BASE_URL ?>/admin/evenement-form.php?id=<?= $e['id'] ?>">Modifier</a>
-                    <a href="<?= BASE_URL ?>/admin/evenements.php?supprimer=<?= $e['id'] ?>" class="lien-suppr" onclick="return confirm('Supprimer cet événement ?');">Supprimer</a>
+                    <form method="post" action="<?= BASE_URL ?>/admin/evenements.php" onsubmit="return confirm('Supprimer cet événement ?');">
+                        <input type="hidden" name="csrf_token" value="<?= h(csrfToken()) ?>">
+                        <input type="hidden" name="supprimer" value="<?= (int) $e['id'] ?>">
+                        <button type="submit" class="lien-suppr bouton-lien">Supprimer</button>
+                    </form>
                 </td>
             </tr>
         <?php endforeach; ?>
