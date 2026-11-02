@@ -1,0 +1,151 @@
+/* Une entrée chaleureuse pour Ridwane : pierre claire, vert profond et détails de laiton.
+   Les règles propres à l'accueil sont limitées aux sections directement dans le main. */
+:root {
+    --ridwane-nuit: #103d36;
+    --ridwane-profond: #092e29;
+    --ridwane-or: #e7c687;
+    --ridwane-papier: #f7f5ec;
+    --ridwane-texte: #253a32;
+}
+
+.site-header {
+    background: #0b302b;
+    border-bottom-color: rgba(231, 198, 135, .18);
+}
+.header-bar { min-height: 72px; }
+.logo { font-size: 1.35rem; line-height: 1.1; }
+.logo-emplacement {
+    width: 44px;
+    height: 44px;
+    border-color: rgba(231, 198, 135, .65);
+    background: rgba(231, 198, 135, .06);
+}
+.logo-sub { margin-top: 5px; letter-spacing: .14em; }
+.bouton { border-radius: 6px; min-height: 46px; justify-content: center; }
+.bouton-dore { background: var(--ridwane-or); color: #17382e; }
+.bouton-dore:hover { background: #f4dba7; }
+
+/* Le verset prend la forme d'une niche architecturale, sans image factice de la mosquée. */
+main > .hero {
+    background: radial-gradient(ellipse at 78% 18%, #285f4e 0%, transparent 43%),
+                linear-gradient(125deg, #092d28 0%, #154d3f 100%);
+    padding: clamp(64px, 8vw, 112px) 0 72px;
+}
+main > .hero::before {
+    opacity: .10;
+    background-size: 185px 185px;
+    pointer-events: none;
+}
+main > .hero::after {
+    background: radial-gradient(circle at 8% 80%, rgba(215, 189, 119, .12), transparent 42%);
+}
+.hero-accueil-grille {
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr);
+    gap: clamp(38px, 7vw, 100px);
+}
+.hero-contenu .eyebrow {
+    color: var(--ridwane-or);
+    font-size: .8rem;
+    letter-spacing: .16em;
+}
+.hero-contenu h1#test {
+    color: #fff9e8;
+    font-size: clamp(3rem, 5.4vw, 5.4rem);
+    line-height: 1.06;
+    letter-spacing: -.025em;
+    margin: 20px 0 22px;
+    text-wrap: balance;
+}
+.hero-contenu p.intro {
+    color: #e1eae0;
+    font-size: clamp(1.06rem, 1.3vw, 1.2rem);
+    line-height: 1.75;
+    max-width: 510px;
+}
+.hero-actions { margin-top: 32px; gap: 12px; }
+.hero-actions .bouton { padding: 14px 23px; }
+.hero-actions .bouton-contour { border-color: rgba(255, 249, 232, .5); }
+.hero-actions .bouton-contour:hover { background: rgba(255,255,255,.09); color: white; }
+.verset-du-jour {
+    isolation: isolate;
+    border: 1px solid rgba(231, 198, 135, .46);
+    border-radius: 210px 210px 12px 12px;
+    background: linear-gradient(160deg, rgba(250, 244, 223, .12), rgba(7, 40, 34, .28));
+    padding: clamp(80px, 9vw, 112px) clamp(24px, 4vw, 48px) 38px;
+    box-shadow: inset 0 0 0 8px rgba(231, 198, 135, .035), 0 24px 70px rgba(0, 24, 20, .22);
+    text-align: center;
+}
+.verset-du-jour::before {
+    content: '✦';
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--ridwane-or);
+    font-size: 1.35rem;
+    line-height: 1;
+}
+.verset-etiquette { color: var(--ridwane-or); letter-spacing: .14em; }
+.verset-arabe { font-size: clamp(1.7rem, 2.5vw, 2.25rem); line-height: 1.9; margin: 22px 0; }
+.verset-traduction { color: #f2f2e6; line-height: 1.7; }
+.verset-reference { color: #b9dfc9; text-align: center; }
+.hero-horaires {
+    margin-top: 64px;
+    padding: 24px 28px;
+    border-color: rgba(231, 198, 135, .24);
+    background: rgba(4, 35, 30, .38);
+    box-shadow: 0 16px 40px rgba(0, 24, 20, .14);
+}
+.hero-horaires-titre { color: #d6e6d7; letter-spacing: .12em; }
+.grille-horaires-hero { gap: 8px; }
+.grille-horaires-hero > div { padding: 12px 5px; }
+.grille-horaires-hero .nom { color: #c5d7c9; }
+.grille-horaires-hero .heure { font-size: clamp(1.15rem, 2vw, 1.45rem); color: #fff9ed; }
+.grille-horaires-hero .prochaine { background: rgba(231, 198, 135, .14); }
+
+/* Rythme éditorial : un peu plus d'air et des cartes plus accueillantes. */
+main > .section { padding-top: clamp(64px, 8vw, 104px); padding-bottom: clamp(64px, 8vw, 104px); }
+main > .section:not(.section-alt):not(.section-emeraude) { background: var(--ridwane-papier); }
+main > .section-alt { background: #e9eee2; }
+main > .section h2 { font-size: clamp(2rem, 3.5vw, 3.1rem); line-height: 1.15; text-wrap: balance; }
+main > .section p { color: var(--ridwane-texte); font-size: 1.06rem; line-height: 1.75; }
+main > .section .eyebrow { color: #286c54; margin-bottom: 12px; }
+main > .section .eyebrow::before { background: #286c54; }
+main > .section .carte {
+    border: 1px solid rgba(18, 70, 52, .10);
+    border-radius: 14px;
+    background: #fffef8;
+    box-shadow: 0 12px 40px rgba(17, 61, 44, .06);
+}
+main > .section .carte:hover { box-shadow: 0 20px 48px rgba(17, 61, 44, .13); }
+main > .section .carte-corps { padding: 28px; }
+main > .section .carte-lien { color: #166346; font-size: 1rem; }
+main > .section-emeraude {
+    background: radial-gradient(circle at 50% 0%, #326d57, transparent 55%), #103d36;
+    color: #fff9ed;
+}
+main > .section-emeraude h2 { color: #fff9ed; }
+main > .section-emeraude p { color: #e0ece0 !important; }
+main > .section-emeraude .eyebrow { color: var(--ridwane-or); }
+main > .section-emeraude .eyebrow::before { background: var(--ridwane-or); }
+
+@media (max-width: 760px) {
+    main > .hero { padding: 64px 0 48px; }
+    .hero-accueil-grille { grid-template-columns: 1fr; gap: 40px; }
+    .hero-contenu h1#test { font-size: clamp(2.8rem, 11vw, 4.4rem); }
+    .verset-du-jour { max-width: 520px; width: 100%; margin: 0 auto; padding-top: 78px; }
+    .hero-horaires { margin-top: 38px; padding: 20px 16px; }
+    .hero-horaires-titre { gap: 12px; flex-wrap: wrap; line-height: 1.5; }
+    .grille-horaires-hero { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    main > .section { padding-top: 64px; padding-bottom: 64px; }
+}
+@media (max-width: 420px) {
+    .hero-actions { display: grid; grid-template-columns: 1fr; }
+    .hero-actions .bouton { width: 100%; }
+    .verset-du-jour { padding-left: 20px; padding-right: 20px; }
+    .verset-arabe { font-size: 1.65rem; }
+    .don-flottant { font-size: .8rem; min-height: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .grille-horaires-hero .prochaine::before { animation: none; }
+}
