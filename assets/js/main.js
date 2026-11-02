@@ -1,42 +1,52 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // --- Menu mobile ---
+    // Menu mobile : état accessible, navigation clavier et fermeture au changement de taille.
     var toggle = document.querySelector('.menu-toggle');
     var nav = document.querySelector('.nav-principale');
+    var menuCompact = window.matchMedia('(max-width: 1360px)');
 
-    function fermerMenu() {
-        if (!nav) return;
-        nav.classList.remove('ouvert');
-        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    function synchroniserMenu(ouvert) {
+        if (!toggle || !nav) return;
+        var affiche = menuCompact.matches && ouvert;
+        nav.classList.toggle('ouvert', affiche);
+        toggle.setAttribute('aria-expanded', affiche ? 'true' : 'false');
+        toggle.setAttribute('aria-label', affiche ? 'Fermer le menu' : 'Ouvrir le menu');
+        // Un menu hors écran ne doit pas recevoir le focus clavier.
+        if (menuCompact.matches && !affiche) {
+            nav.setAttribute('inert', '');
+            nav.setAttribute('aria-hidden', 'true');
+        } else {
+            nav.removeAttribute('inert');
+            nav.removeAttribute('aria-hidden');
+        }
     }
 
     if (toggle && nav) {
+        synchroniserMenu(false);
         toggle.addEventListener('click', function () {
-            var ouvert = nav.classList.toggle('ouvert');
-            toggle.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+            synchroniserMenu(!nav.classList.contains('ouvert'));
         });
-
-        // Ferme le menu quand on choisit un lien (mobile)
         nav.querySelectorAll('a').forEach(function (lien) {
-            lien.addEventListener('click', fermerMenu);
+            lien.addEventListener('click', function () { synchroniserMenu(false); });
         });
-
-        // Ferme le menu avec la touche Échap
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') fermerMenu();
+            if (e.key === 'Escape' && nav.classList.contains('ouvert')) {
+                synchroniserMenu(false);
+                toggle.focus();
+            }
         });
+        var changementTaille = function () { synchroniserMenu(false); };
+        if (menuCompact.addEventListener) menuCompact.addEventListener('change', changementTaille);
+        else menuCompact.addListener(changementTaille);
     }
 
-    // --- Ombre portée sur l'en-tête au défilement ---
+    // Ombre portée sur l'en-tête au défilement.
     var entete = document.getElementById('entete');
     if (entete) {
-        var appliquerOmbre = function () {
-            entete.classList.toggle('defile', window.scrollY > 8);
-        };
+        var appliquerOmbre = function () { entete.classList.toggle('defile', window.scrollY > 8); };
         appliquerOmbre();
         window.addEventListener('scroll', appliquerOmbre, { passive: true });
     }
 
-    // --- Bouton retour en haut ---
     var versHaut = document.getElementById('vers-haut');
     if (versHaut) {
         window.addEventListener('scroll', function () {
@@ -47,16 +57,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // --- Met en évidence la prochaine prière dans le bloc horaires de la page d'accueil ---
+    // Mise en évidence de la prochaine prière.
     var items = document.querySelectorAll('[data-heure-priere]');
     if (items.length) {
         var maintenant = new Date();
         var minutesActuelles = maintenant.getHours() * 60 + maintenant.getMinutes();
         var prochain = null;
         var ecartMin = Infinity;
-
         items.forEach(function (el) {
-            var valeur = el.getAttribute('data-heure-priere'); // format HH:MM
+            var valeur = el.getAttribute('data-heure-priere');
             if (!valeur) return;
             var parts = valeur.split(':');
             var minutes = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
@@ -66,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 prochain = el;
             }
         });
-        // Si toutes les prières du jour sont passées, on met en avant la première (Fajr du lendemain)
         if (!prochain && items.length) prochain = items[0];
         if (prochain) prochain.classList.add('prochaine');
     }

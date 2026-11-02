@@ -29,6 +29,22 @@ $liens_nav = [
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/accueil-visuel.css">
+<style>
+/* Sur mobile, le don reste disponible sans recouvrir le contenu. */
+@media (max-width: 760px) {
+    .don-flottant { position: static; display: flex; width: 100%; border-radius: 0; box-shadow: none; }
+}
+@media (max-width: 1360px) { .nav-principale { top: 72px; } }
+/* Informations visibles sous les médias, quelle que soit leur taille. */
+.media-carte { min-width: 0; overflow: hidden; border: 1px solid var(--plâtre-200); border-radius: 10px; background: #fffef8; }
+.media-carte .carte-media { border-radius: 0; }
+.media-carte .carte-media a { display: block; width: 100%; height: 100%; }
+.media-carte .carte-media img { width: 100%; height: 100%; object-fit: cover; }
+.media-infos { padding: 16px 18px 20px; overflow-wrap: anywhere; }
+.media-infos h2 { margin: 0 0 8px; font-size: 1.2rem; }
+main > .section .media-infos p { margin: 4px 0 0; font-size: .92rem; line-height: 1.5; }
+.media-video-lien { display: flex !important; align-items: center; justify-content: center; gap: 10px; background: var(--mint-950); color: var(--plâtre-50); font-weight: 700; }
+</style>
 </head>
 <body>
 
@@ -54,7 +70,7 @@ $liens_nav = [
             </ul>
         </nav>
 
-        <button class="menu-toggle" aria-label="Ouvrir le menu" aria-controls="nav-principale" aria-expanded="false">
+        <button type="button" class="menu-toggle" aria-label="Ouvrir le menu" aria-controls="nav-principale" aria-expanded="false">
             <i class="fa-solid fa-bars" aria-hidden="true"></i>
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
