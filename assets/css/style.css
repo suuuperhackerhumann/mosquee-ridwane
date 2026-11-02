@@ -1,0 +1,676 @@
+/* ==========================================================================
+   Mosquée Ridwane — Feuille de style
+   Palette : mint eclipse (sombre) / eucalyptus glow (accent frais) / laiton doré / plâtre ivoire
+   Typo : Amiri (titres, écho des manuscrits coraniques) + Karla (texte) + Inter (données)
+   Signature : motif d'étoile à huit branches (khatam) en liseré fin
+   ========================================================================== */
+
+:root {
+    /* --- Mint Eclipse : vert sombre profond (remplace l'ancien émeraude) --- */
+    --mint-950: #0e2d29;
+    --mint-800: #163f39;
+    --mint-700: #1e5049;
+    --mint-500: #2f6f62;
+
+    /* --- Eucalyptus Glow : vert frais/lumineux, couleur d'accent --- */
+    --eucalyptus-600: #4f9179;
+    --eucalyptus-400: #7ec9a8;
+    --eucalyptus-200: #bfe8d3;
+    --eucalyptus-100: #e6f7ed;
+
+    /* --- Laiton doré : conservé --- */
+    --laiton-500: #b9903f;
+    --laiton-300: #d8b874;
+    --laiton-100: #f1e3c3;
+
+    --plâtre-50: #faf7f0;
+    --plâtre-100: #f4eee0;
+    --plâtre-200: #ece2cc;
+    --encre-900: #1c211f;
+    --encre-600: #4a534e;
+    --rouge-alerte: #a3402f;
+
+    /* alias de compatibilité (ancienne palette « émeraude ») */
+    --emeraude-700: var(--mint-700);
+    --emeraude-800: var(--mint-800);
+    --emeraude-950: var(--mint-950);
+
+    --police-titre: 'Amiri', 'Georgia', serif;
+    --police-texte: 'Karla', 'Segoe UI', sans-serif;
+    --police-donnee: 'Inter', 'Segoe UI', sans-serif;
+
+    --rayon: 4px;
+    --rayon-lg: 10px;
+    --ombre-legere: 0 2px 10px -4px rgba(14, 45, 41, 0.18);
+    --ombre: 0 6px 24px -8px rgba(14, 45, 41, 0.25);
+    --ombre-forte: 0 20px 48px -12px rgba(14, 45, 41, 0.38);
+    --conteneur: 1160px;
+
+    --ease-doux: cubic-bezier(0.16, 1, 0.3, 1);
+    --duree-micro: 180ms;
+    --duree-panneau: 320ms;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Lien d'évitement clavier */
+.lien-evitement {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--laiton-500);
+    color: var(--mint-950);
+    padding: 12px 18px;
+    border-radius: 0 0 6px 0;
+    font-weight: 700;
+    z-index: 1000;
+}
+.lien-evitement:focus { left: 0; }
+
+:focus-visible {
+    outline: 2px solid var(--laiton-500);
+    outline-offset: 2px;
+}
+
+body {
+    margin: 0;
+    font-family: var(--police-texte);
+    color: var(--encre-900);
+    background: var(--plâtre-50);
+    line-height: 1.6;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3, h4 {
+    font-family: var(--police-titre);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--mint-950);
+    margin: 0 0 0.5em;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3.2rem); }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2.2rem); }
+h3 { font-size: 1.3rem; }
+
+p { margin: 0 0 1em; }
+
+.conteneur {
+    max-width: var(--conteneur);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.eyebrow {
+    font-family: var(--police-donnee);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--eucalyptus-600);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.eyebrow::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background: var(--eucalyptus-600);
+    display: inline-block;
+}
+
+/* --- Motif signature : étoile à huit branches, utilisée en séparateur --- */
+.motif-etoile {
+    width: 28px;
+    height: 28px;
+    margin: 28px auto;
+    display: block;
+    opacity: 0.8;
+}
+.motif-etoile path { fill: none; stroke: var(--laiton-500); stroke-width: 1.4; }
+
+.section-diviseur {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   En-tête / navigation
+   ========================================================================== */
+.site-header {
+    background: var(--mint-950);
+    color: var(--plâtre-100);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(216, 184, 116, 0.25);
+    transition: box-shadow var(--duree-panneau) var(--ease-doux);
+}
+.site-header.defile { box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.45); }
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--police-titre);
+    font-size: 1.25rem;
+    color: var(--plâtre-50);
+    flex-shrink: 0;
+    transition: opacity var(--duree-micro) ease;
+}
+.logo:hover { opacity: 0.88; }
+.logo-emplacement {
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(216, 184, 116, 0.65);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--laiton-300);
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+.logo:hover .logo-emplacement { transform: scale(1.05); }
+.logo-sub {
+    display: block;
+    font-family: var(--police-donnee);
+    font-size: 0.63rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--eucalyptus-400);
+    font-weight: 400;
+}
+
+.nav-principale {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-left: auto;
+}
+.nav-principale ul {
+    list-style: none;
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+}
+.nav-principale a {
+    position: relative;
+    display: block;
+    padding: 9px 12px;
+    font-size: 0.87rem;
+    font-weight: 600;
+    border-radius: var(--rayon);
+    color: var(--plâtre-100);
+    white-space: nowrap;
+    transition: background var(--duree-micro) ease, color var(--duree-micro) ease;
+}
+.nav-principale a:hover {
+    background: rgba(126, 201, 168, 0.14);
+    color: var(--eucalyptus-400);
+}
+.nav-principale a.actif { color: var(--eucalyptus-400); }
+.nav-principale a.actif::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 3px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--laiton-500);
+}
+
+.bouton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: var(--rayon);
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform var(--duree-micro) var(--ease-doux), box-shadow var(--duree-micro) ease, background var(--duree-micro) ease, border-color var(--duree-micro) ease, color var(--duree-micro) ease;
+}
+.bouton:hover { transform: translateY(-1px); }
+.bouton:active { transform: translateY(0) scale(0.97); }
+.bouton-dore {
+    background: var(--laiton-500);
+    color: var(--mint-950);
+}
+.bouton-dore:hover { background: var(--laiton-300); box-shadow: var(--ombre); }
+.bouton-contour {
+    border-color: rgba(250, 247, 240, 0.4);
+    color: var(--plâtre-50);
+    background: transparent;
+}
+.bouton-contour:hover { border-color: var(--eucalyptus-400); color: var(--eucalyptus-400); }
+.bouton-emeraude { background: var(--mint-700); color: var(--plâtre-50); }
+.bouton-emeraude:hover { background: var(--eucalyptus-600); }
+.bouton-petit { padding: 8px 16px; font-size: 0.82rem; }
+.bouton:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--plâtre-50);
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background var(--duree-micro) ease;
+    flex-shrink: 0;
+}
+.menu-toggle:hover { background: rgba(250, 247, 240, 0.1); }
+.menu-toggle .fa-xmark { display: none; }
+.menu-toggle[aria-expanded="true"] .fa-bars { display: none; }
+.menu-toggle[aria-expanded="true"] .fa-xmark { display: inline-block; }
+
+/* ==========================================================================
+   Bannière d'accueil (hero)
+   ========================================================================== */
+.hero {
+    position: relative;
+    background: radial-gradient(ellipse at top right, var(--mint-700), var(--mint-950) 65%);
+    color: var(--plâtre-50);
+    overflow: hidden;
+    padding: 96px 0 84px;
+}
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23d8b874' stroke-width='1'%3E%3Cpath d='M60 6 L74 34 L106 34 L80 54 L90 86 L60 66 L30 86 L40 54 L14 34 L46 34 Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 220px 220px;
+}
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 15% 85%, rgba(126, 201, 168, 0.22), transparent 55%);
+    pointer-events: none;
+}
+.hero-contenu { position: relative; max-width: 640px; }
+.hero-contenu .eyebrow { color: var(--laiton-300); }
+.hero-contenu .eyebrow::before { background: var(--laiton-300); }
+.hero-contenu h1#test { color: var(--laiton-300); }
+.hero-contenu p.intro { font-size: 1.1rem; color: var(--plâtre-100); max-width: 540px; }
+.hero-actions { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+
+/* Moment d'entrée unique de la page : le hero apparaît en cascade légère */
+@keyframes entree-hero {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.hero-contenu > * { animation: entree-hero 620ms var(--ease-doux) both; }
+.hero-contenu .eyebrow { animation-delay: 0ms; }
+.hero-contenu h1 { animation-delay: 70ms; }
+.hero-contenu p.intro { animation-delay: 140ms; }
+.hero-contenu .hero-actions { animation-delay: 210ms; }
+.hero-horaires { animation: entree-hero 620ms 280ms var(--ease-doux) both; }
+@media (prefers-reduced-motion: reduce) {
+    .hero-contenu > *, .hero-horaires { animation: none; }
+}
+
+.hero-horaires {
+    position: relative;
+    margin-top: 48px;
+    background: rgba(250, 247, 240, 0.06);
+    border: 1px solid rgba(126, 201, 168, 0.3);
+    border-radius: 8px;
+    padding: 22px 26px;
+    backdrop-filter: blur(2px);
+}
+.hero-horaires-titre {
+    font-family: var(--police-donnee);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    color: var(--eucalyptus-400);
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+.grille-horaires-hero {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    text-align: center;
+}
+.grille-horaires-hero > div { position: relative; padding: 6px 4px 10px; border-radius: 8px; transition: background var(--duree-panneau) ease; }
+.grille-horaires-hero .prochaine { background: rgba(216, 184, 116, 0.1); }
+.grille-horaires-hero .prochaine .nom { color: var(--laiton-300); }
+.grille-horaires-hero .prochaine .heure { color: var(--laiton-300); }
+.grille-horaires-hero .prochaine::before {
+    content: '';
+    position: absolute;
+    top: -3px; left: 50%;
+    width: 6px; height: 6px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: var(--laiton-300);
+    box-shadow: 0 0 0 rgba(216, 184, 116, 0.55);
+    animation: pouls-priere 2.4s ease-out infinite;
+}
+@keyframes pouls-priere {
+    0% { box-shadow: 0 0 0 0 rgba(216, 184, 116, 0.55); }
+    70% { box-shadow: 0 0 0 8px rgba(216, 184, 116, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(216, 184, 116, 0); }
+}
+.grille-horaires-hero .nom {
+    font-family: var(--police-donnee);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(250, 247, 240, 0.65);
+    margin-bottom: 4px;
+    transition: color var(--duree-panneau) ease;
+}
+.grille-horaires-hero .heure {
+    font-family: var(--police-donnee);
+    font-size: 1.25rem;
+    font-weight: 600;
+    transition: color var(--duree-panneau) ease;
+}
+
+/* ==========================================================================
+   Sections génériques
+   ========================================================================== */
+.section { padding: 72px 0; }
+.section-alt { background: var(--plâtre-100); }
+.section-emeraude { background: var(--mint-950); color: var(--plâtre-100); }
+.section-emeraude h2 { color: var(--plâtre-50); }
+.section-tete { max-width: 640px; margin-bottom: 40px; }
+.section-tete.centre { margin-left: auto; margin-right: auto; text-align: center; }
+
+.grille { display: grid; gap: 26px; }
+.grille-3 { grid-template-columns: repeat(3, 1fr); }
+.grille-2 { grid-template-columns: repeat(2, 1fr); }
+.grille-4 { grid-template-columns: repeat(4, 1fr); }
+
+.carte {
+    background: var(--plâtre-50);
+    border: 1px solid var(--plâtre-200);
+    border-radius: var(--rayon-lg);
+    overflow: hidden;
+    transition: box-shadow var(--duree-panneau) var(--ease-doux), transform var(--duree-panneau) var(--ease-doux), border-color var(--duree-panneau) ease;
+    display: flex;
+    flex-direction: column;
+}
+.carte:hover { box-shadow: var(--ombre); transform: translateY(-4px); border-color: var(--eucalyptus-200); }
+.carte-image { aspect-ratio: 16/10; background: var(--plâtre-200) center/cover no-repeat; overflow: hidden; }
+.carte-image { position: relative; }
+a.carte:hover .carte-image { filter: saturate(1.08); }
+
+/* Icônes fonctionnelles : Font Awesome uniquement, taille et alignement cohérents */
+.icone { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.meta-icone { display: inline-flex; align-items: center; gap: 6px; }
+.meta-icone .icone { color: var(--laiton-500); font-size: 0.85em; }
+.carte-corps { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; }
+.carte-meta {
+    font-family: var(--police-donnee);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--laiton-500);
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.carte-corps h3 { margin-bottom: 8px; }
+.carte-corps .resume { color: var(--encre-600); font-size: 0.95rem; flex: 1; }
+.carte-lien { margin-top: 14px; font-weight: 700; color: var(--eucalyptus-600); font-size: 0.9rem; }
+
+.badge {
+    display: inline-block;
+    background: var(--eucalyptus-100);
+    color: var(--eucalyptus-600);
+    font-family: var(--police-donnee);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+}
+.badge-dore {
+    background: var(--laiton-100);
+    color: var(--laiton-500);
+}
+
+.bloc-date {
+    background: var(--mint-950);
+    color: var(--plâtre-50);
+    font-family: var(--police-donnee);
+    text-align: center;
+    border-radius: 6px;
+    min-width: 62px;
+    padding: 8px 6px;
+}
+.bloc-date .jour { font-size: 1.3rem; font-weight: 700; line-height: 1; }
+.bloc-date .mois { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ==========================================================================
+   Page horaires
+   ========================================================================== */
+.tableau-horaires { width: 100%; border-collapse: collapse; font-family: var(--police-donnee); }
+.tableau-horaires th, .tableau-horaires td {
+    padding: 16px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--plâtre-200);
+}
+.tableau-horaires th {
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--encre-600);
+}
+.tableau-horaires td.heure { font-size: 1.15rem; font-weight: 700; color: var(--mint-800); }
+
+/* ==========================================================================
+   Formulaires
+   ========================================================================== */
+.champ { margin-bottom: 18px; }
+.champ label {
+    display: block;
+    font-family: var(--police-donnee);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--encre-900);
+}
+.champ input, .champ textarea, .champ select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--plâtre-200);
+    border-radius: var(--rayon);
+    font-family: var(--police-texte);
+    font-size: 0.95rem;
+    background: var(--plâtre-50);
+}
+.champ input:focus, .champ textarea:focus, .champ select:focus {
+    outline: 2px solid var(--eucalyptus-600);
+    outline-offset: 1px;
+}
+.alerte { padding: 14px 18px; border-radius: var(--rayon); margin-bottom: 20px; font-size: 0.92rem; }
+.alerte-succes { background: var(--eucalyptus-100); color: #205a2c; border: 1px solid var(--eucalyptus-200); }
+.alerte-erreur { background: #fbe7e3; color: var(--rouge-alerte); border: 1px solid #f0bdb2; }
+
+/* ==========================================================================
+   Pied de page
+   ========================================================================== */
+.site-footer {
+    background: var(--mint-950);
+    color: rgba(250, 247, 240, 0.75);
+    padding: 64px 0 28px;
+}
+.footer-grille {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 36px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(126, 201, 168, 0.2);
+}
+.footer-grille h4 { color: var(--eucalyptus-400); font-family: var(--police-donnee); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.footer-grille ul { list-style: none; margin: 0; padding: 0; }
+.footer-grille li { margin-bottom: 10px; font-size: 0.92rem; }
+.footer-grille a { transition: color var(--duree-micro) ease; }
+.footer-grille a:hover { color: var(--eucalyptus-400); }
+.footer-grille address { font-style: normal; }
+.footer-logo-emplacement {
+    width: 86px;
+    height: 70px;
+    border: 1px dashed rgba(216, 184, 116, 0.55);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--laiton-300);
+    font-size: 0.7rem;
+    margin-bottom: 16px;
+}
+.footer-logo-emplacement i { font-size: 1.35rem; }
+.footer-social { display: flex; gap: 10px; margin-top: 16px; }
+.footer-social a {
+    width: 38px; height: 38px;
+    border: 1px solid rgba(126, 201, 168, 0.35);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.92rem;
+    transition: background var(--duree-micro) ease, border-color var(--duree-micro) ease, transform var(--duree-micro) var(--ease-doux);
+}
+.footer-social a:hover { background: rgba(126, 201, 168, 0.15); border-color: var(--eucalyptus-400); transform: translateY(-2px); }
+.footer-motif { opacity: 0.55; margin: 0 auto 36px; }
+.footer-bas { padding-top: 24px; display: flex; justify-content: space-between; font-size: 0.82rem; flex-wrap: wrap; gap: 10px; }
+
+/* Bouton retour en haut */
+.vers-haut {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--mint-950);
+    color: var(--eucalyptus-400);
+    border: 1px solid rgba(126, 201, 168, 0.35);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--ombre);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity var(--duree-panneau) ease, transform var(--duree-panneau) var(--ease-doux), background var(--duree-micro) ease;
+    z-index: 90;
+}
+.vers-haut.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.vers-haut:hover { background: var(--mint-800); }
+
+/* ==========================================================================
+   Divers : pages intérieures, table admin
+   ========================================================================== */
+.page-entete {
+    background: var(--mint-950);
+    color: var(--plâtre-50);
+    padding: 56px 0 40px;
+}
+.fil-ariane { font-family: var(--police-donnee); font-size: 0.8rem; color: var(--eucalyptus-400); margin-bottom: 10px; }
+
+.liste-simple { list-style: none; padding: 0; margin: 0; }
+.liste-simple li {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--plâtre-200);
+    display: flex;
+    gap: 18px;
+}
+
+.carte-media { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 4/3; }
+.carte-media img { width: 100%; height: 100%; object-fit: cover; }
+
+.barre-progression { background: var(--plâtre-200); border-radius: 100px; height: 8px; overflow: hidden; }
+.barre-progression span { display: block; height: 100%; background: var(--eucalyptus-600); }
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+/* Desktop moyen : resserrer la nav pour que les 9 liens + le bouton tiennent sans déborder */
+@media (max-width: 1180px) and (min-width: 761px) {
+    .nav-principale { gap: 10px; }
+    .nav-principale a { padding: 9px 9px; font-size: 0.82rem; }
+    .header-bar .bouton-dore { padding: 10px 16px; font-size: 0.82rem; }
+}
+
+@media (max-width: 900px) {
+    .grille-3, .grille-4 { grid-template-columns: repeat(2, 1fr); }
+    .footer-grille { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
+    .menu-toggle { display: flex; }
+    .nav-principale {
+        position: fixed;
+        inset: 62px 0 0 0;
+        background: var(--mint-950);
+        transform: translateX(100%);
+        transition: transform var(--duree-panneau) var(--ease-doux);
+        padding: 20px;
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+        overflow-y: auto;
+    }
+    .nav-principale.ouvert { transform: translateX(0); }
+    .nav-principale ul { flex-direction: column; gap: 2px; }
+    .nav-principale a { display: block; padding: 14px 12px; font-size: 1.05rem; }
+    .nav-principale a.actif::after { display: none; }
+    .nav-principale a.actif { background: rgba(126, 201, 168, 0.14); border-radius: var(--rayon); }
+    .header-bar .bouton-dore { display: none; }
+    .nav-principale .bouton-dore { display: flex; justify-content: center; margin-top: 14px; }
+
+    .grille-3, .grille-4, .grille-2 { grid-template-columns: 1fr; }
+    .grille-horaires-hero { grid-template-columns: repeat(3, 1fr); row-gap: 16px; }
+    .footer-grille { grid-template-columns: 1fr; }
+    .footer-bas { flex-direction: column; }
+    .hero { padding: 64px 0 56px; }
+    .section { padding: 52px 0; }
+    .vers-haut { right: 14px; bottom: 14px; width: 40px; height: 40px; }
+}
+
+@media (max-width: 420px) {
+    .grille-horaires-hero { grid-template-columns: repeat(3, 1fr); }
+    .logo-sub { display: none; }
+}

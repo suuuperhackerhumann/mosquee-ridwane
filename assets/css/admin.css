@@ -1,0 +1,109 @@
+/* Espace d'administration — Mosquée Ridwane */
+body.admin-body {
+    background: var(--plâtre-100);
+    font-family: var(--police-texte);
+}
+
+.admin-layout { display: flex; min-height: 100vh; }
+
+.admin-sidebar {
+    width: 236px;
+    flex-shrink: 0;
+    background: var(--mint-950);
+    color: var(--plâtre-100);
+    padding: 24px 16px;
+}
+.admin-sidebar .marque {
+    font-family: var(--police-titre);
+    font-size: 1.1rem;
+    color: var(--plâtre-50);
+    display: block;
+    margin-bottom: 4px;
+}
+.admin-sidebar .sous-marque {
+    font-family: var(--police-donnee);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--laiton-300);
+}
+.admin-nav { list-style: none; padding: 0; margin: 28px 0 0; }
+.admin-nav li a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: var(--rayon);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--plâtre-100);
+    margin-bottom: 2px;
+}
+.admin-nav li a:hover, .admin-nav li a.actif {
+    background: rgba(126, 201, 168, 0.14);
+    color: var(--eucalyptus-400);
+}
+.admin-nav .voir-site {
+    margin-top: 20px;
+    border-top: 1px solid rgba(216,184,116,0.2);
+    padding-top: 16px;
+}
+
+.admin-main { flex: 1; padding: 32px 40px; max-width: 1100px; }
+.admin-entete { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+.admin-entete h1 { margin: 0; }
+
+.admin-carte {
+    background: var(--plâtre-50);
+    border: 1px solid var(--plâtre-200);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+}
+.permissions-role {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px;
+    border: 1px solid var(--plâtre-200);
+    border-radius: 6px;
+    margin: 0 0 20px;
+    padding: 16px;
+}
+.permissions-role legend { padding: 0 6px; font-weight: 700; }
+.permissions-role label { display: flex; align-items: center; gap: 8px; }
+
+.admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
+.admin-stat { background: var(--plâtre-50); border: 1px solid var(--plâtre-200); border-radius: 6px; padding: 18px 20px; }
+.admin-stat .valeur { font-family: var(--police-donnee); font-size: 1.8rem; font-weight: 700; color: var(--mint-800); }
+.admin-stat .libelle { font-family: var(--police-donnee); font-size: 0.78rem; color: var(--encre-600); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.table-admin { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.table-admin th, .table-admin td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--plâtre-200); }
+.table-admin th { font-family: var(--police-donnee); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--encre-600); }
+.table-admin .actions { display: flex; gap: 10px; }
+.table-admin .actions a { font-weight: 700; font-size: 0.85rem; }
+.lien-suppr { color: var(--rouge-alerte) !important; }
+
+.statut-pastille { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.72rem; font-family: var(--police-donnee); font-weight: 700; text-transform: uppercase; }
+.statut-publie { background: var(--eucalyptus-100); color: #205a2c; }
+.statut-brouillon { background: #f1e3c3; color: #8a6a20; }
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mint-950);
+}
+.login-carte {
+    background: var(--plâtre-50);
+    padding: 44px 40px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 380px;
+}
+
+@media (max-width: 800px) {
+    .admin-layout { flex-direction: column; }
+    .admin-sidebar { width: 100%; }
+    .admin-main { padding: 24px 20px; }
+    .admin-stats { grid-template-columns: 1fr 1fr; }
+}
