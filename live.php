@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     checkCsrf();
 
     if (!empty($_POST['site_web'] ?? '')) {
-        redirect('/live.php');
+        redirect('/live');
     }
 
     $nomBrut = $_POST['nom_auteur'] ?? '';
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("INSERT INTO live_questions (session_id, nom_auteur, contenu) VALUES (?, ?, ?)");
             $stmt->execute([(int) $sessionId, $nom !== '' ? $nom : null, $contenu]);
             $_SESSION['live_question_last_sent'] = time();
-            redirect('/live.php?question=envoyee');
+            redirect('/live?question=envoyee');
         }
     }
 }

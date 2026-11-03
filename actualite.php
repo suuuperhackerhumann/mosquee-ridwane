@@ -31,7 +31,7 @@ $page_structured_data = [[
     'description' => $page_description,
     'image' => $articleImageUrl,
     'datePublished' => date(DATE_W3C, strtotime($actu['date_publication'])),
-    'mainEntityOfPage' => $canonicalUrl ?? rtrim(SITE_URL, '/') . '/actualite.php?slug=' . rawurlencode($actu['slug']),
+    'mainEntityOfPage' => $canonicalUrl ?? rtrim(SITE_URL, '/') . '/actualite?slug=' . rawurlencode($actu['slug']),
     'publisher' => ['@id' => rtrim(SITE_URL, '/') . '/#mosquee'],
 ]];
 require_once __DIR__ . '/includes/header.php';

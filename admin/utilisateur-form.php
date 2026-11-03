@@ -7,7 +7,7 @@ $stmt = $pdo->prepare('SELECT a.id, a.nom, a.email, a.role_id, r.role_key FROM a
 $stmt->execute([$id]);
 $utilisateur = $stmt->fetch();
 if (!$utilisateur) {
-    redirect('/admin/roles.php');
+    redirect('/admin/roles');
 }
 $utilisateur['id'] = (int) $utilisateur['id'];
 $utilisateur['role_id'] = (int) $utilisateur['role_id'];
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $stmt = $pdo->prepare('DELETE FROM admins WHERE id = ?');
                 $stmt->execute([$id]);
-                redirect('/admin/roles.php?utilisateur_supprime=1');
+                redirect('/admin/roles?utilisateur_supprime=1');
             }
         }
     } else {
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if ($id === (int) $_SESSION['admin_id']) {
                             $_SESSION['admin_nom'] = $nom;
                         }
-                        redirect('/admin/utilisateur-form.php?id=' . $id . '&ok=1');
+                        redirect('/admin/utilisateur-form?id=' . $id . '&ok=1');
                     }
                 }
             }

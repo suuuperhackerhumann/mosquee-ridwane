@@ -81,6 +81,8 @@ function extraitTexte($texte, $longueur = 160) {
 // Renvoie ' actif' si $fichier correspond à la page actuellement affichée (pour la nav)
 function estActif($fichier) {
     $courante = basename($_SERVER['SCRIPT_NAME']);
+    $courante = preg_replace('/\.php$/i', '', $courante);
+    $fichier = preg_replace('/\.php$/i', '', $fichier);
     return $courante === $fichier ? ' actif' : '';
 }
 
@@ -112,12 +114,36 @@ function whatsappMessageUrl($message) {
 
 // --- Authentification admin ---
 function isAdminLoggedIn() {
-    return isset($_SESSION['admin_id']);
+    if (!isset($_SESSION['admin_id'])) {
+        return false;
+    }
+
+    $maintenant = time();
+    $debutSession = (int) ($_SESSION['admin_session_started_at'] ?? 0);
+    $derniereActivite = (int) ($_SESSION['admin_last_activity'] ?? 0);
+    if (
+        !$debutSession
+        || !$derniereActivite
+        || $debutSession > $maintenant
+        || $derniereActivite > $maintenant
+        || $maintenant - $derniereActivite >= ADMIN_SESSION_IDLE_TIMEOUT
+        || $maintenant - $debutSession >= ADMIN_SESSION_MAX_LIFETIME
+    ) {
+        foreach (array_keys($_SESSION) as $cle) {
+            if (strpos($cle, 'admin_') === 0) {
+                unset($_SESSION[$cle]);
+            }
+        }
+        session_regenerate_id(true);
+        return false;
+    }
+
+    return true;
 }
 
 function requireAdmin() {
     if (!isAdminLoggedIn()) {
-        redirect('/admin/index.php');
+        redirect('/admin');
     }
 
     global $pdo;
@@ -125,15 +151,24 @@ function requireAdmin() {
     $stmt->execute([(int) $_SESSION['admin_id']]);
     $admin = $stmt->fetch();
     if (!$admin) {
-        $_SESSION = [];
-        session_destroy();
-        redirect('/admin/index.php');
+        destroyCurrentSession();
+        redirect('/admin');
     }
 
+    $_SESSION['admin_last_activity'] = time();
     $_SESSION['admin_nom'] = $admin['nom'];
     $_SESSION['admin_role'] = $admin['role'];
     $_SESSION['admin_role_id'] = (int) $admin['role_id'];
     $_SESSION['admin_role_key'] = $admin['role_key'];
+}
+
+function destroyCurrentSession() {
+    $_SESSION = [];
+    if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+    }
+    session_destroy();
 }
 
 function adminPermissions() {

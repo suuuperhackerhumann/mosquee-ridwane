@@ -20,25 +20,25 @@ $page_admin = $page_admin ?? '';
 <body class="admin-body">
 <div class="admin-layout">
     <aside class="admin-sidebar">
-        <a class="admin-marque" href="<?= BASE_URL ?>/admin/dashboard.php">
+        <a class="admin-marque" href="<?= BASE_URL ?>/admin/dashboard">
             <img class="admin-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="">
             <span class="marque">Mosquée Ridwane</span>
         </a>
         <span class="sous-marque">Espace d'administration</span>
         <ul class="admin-nav">
-            <li><a href="<?= BASE_URL ?>/admin/dashboard.php" class="<?= $page_admin === 'dashboard' ? 'actif' : '' ?>"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Tableau de bord</a></li>
-            <?php if (hasAdminPermission('actualites')): ?><li><a href="<?= BASE_URL ?>/admin/actualites.php" class="<?= $page_admin === 'actualites' ? 'actif' : '' ?>"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Actualités</a></li><?php endif; ?>
-            <?php if (hasAdminPermission('evenements')): ?><li><a href="<?= BASE_URL ?>/admin/evenements.php" class="<?= $page_admin === 'evenements' ? 'actif' : '' ?>"><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> Événements</a></li><?php endif; ?>
-            <?php if (hasAdminPermission('horaires')): ?><li><a href="<?= BASE_URL ?>/admin/horaires.php" class="<?= $page_admin === 'horaires' ? 'actif' : '' ?>"><i class="fa-regular fa-clock" aria-hidden="true"></i> Horaires de prière</a></li><?php endif; ?>
-            <?php if (hasAdminPermission('pages')): ?><li><a href="<?= BASE_URL ?>/admin/pages.php" class="<?= $page_admin === 'pages' ? 'actif' : '' ?>"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Contenu des pages</a></li><?php endif; ?>
-            <?php if (hasAdminPermission('media')): ?><li><a href="<?= BASE_URL ?>/admin/media.php" class="<?= $page_admin === 'media' ? 'actif' : '' ?>"><i class="fa-solid fa-photo-film" aria-hidden="true"></i> Médiathèque</a></li><?php endif; ?>
-            <?php if (hasAdminPermission('messages')): ?><li><a href="<?= BASE_URL ?>/admin/messages.php" class="<?= $page_admin === 'messages' ? 'actif' : '' ?>"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages de contact</a></li><?php endif; ?>
-            <?php if (hasAdminPermission('discussions')): ?><li><a href="<?= BASE_URL ?>/admin/discussions.php" class="<?= $page_admin === 'discussions' || $page_admin === 'live' ? 'actif' : '' ?>"><i class="fa-regular fa-comments" aria-hidden="true"></i> Discussions et live</a></li><?php endif; ?>
-            <?php if (isFullAdmin()): ?><li><a href="<?= BASE_URL ?>/admin/roles.php" class="<?= $page_admin === 'roles' ? 'actif' : '' ?>"><i class="fa-solid fa-users-gear" aria-hidden="true"></i> Utilisateurs et rôles</a></li><?php endif; ?>
-            <li><a href="<?= BASE_URL ?>/admin/mot-de-passe.php" class="<?= $page_admin === 'mot-de-passe' ? 'actif' : '' ?>"><i class="fa-solid fa-key" aria-hidden="true"></i> Changer mon mot de passe</a></li>
-            <li class="voir-site"><a href="<?= BASE_URL ?>/index.php" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Voir le site</a></li>
+            <li><a href="<?= BASE_URL ?>/admin/dashboard" class="<?= $page_admin === 'dashboard' ? 'actif' : '' ?>"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Tableau de bord</a></li>
+            <?php if (hasAdminPermission('actualites')): ?><li><a href="<?= BASE_URL ?>/admin/actualites" class="<?= $page_admin === 'actualites' ? 'actif' : '' ?>"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Actualités</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('evenements')): ?><li><a href="<?= BASE_URL ?>/admin/evenements" class="<?= $page_admin === 'evenements' ? 'actif' : '' ?>"><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> Événements</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('horaires')): ?><li><a href="<?= BASE_URL ?>/admin/horaires" class="<?= $page_admin === 'horaires' ? 'actif' : '' ?>"><i class="fa-regular fa-clock" aria-hidden="true"></i> Horaires de prière</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('pages')): ?><li><a href="<?= BASE_URL ?>/admin/pages" class="<?= $page_admin === 'pages' ? 'actif' : '' ?>"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Contenu des pages</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('media')): ?><li><a href="<?= BASE_URL ?>/admin/media" class="<?= $page_admin === 'media' ? 'actif' : '' ?>"><i class="fa-solid fa-photo-film" aria-hidden="true"></i> Médiathèque</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('messages')): ?><li><a href="<?= BASE_URL ?>/admin/messages" class="<?= $page_admin === 'messages' ? 'actif' : '' ?>"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages de contact</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('discussions')): ?><li><a href="<?= BASE_URL ?>/admin/discussions" class="<?= $page_admin === 'discussions' || $page_admin === 'live' ? 'actif' : '' ?>"><i class="fa-regular fa-comments" aria-hidden="true"></i> Discussions et live</a></li><?php endif; ?>
+            <?php if (isFullAdmin()): ?><li><a href="<?= BASE_URL ?>/admin/roles" class="<?= $page_admin === 'roles' ? 'actif' : '' ?>"><i class="fa-solid fa-users-gear" aria-hidden="true"></i> Utilisateurs et rôles</a></li><?php endif; ?>
+            <li><a href="<?= BASE_URL ?>/admin/mot-de-passe" class="<?= $page_admin === 'mot-de-passe' ? 'actif' : '' ?>"><i class="fa-solid fa-key" aria-hidden="true"></i> Changer mon mot de passe</a></li>
+            <li class="voir-site"><a href="<?= BASE_URL ?>/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Voir le site</a></li>
             <li>
-                <form method="post" action="<?= BASE_URL ?>/admin/logout.php">
+                <form method="post" action="<?= BASE_URL ?>/admin/logout">
                     <input type="hidden" name="csrf_token" value="<?= h(csrfToken()) ?>">
                     <button type="submit" class="admin-deconnexion"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Se déconnecter</button>
                 </form>

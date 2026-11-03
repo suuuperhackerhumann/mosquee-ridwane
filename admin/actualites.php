@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer'])) {
     checkCsrf();
     $stmt = $pdo->prepare("DELETE FROM actualites WHERE id = ?");
     $stmt->execute([(int) $_POST['supprimer']]);
-    redirect('/admin/actualites.php?suppr=1');
+    redirect('/admin/actualites?suppr=1');
 }
 
 $actus = $pdo->query("SELECT a.*, c.nom AS categorie FROM actualites a LEFT JOIN categories c ON a.categorie_id = c.id ORDER BY a.date_publication DESC")->fetchAll();

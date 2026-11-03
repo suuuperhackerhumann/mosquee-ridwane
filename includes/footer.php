@@ -20,21 +20,21 @@
                 <div>
                     <h4>Découvrir</h4>
                     <ul>
-                        <li><a href="<?= BASE_URL ?>/index.php">Accueil</a></li>
-                        <li><a href="<?= BASE_URL ?>/a-propos.php">À propos</a></li>
-                        <li><a href="<?= BASE_URL ?>/horaires.php">Horaires</a></li>
-                        <li><a href="<?= BASE_URL ?>/enseignements.php">Enseignements</a></li>
-                        <li><a href="<?= BASE_URL ?>/services.php">Services</a></li>
+                        <li><a href="<?= BASE_URL ?>/">Accueil</a></li>
+                        <li><a href="<?= BASE_URL ?>/a-propos">À propos</a></li>
+                        <li><a href="<?= BASE_URL ?>/horaires">Horaires</a></li>
+                        <li><a href="<?= BASE_URL ?>/enseignements">Enseignements</a></li>
+                        <li><a href="<?= BASE_URL ?>/services">Services</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4>Participer</h4>
                     <ul>
-                        <li><a href="<?= BASE_URL ?>/evenements.php">Événements</a></li>
-                        <li><a href="<?= BASE_URL ?>/actualites.php">Actualités</a></li>
-                        <li><a href="<?= BASE_URL ?>/dons.php">Faire un don</a></li>
-                        <li><a href="<?= BASE_URL ?>/mediatheque.php">Médiathèque</a></li>
-                        <li><a href="<?= BASE_URL ?>/discussions.php">Discussion</a></li>
+                        <li><a href="<?= BASE_URL ?>/evenements">Événements</a></li>
+                        <li><a href="<?= BASE_URL ?>/actualites">Actualités</a></li>
+                        <li><a href="<?= BASE_URL ?>/dons">Faire un don</a></li>
+                        <li><a href="<?= BASE_URL ?>/mediatheque">Médiathèque</a></li>
+                        <li><a href="<?= BASE_URL ?>/discussions">Discussion</a></li>
                     </ul>
                 </div>
                 <div>

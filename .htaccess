@@ -4,3 +4,15 @@ ErrorDocument 500 /mosquee-ridwane/erreur-serveur.php
 ErrorDocument 502 /mosquee-ridwane/erreur-serveur.php
 ErrorDocument 503 /mosquee-ridwane/erreur-serveur.php
 ErrorDocument 504 /mosquee-ridwane/erreur-serveur.php
+
+Options -MultiViews
+RewriteEngine On
+
+RewriteCond %{ENV:REDIRECT_STATUS} =""
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php(?:[?\s]) [NC]
+RewriteRule ^(.+)\.php$ $1 [R=301,L,NE]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L]

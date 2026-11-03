@@ -9,16 +9,16 @@ $urls = [
 ];
 
 foreach ([
-    'a-propos.php',
-    'horaires.php',
-    'actualites.php',
-    'evenements.php',
-    'enseignements.php',
-    'services.php',
-    'mediatheque.php',
-    'discussions.php',
-    'contact.php',
-    'dons.php',
+    'a-propos',
+    'horaires',
+    'actualites',
+    'evenements',
+    'enseignements',
+    'services',
+    'mediatheque',
+    'discussions',
+    'contact',
+    'dons',
 ] as $page) {
     $urls[] = ['loc' => $base . '/' . $page, 'lastmod' => null];
 }
@@ -26,7 +26,7 @@ foreach ([
 $actualites = $pdo->query("SELECT slug, date_publication FROM actualites WHERE statut = 'publie' ORDER BY date_publication DESC")->fetchAll();
 foreach ($actualites as $actualite) {
     $urls[] = [
-        'loc' => $base . '/actualite.php?slug=' . rawurlencode($actualite['slug']),
+        'loc' => $base . '/actualite?slug=' . rawurlencode($actualite['slug']),
         'lastmod' => $actualite['date_publication'],
     ];
 }
@@ -34,7 +34,7 @@ foreach ($actualites as $actualite) {
 $evenements = $pdo->query("SELECT slug, date_creation FROM evenements WHERE statut = 'publie' ORDER BY date_creation DESC")->fetchAll();
 foreach ($evenements as $evenement) {
     $urls[] = [
-        'loc' => $base . '/evenement.php?slug=' . rawurlencode($evenement['slug']),
+        'loc' => $base . '/evenement?slug=' . rawurlencode($evenement['slug']),
         'lastmod' => $evenement['date_creation'],
     ];
 }

@@ -182,7 +182,30 @@ body.admin-body {
     border-radius: 50%;
     background: #fff;
 }
+.login-progression {
+    height: 4px;
+    overflow: hidden;
+    margin: 0 0 24px;
+    border-radius: 999px;
+    background: var(--plâtre-200);
+}
+.login-progression span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--eucalyptus-600);
+    animation: login-progression-remplir 1.4s ease-out forwards;
+}
+@keyframes login-progression-remplir {
+    to { width: 100%; }
+}
+.login-carte h1 { margin: 0 0 8px; }
 .login-carte .bouton i { margin-right: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .login-progression span { width: 100%; animation: none; }
+}
 
 @media (max-width: 800px) {
     .admin-layout { flex-direction: column; }

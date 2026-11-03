@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     checkCsrf();
 
     if (!empty($_POST['site_web'] ?? '')) {
-        redirect('/discussions.php');
+        redirect('/discussions');
     }
 
     $nomBrut = $_POST['nom_auteur'] ?? '';
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (!$erreur) {
             $stmt = $pdo->prepare('INSERT INTO discussions_reponses (discussion_id, nom_auteur, contenu) VALUES (?, ?, ?)');
             $stmt->execute([$discussionId, $nom !== '' ? $nom : null, $contenu]);
-            redirect('/discussions.php?reponse=1#discussion-' . $discussionId);
+            redirect('/discussions?reponse=1#discussion-' . $discussionId);
         }
     } else {
         $titreBrut = $_POST['titre'] ?? '';
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (!$erreur) {
             $stmt = $pdo->prepare('INSERT INTO discussions (titre, nom_auteur, contenu) VALUES (?, ?, ?)');
             $stmt->execute([$titre, $nom !== '' ? $nom : null, $contenu]);
-            redirect('/discussions.php?sujet=1');
+            redirect('/discussions?sujet=1');
         }
     }
 }

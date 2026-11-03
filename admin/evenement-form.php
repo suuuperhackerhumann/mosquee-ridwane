@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("INSERT INTO evenements (titre, slug, description, image, categorie_id, date_evenement, heure_evenement, lieu, statut, admin_id) VALUES (?,?,?,?,?,?,?,?,?,?)");
                 $stmt->execute([$ev['titre'], $slug, $ev['description'], $ev['image'], $ev['categorie_id'], $ev['date_evenement'], $ev['heure_evenement'], $ev['lieu'], $ev['statut'], $_SESSION['admin_id']]);
             }
-            redirect('/admin/evenements.php?ok=1');
+            redirect('/admin/evenements?ok=1');
         }
     }
 }

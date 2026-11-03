@@ -6,10 +6,11 @@ $pageDescriptionSeo = mb_substr(trim(strip_tags($page_description)), 0, 300);
 $liveSessionActive = (bool) $pdo->query("SELECT id FROM live_sessions WHERE statut = 'actif' ORDER BY date_debut DESC LIMIT 1")->fetchColumn();
 $siteUrlSeo = rtrim(SITE_URL, '/');
 $pageScript = basename(parse_url($_SERVER['SCRIPT_NAME'] ?? '/index.php', PHP_URL_PATH) ?: 'index.php');
-$canonicalUrl = $pageScript === 'index.php' ? $siteUrlSeo . '/' : $siteUrlSeo . '/' . rawurlencode($pageScript);
-if (in_array($pageScript, ['actualite.php', 'evenement.php'], true) && isset($_GET['slug']) && is_string($_GET['slug'])) {
+$pageRoute = pathinfo($pageScript, PATHINFO_FILENAME);
+$canonicalUrl = $pageRoute === 'index' ? $siteUrlSeo . '/' : $siteUrlSeo . '/' . rawurlencode($pageRoute);
+if (in_array($pageRoute, ['actualite', 'evenement'], true) && isset($_GET['slug']) && is_string($_GET['slug'])) {
     $canonicalUrl .= '?slug=' . rawurlencode($_GET['slug']);
-} elseif ($pageScript === 'actualites.php' && isset($_GET['page']) && filter_var($_GET['page'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 2]])) {
+} elseif ($pageRoute === 'actualites' && isset($_GET['page']) && filter_var($_GET['page'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 2]])) {
     $canonicalUrl .= '?page=' . (int) $_GET['page'];
 }
 $fallbackSocialImage = '/assets/img/social-share.png';
@@ -79,16 +80,16 @@ $donneesStructurees = [
 ];
 
 $liens_nav = [
-    'index.php'          => 'Accueil',
-    'a-propos.php'       => 'À propos',
-    'horaires.php'       => 'Horaires',
-    'actualites.php'     => 'Actualités',
-    'evenements.php'     => 'Événements',
-    'enseignements.php'  => 'Enseignements',
-    'services.php'       => 'Services',
-    'mediatheque.php'    => 'Médiathèque',
-    'discussions.php'    => 'Discussion',
-    'contact.php'        => 'Contact',
+    'index'          => 'Accueil',
+    'a-propos'       => 'À propos',
+    'horaires'       => 'Horaires',
+    'actualites'     => 'Actualités',
+    'evenements'     => 'Événements',
+    'enseignements'  => 'Enseignements',
+    'services'       => 'Services',
+    'mediatheque'    => 'Médiathèque',
+    'discussions'   => 'Discussion',
+    'contact'        => 'Contact',
 ];
 ?>
 <!DOCTYPE html>
@@ -105,7 +106,7 @@ $liens_nav = [
 <link rel="shortcut icon" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="<?= BASE_URL ?>/site.webmanifest">
-<link rel="sitemap" type="application/xml" href="<?= h($siteUrlSeo . '/sitemap.php') ?>">
+<link rel="sitemap" type="application/xml" href="<?= h($siteUrlSeo . '/sitemap') ?>">
 <meta property="og:type" content="<?= h($ogType) ?>">
 <meta property="og:locale" content="fr_CI">
 <meta property="og:site_name" content="<?= h(SITE_NOM) ?>">
@@ -154,7 +155,7 @@ main > .section .media-infos p { margin: 4px 0 0; font-size: .92rem; line-height
 
 <header class="site-header" id="entete">
     <div class="conteneur header-bar">
-        <a href="<?= BASE_URL ?>/index.php" class="logo">
+        <a href="<?= BASE_URL ?>/" class="logo">
             <img class="logo-marque logo-emplacement" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Communauté Musulmane de la Riviera Abatta">
             <span>
                 Mosquée Ridwane
@@ -177,11 +178,11 @@ main > .section .media-infos p { margin: 4px 0 0; font-size: .92rem; line-height
     </div>
 </header>
 
-<a href="<?= BASE_URL ?>/dons.php" class="bouton bouton-dore don-flottant">
+<a href="<?= BASE_URL ?>/dons" class="bouton bouton-dore don-flottant">
     <i class="fa-solid fa-hand-holding-heart icone" aria-hidden="true"></i> Faire un don
 </a>
 <?php if ($liveSessionActive): ?>
-<a href="<?= BASE_URL ?>/live.php" class="live-flottant" aria-label="Questions en direct : participer au live">
+<a href="<?= BASE_URL ?>/live" class="live-flottant" aria-label="Questions en direct : participer au live">
     <i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i>
     <span>LIVE</span>
 </a>

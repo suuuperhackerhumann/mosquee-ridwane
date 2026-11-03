@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config/config.php';
 
 if (isAdminLoggedIn()) {
-    redirect('/admin/dashboard.php');
+    redirect('/admin/dashboard');
 }
 
 $erreur = '';
@@ -22,7 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['admin_role'] = $admin['role'];
         $_SESSION['admin_role_id'] = (int) $admin['role_id'];
         $_SESSION['admin_role_key'] = $admin['role_key'];
-        redirect('/admin/dashboard.php');
+        $_SESSION['admin_session_started_at'] = time();
+        $_SESSION['admin_last_activity'] = time();
+        redirect('/admin/dashboard');
     } else {
         $erreur = "E-mail ou mot de passe incorrect.";
     }
@@ -33,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Connexion — Espace admin — Mosquée Ridwane</title>
+<title>Connexion admin — Mosquée Ridwane</title>
 <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Karla:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -45,14 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="login-page">
     <div class="login-carte">
         <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Mosquée Ridwane">
-        <h2 style="text-align:center;">Espace d'administration</h2>
-        <p style="text-align:center; color:var(--encre-600); font-size:0.9rem; margin-bottom:24px;">Mosquée Ridwane</p>
+        <h1 style="text-align:center;">Connexion admin</h1>
+        <p style="text-align:center; color:var(--encre-600); font-size:0.9rem; margin-bottom:18px;">Mosquée Ridwane</p>
+        <div class="login-progression" aria-hidden="true"><span></span></div>
 
         <?php if ($erreur): ?>
         <div class="alerte alerte-erreur"><?= h($erreur) ?></div>
         <?php endif; ?>
 
-        <form method="post" action="<?= BASE_URL ?>/admin/index.php">
+        <form method="post" action="<?= BASE_URL ?>/admin">
             <input type="hidden" name="csrf_token" value="<?= h(csrfToken()) ?>">
             <div class="champ">
                 <label for="email">E-mail</label>
@@ -64,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" class="bouton bouton-emeraude" style="width:100%;"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Se connecter</button>
         </form>
-        <p style="text-align:center; margin-top:20px;"><a href="<?= BASE_URL ?>/index.php" style="font-size:0.85rem; color:var(--encre-600);"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au site</a></p>
+        <p style="text-align:center; margin-top:20px;"><a href="<?= BASE_URL ?>/" style="font-size:0.85rem; color:var(--encre-600);"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au site</a></p>
     </div>
 </div>
 </body>

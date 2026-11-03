@@ -13,11 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $active = $pdo->query("SELECT id FROM live_sessions WHERE statut = 'actif' LIMIT 1")->fetchColumn();
         if ($active) {
-            redirect('/admin/discussions.php?live=deja-actif#live-questions');
+            redirect('/admin/discussions?live=deja-actif#live-questions');
         }
         $stmt = $pdo->prepare("INSERT INTO live_sessions (titre, statut) VALUES (?, 'actif')");
         $stmt->execute([$titreLive]);
-        redirect('/admin/discussions.php?live=demarre#live-questions');
+        redirect('/admin/discussions?live=demarre#live-questions');
     }
     if (isset($_POST['action_live']) && $_POST['action_live'] === 'terminer') {
         $sessionId = filter_var($_POST['session_id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare("UPDATE live_sessions SET statut = 'termine', date_fin = CURRENT_TIMESTAMP WHERE id = ? AND statut = 'actif'");
         $stmt->execute([$sessionId]);
-        redirect('/admin/discussions.php?live=termine#live-questions');
+        redirect('/admin/discussions?live=termine#live-questions');
     }
     if (isset($_POST['action_live']) && $_POST['action_live'] === 'statut_question') {
         $questionId = filter_var($_POST['question_id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare("UPDATE live_questions SET statut = ?, date_lecture = CASE WHEN ? = 'lue' THEN CURRENT_TIMESTAMP ELSE NULL END WHERE id = ?");
         $stmt->execute([$statutQuestion, $statutQuestion, $questionId]);
-        redirect('/admin/discussions.php?live=question#live-questions');
+        redirect('/admin/discussions?live=question#live-questions');
     }
     if (isset($_POST['supprimer_discussion'])) {
         $discussionId = filter_var($_POST['discussion_id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare('DELETE FROM discussions WHERE id = ?');
         $stmt->execute([$discussionId]);
-        redirect('/admin/discussions.php?supprime=discussion');
+        redirect('/admin/discussions?supprime=discussion');
     }
     if (isset($_POST['supprimer_reponse'])) {
         $reponseId = filter_var($_POST['reponse_id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare('DELETE FROM discussions_reponses WHERE id = ?');
         $stmt->execute([$reponseId]);
-        redirect('/admin/discussions.php?supprime=reponse');
+        redirect('/admin/discussions?supprime=reponse');
     }
 }
 

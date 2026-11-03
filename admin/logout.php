@@ -6,6 +6,5 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit('Méthode non autorisée.');
 }
 checkCsrf();
-$_SESSION = [];
-session_destroy();
-redirect('/admin/index.php');
+destroyCurrentSession();
+redirect('/admin');

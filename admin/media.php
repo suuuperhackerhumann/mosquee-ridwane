@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer'])) {
 
                 $stmt = $pdo->prepare("DELETE FROM mediatheque WHERE id IN ($placeholders)");
                 $stmt->execute($identifiants);
-                redirect('/admin/media.php?suppr=' . count($identifiants));
+                redirect('/admin/media?suppr=' . count($identifiants));
             }
         }
     }
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $stmt->execute([$titre, '/assets/uploads/' . $nomFichier, $album]);
                             }
                             $pdo->commit();
-                            redirect('/admin/media.php?ok=1');
+                            redirect('/admin/media?ok=1');
                         }
                     } catch (Throwable $e) {
                         if ($pdo->inTransaction()) {
@@ -220,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-    if (!$erreur) redirect('/admin/media.php?ok=1');
+    if (!$erreur) redirect('/admin/media?ok=1');
 }
 
 $medias = $pdo->query("SELECT * FROM mediatheque ORDER BY date_ajout DESC")->fetchAll();

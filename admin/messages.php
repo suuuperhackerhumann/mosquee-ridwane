@@ -8,12 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['marquer_lu'])) {
         $stmt = $pdo->prepare("UPDATE messages_contact SET lu = 1 WHERE id = ?");
         $stmt->execute([$messageId]);
-        redirect('/admin/messages.php');
+        redirect('/admin/messages');
     }
     if (isset($_POST['supprimer'])) {
         $stmt = $pdo->prepare("DELETE FROM messages_contact WHERE id = ?");
         $stmt->execute([$messageId]);
-        redirect('/admin/messages.php?suppr=1');
+        redirect('/admin/messages?suppr=1');
     }
 }
 
