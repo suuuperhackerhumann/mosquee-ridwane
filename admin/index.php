@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 
-if (isAdminLoggedIn()) {
+$adminConnecte = isAdminLoggedIn();
+$connexionEnCours = $adminConnecte && !empty($_SESSION['admin_login_pending']);
+if ($adminConnecte && !$connexionEnCours) {
     redirect('/admin/dashboard');
 }
 
@@ -24,10 +26,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['admin_role_key'] = $admin['role_key'];
         $_SESSION['admin_session_started_at'] = time();
         $_SESSION['admin_last_activity'] = time();
-        redirect('/admin/dashboard');
+        $_SESSION['admin_login_pending'] = true;
+        redirect('/admin');
     } else {
         $erreur = "E-mail ou mot de passe incorrect.";
     }
+}
+
+if ($connexionEnCours) {
+    unset($_SESSION['admin_login_pending']);
+    $dashboardUrl = BASE_URL . '/admin/dashboard';
+    ?>
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="2;url=<?= h($dashboardUrl) ?>">
+    <title>Connexion réussie — Mosquée Ridwane</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
+    </head>
+    <body class="admin-body">
+    <main class="login-page">
+        <section class="login-carte" aria-labelledby="titre-connexion-reussie">
+            <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="">
+            <h1 id="titre-connexion-reussie" style="text-align:center;">Connexion réussie</h1>
+            <p class="login-message" role="status">Ouverture de votre espace d’administration…</p>
+            <div class="login-progression" aria-hidden="true"><span></span></div>
+        </section>
+    </main>
+    <script>
+        window.setTimeout(function () {
+            window.location.replace(<?= json_encode($dashboardUrl, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>);
+        }, 1500);
+    </script>
+    </body>
+    </html>
+    <?php
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -49,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Mosquée Ridwane">
         <h1 style="text-align:center;">Connexion admin</h1>
         <p style="text-align:center; color:var(--encre-600); font-size:0.9rem; margin-bottom:18px;">Mosquée Ridwane</p>
-        <div class="login-progression" aria-hidden="true"><span></span></div>
 
         <?php if ($erreur): ?>
         <div class="alerte alerte-erreur"><?= h($erreur) ?></div>

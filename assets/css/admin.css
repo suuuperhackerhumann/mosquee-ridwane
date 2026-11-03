@@ -185,7 +185,7 @@ body.admin-body {
 .login-progression {
     height: 4px;
     overflow: hidden;
-    margin: 0 0 24px;
+    margin: 24px 0 0;
     border-radius: 999px;
     background: var(--plâtre-200);
 }
@@ -201,6 +201,7 @@ body.admin-body {
     to { width: 100%; }
 }
 .login-carte h1 { margin: 0 0 8px; }
+.login-message { margin: 12px 0 0; color: var(--encre-600); text-align: center; }
 .login-carte .bouton i { margin-right: 6px; }
 
 @media (prefers-reduced-motion: reduce) {

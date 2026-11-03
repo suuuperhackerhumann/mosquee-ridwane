@@ -12,6 +12,15 @@ RewriteCond %{ENV:REDIRECT_STATUS} =""
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.php(?:[?\s]) [NC]
 RewriteRule ^(.+)\.php$ $1 [R=301,L,NE]
 
+# Routes de l'administration
+RewriteRule ^admin/?$ admin/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^admin/(.+?)/?$ admin/$1.php [L]
+
+# Routes du site public
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
