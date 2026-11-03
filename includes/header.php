@@ -3,6 +3,8 @@
 $page_titre = $page_titre ?? SITE_NOM;
 $page_description = $page_description ?? SITE_DESCRIPTION;
 $pageDescriptionSeo = mb_substr(trim(strip_tags($page_description)), 0, 300);
+$pageMetaTitle = $page_meta_title ?? ($page_titre . ' — ' . SITE_NOM);
+$pageOgDescription = $page_og_description ?? $pageDescriptionSeo;
 $liveSessionActive = (bool) $pdo->query("SELECT id FROM live_sessions WHERE statut = 'actif' ORDER BY date_debut DESC LIMIT 1")->fetchColumn();
 $siteUrlSeo = rtrim(SITE_URL, '/');
 $pageScript = basename(parse_url($_SERVER['SCRIPT_NAME'] ?? '/index.php', PHP_URL_PATH) ?: 'index.php');
@@ -97,7 +99,7 @@ $liens_nav = [
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= h($page_titre) ?> — <?= h(SITE_NOM) ?></title>
+<title><?= h($pageMetaTitle) ?></title>
 <meta name="description" content="<?= h($pageDescriptionSeo) ?>">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="<?= h($canonicalUrl) ?>">
@@ -110,8 +112,8 @@ $liens_nav = [
 <meta property="og:type" content="<?= h($ogType) ?>">
 <meta property="og:locale" content="fr_CI">
 <meta property="og:site_name" content="<?= h(SITE_NOM) ?>">
-<meta property="og:title" content="<?= h($page_titre . ' — ' . SITE_NOM) ?>">
-<meta property="og:description" content="<?= h($pageDescriptionSeo) ?>">
+<meta property="og:title" content="<?= h($pageMetaTitle) ?>">
+<meta property="og:description" content="<?= h($pageOgDescription) ?>">
 <meta property="og:url" content="<?= h($canonicalUrl) ?>">
 <meta property="og:image" content="<?= h($socialImageUrl) ?>">
 <meta property="og:image:secure_url" content="<?= h($socialImageUrl) ?>">
@@ -121,7 +123,7 @@ $liens_nav = [
 <meta property="og:image:height" content="<?= (int) $socialImageHeight ?>">
 <?php if ($ogType === 'article' && !empty($page_publication_date)): ?><meta property="article:published_time" content="<?= h(date(DATE_W3C, strtotime($page_publication_date))) ?>"><?php endif; ?>
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="<?= h($page_titre . ' — ' . SITE_NOM) ?>">
+<meta name="twitter:title" content="<?= h($pageMetaTitle) ?>">
 <meta name="twitter:description" content="<?= h($pageDescriptionSeo) ?>">
 <meta name="twitter:image" content="<?= h($socialImageUrl) ?>">
 <meta name="twitter:image:alt" content="<?= h($socialImageAlt) ?>">
