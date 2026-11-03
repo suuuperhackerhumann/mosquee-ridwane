@@ -105,6 +105,8 @@ $liens_nav = [
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="<?= h($canonicalUrl) ?>">
 <meta name="theme-color" content="#0e2d29">
+<meta name="site-revision" content="<?= h(publicRevision()) ?>">
+<meta name="site-revision-url" content="<?= h(BASE_URL . '/public-revision') ?>">
 <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
 <link rel="shortcut icon" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
