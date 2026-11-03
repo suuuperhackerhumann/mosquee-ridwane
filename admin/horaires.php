@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$date,$valeurs['fajr'],$valeurs['lever_soleil'],$valeurs['dhuhr'],$valeurs['asr'],$valeurs['maghrib'],$valeurs['isha'],$valeurs['jumuah']]);
     }
+    signalerModificationPublique();
     $succes = true;
 }
 
@@ -32,6 +33,7 @@ if (isset($_POST['maj_textes'])) {
         $stmt = $pdo->prepare("UPDATE pages_contenu SET contenu = ? WHERE cle = ?");
         $stmt->execute([trim($_POST[$cle] ?? ''), $cle]);
     }
+    signalerModificationPublique();
     $succes = true;
 }
 

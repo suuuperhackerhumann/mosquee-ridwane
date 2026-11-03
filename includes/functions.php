@@ -104,6 +104,33 @@ function siteAssetUrl($path) {
     return rtrim(BASE_URL, '/') . '/' . ltrim($path, '/');
 }
 
+function publicRevisionPath() {
+    return rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR)
+        . DIRECTORY_SEPARATOR
+        . 'mosquee-ridwane-' . hash('sha256', dirname(__DIR__)) . '.revision';
+}
+
+function publicRevision() {
+    $path = publicRevisionPath();
+    if (!is_file($path)) {
+        return '0';
+    }
+
+    $revision = file_get_contents($path);
+    if ($revision === false) {
+        throw new RuntimeException('Impossible de lire la version du contenu public.');
+    }
+
+    return trim($revision);
+}
+
+function signalerModificationPublique() {
+    $revision = bin2hex(random_bytes(16));
+    if (file_put_contents(publicRevisionPath(), $revision, LOCK_EX) === false) {
+        throw new RuntimeException('Impossible de signaler la mise à jour du contenu public.');
+    }
+}
+
 function whatsappMessageUrl($message) {
     if (!defined('SITE_WHATSAPP') || !preg_match('~^https://wa\.me/\d+$~', SITE_WHATSAPP)) {
         return '';

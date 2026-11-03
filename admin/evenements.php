@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer'])) {
     checkCsrf();
     $stmt = $pdo->prepare("DELETE FROM evenements WHERE id = ?");
     $stmt->execute([(int) $_POST['supprimer']]);
+    signalerModificationPublique();
     redirect('/admin/evenements?suppr=1');
 }
 

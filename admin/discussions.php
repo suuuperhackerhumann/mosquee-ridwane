@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare("INSERT INTO live_sessions (titre, statut) VALUES (?, 'actif')");
         $stmt->execute([$titreLive]);
+        signalerModificationPublique();
         redirect('/admin/discussions?live=demarre#live-questions');
     }
     if (isset($_POST['action_live']) && $_POST['action_live'] === 'terminer') {
@@ -27,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare("UPDATE live_sessions SET statut = 'termine', date_fin = CURRENT_TIMESTAMP WHERE id = ? AND statut = 'actif'");
         $stmt->execute([$sessionId]);
+        if ($stmt->rowCount() > 0) {
+            signalerModificationPublique();
+        }
         redirect('/admin/discussions?live=termine#live-questions');
     }
     if (isset($_POST['action_live']) && $_POST['action_live'] === 'statut_question') {
@@ -38,6 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare("UPDATE live_questions SET statut = ?, date_lecture = CASE WHEN ? = 'lue' THEN CURRENT_TIMESTAMP ELSE NULL END WHERE id = ?");
         $stmt->execute([$statutQuestion, $statutQuestion, $questionId]);
+        if ($stmt->rowCount() > 0) {
+            signalerModificationPublique();
+        }
         redirect('/admin/discussions?live=question#live-questions');
     }
     if (isset($_POST['supprimer_discussion'])) {
@@ -48,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare('DELETE FROM discussions WHERE id = ?');
         $stmt->execute([$discussionId]);
+        signalerModificationPublique();
         redirect('/admin/discussions?supprime=discussion');
     }
     if (isset($_POST['supprimer_reponse'])) {
@@ -58,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare('DELETE FROM discussions_reponses WHERE id = ?');
         $stmt->execute([$reponseId]);
+        signalerModificationPublique();
         redirect('/admin/discussions?supprime=reponse');
     }
 }

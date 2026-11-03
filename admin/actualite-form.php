@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("INSERT INTO actualites (titre, slug, resume, contenu, image, categorie_id, statut, admin_id) VALUES (?,?,?,?,?,?,?,?)");
                 $stmt->execute([$actu['titre'], $slug, $actu['resume'], $actu['contenu'], $actu['image'], $actu['categorie_id'], $actu['statut'], $_SESSION['admin_id']]);
             }
+            signalerModificationPublique();
             redirect('/admin/actualites?ok=1');
         }
     }

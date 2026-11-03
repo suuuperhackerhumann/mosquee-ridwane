@@ -1,4 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
+    var revisionMeta = document.querySelector('meta[name="site-revision"]');
+    var revisionUrlMeta = document.querySelector('meta[name="site-revision-url"]');
+    if (revisionMeta && revisionUrlMeta) {
+        var revision = revisionMeta.content;
+        var revisionUrl = revisionUrlMeta.content;
+        function formulaireModifie() {
+            return Array.prototype.some.call(document.querySelectorAll('input, textarea, select'), function (champ) {
+                if (champ.disabled || champ.type === 'submit' || champ.type === 'button' || champ.type === 'reset') return false;
+                if (champ === document.activeElement) return true;
+                if (champ.type === 'checkbox' || champ.type === 'radio') return champ.checked !== champ.defaultChecked;
+                if (champ.type === 'file') return champ.files && champ.files.length > 0;
+                return champ.value !== champ.defaultValue;
+            });
+        }
+        window.setInterval(function () {
+            if (document.visibilityState !== 'visible') return;
+            fetch(revisionUrl, { cache: 'no-store', credentials: 'same-origin' })
+                .then(function (response) {
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (typeof data.revision !== 'string') {
+                        throw new Error('Réponse de version invalide');
+                    }
+                    if (data.revision !== revision && !formulaireModifie()) window.location.reload();
+                })
+                .catch(function (error) {
+                    console.error('Vérification de la mise à jour du site impossible :', error);
+                });
+        }, 15000);
+    }
+
     // Menu mobile : état accessible, navigation clavier et fermeture au changement de taille.
     var toggle = document.querySelector('.menu-toggle');
     var nav = document.querySelector('.nav-principale');

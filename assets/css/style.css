@@ -582,45 +582,45 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 .site-footer {
     background: var(--mint-950);
     color: rgba(250, 247, 240, 0.75);
-    padding: 64px 0 28px;
+    padding: 42px 0 20px;
 }
 .footer-grille {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr;
-    gap: 36px;
-    padding-bottom: 40px;
+    gap: 24px;
+    padding-bottom: 26px;
     border-bottom: 1px solid rgba(126, 201, 168, 0.2);
 }
-.footer-grille h4 { color: var(--eucalyptus-400); font-family: var(--police-donnee); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.footer-grille h4 { margin: 0 0 12px; color: var(--eucalyptus-400); font-family: var(--police-donnee); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
 .footer-grille ul { list-style: none; margin: 0; padding: 0; }
 .footer-grille li { margin-bottom: 10px; font-size: 0.92rem; }
 .footer-grille a { transition: color var(--duree-micro) ease; }
 .footer-grille a:hover { color: var(--eucalyptus-400); }
 .footer-grille address { font-style: normal; }
-.footer-contact-list li { margin-bottom: 8px; }
+.footer-contact-list li { margin-bottom: 2px; font-size: 0.86rem; }
 .footer-contact-action {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
-    padding: 8px 10px;
-    border: 1px solid rgba(126, 201, 168, 0.16);
-    border-radius: var(--rayon);
+    padding: 3px 4px;
+    border: 1px solid transparent;
+    border-radius: 4px;
     overflow-wrap: anywhere;
 }
-.footer-contact-action > i { flex: 0 0 16px; padding-top: 3px; color: var(--eucalyptus-400); text-align: center; }
+.footer-contact-action > i { flex: 0 0 15px; padding-top: 2px; color: var(--eucalyptus-400); text-align: center; }
 .footer-contact-action:hover { background: rgba(126, 201, 168, 0.1); border-color: rgba(126, 201, 168, 0.4); }
-.footer-contact-whatsapp { background: rgba(126, 201, 168, 0.12); border-color: rgba(126, 201, 168, 0.4); }
+.footer-contact-whatsapp { display: inline-flex; min-height: 36px; align-items: center; padding: 5px 9px; background: rgba(126, 201, 168, 0.12); border-color: rgba(126, 201, 168, 0.4); }
 .footer-contact-whatsapp > i { color: #58d68d; }
 .footer-mosquee-logo {
-    width: 88px;
-    height: 88px;
+    width: 68px;
+    height: 68px;
     object-fit: contain;
     background: #fff;
     border: 1px solid rgba(216, 184, 116, 0.55);
     border-radius: 50%;
     padding: 2px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 .footer-social { display: flex; gap: 10px; margin-top: 16px; }
 .footer-social a {
@@ -632,8 +632,8 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
     transition: background var(--duree-micro) ease, border-color var(--duree-micro) ease, transform var(--duree-micro) var(--ease-doux);
 }
 .footer-social a:hover { background: rgba(126, 201, 168, 0.15); border-color: var(--eucalyptus-400); transform: translateY(-2px); }
-.footer-motif { opacity: 0.55; margin: 0 auto 36px; }
-.footer-bas { padding-top: 24px; display: flex; justify-content: space-between; font-size: 0.82rem; flex-wrap: wrap; gap: 10px; }
+.footer-motif { opacity: 0.55; margin: 0 auto 20px; }
+.footer-bas { padding-top: 18px; display: flex; justify-content: space-between; font-size: 0.82rem; flex-wrap: wrap; gap: 10px; }
 .footer-signature { display: inline-flex; align-items: center; gap: 8px; }
 .footer-signature a { display: inline-flex; align-items: center; gap: 7px; }
 .footer-signature img { width: 38px; height: 38px; object-fit: cover; border-radius: 50%; }
@@ -816,7 +816,11 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 @media (max-width: 760px) {
     .grille-3, .grille-4, .grille-2 { grid-template-columns: 1fr; }
     .grille-horaires-hero { grid-template-columns: repeat(3, 1fr); row-gap: 16px; }
-    .footer-grille { grid-template-columns: 1fr; }
+    .footer-grille { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; }
+    .footer-grille > div:first-child, .footer-grille > div:last-child { grid-column: 1 / -1; }
+    .footer-contact-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 8px; }
+    .footer-contact-list li { min-width: 0; margin: 0; }
+    .footer-contact-list li:nth-child(2) { grid-column: 1 / -1; }
     .footer-bas { flex-direction: column; }
     .hero { padding: 64px 0 56px; }
     .hero-accueil-grille { grid-template-columns: 1fr; gap: 32px; }
@@ -836,6 +840,8 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 
 @media (max-width: 420px) {
     .grille-horaires-hero { grid-template-columns: repeat(3, 1fr); }
+    .footer-contact-list { grid-template-columns: 1fr; }
+    .footer-contact-list li:nth-child(2) { grid-column: auto; }
     .logo-sub { display: none; }
     .conteneur { padding-left: 16px; padding-right: 16px; }
     .verset-du-jour { padding: 22px 18px; }

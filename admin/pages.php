@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_POST['blocs'] ?? [] as $cle => $bloc) {
         $stmt->execute([trim($bloc['titre'] ?? ''), trim($bloc['contenu'] ?? ''), $cle]);
     }
+    signalerModificationPublique();
     $succes = true;
 }
 

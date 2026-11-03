@@ -3,6 +3,7 @@ require_once __DIR__ . '/../config/config.php';
 requireAdminPermission('media');
 
 $erreur = '';
+$modificationPublique = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     checkCsrf();
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer'])) {
 
                 $stmt = $pdo->prepare("DELETE FROM mediatheque WHERE id IN ($placeholders)");
                 $stmt->execute($identifiants);
+                signalerModificationPublique();
                 redirect('/admin/media?suppr=' . count($identifiants));
             }
         }
@@ -106,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             }
                             throw $e;
                         }
+                        $modificationPublique = true;
                     }
                 }
             }
@@ -116,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $stmt = $pdo->prepare("INSERT INTO mediatheque (titre, type, fichier, album) VALUES (?, 'video', ?, ?)");
                 $stmt->execute([$titre, $url, $album]);
+                $modificationPublique = true;
             }
         } else {
             $erreur = 'Choisissez une source vidéo valide.';
@@ -193,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $stmt->execute([$titre, '/assets/uploads/' . $nomFichier, $album]);
                             }
                             $pdo->commit();
-                            redirect('/admin/media?ok=1');
+                            $modificationPublique = true;
                         }
                     } catch (Throwable $e) {
                         if ($pdo->inTransaction()) {
@@ -220,7 +224,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-    if (!$erreur) redirect('/admin/media?ok=1');
+    if (!$erreur) {
+        if ($modificationPublique) {
+            signalerModificationPublique();
+        }
+        redirect('/admin/media?ok=1');
+    }
 }
 
 $medias = $pdo->query("SELECT * FROM mediatheque ORDER BY date_ajout DESC")->fetchAll();
