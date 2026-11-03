@@ -3,6 +3,7 @@
 $page_titre = $page_titre ?? SITE_NOM;
 $page_description = $page_description ?? SITE_DESCRIPTION;
 $pageDescriptionSeo = mb_substr(trim(strip_tags($page_description)), 0, 300);
+$liveSessionActive = (bool) $pdo->query("SELECT id FROM live_sessions WHERE statut = 'actif' ORDER BY date_debut DESC LIMIT 1")->fetchColumn();
 $siteUrlSeo = rtrim(SITE_URL, '/');
 $pageScript = basename(parse_url($_SERVER['SCRIPT_NAME'] ?? '/index.php', PHP_URL_PATH) ?: 'index.php');
 $canonicalUrl = $pageScript === 'index.php' ? $siteUrlSeo . '/' : $siteUrlSeo . '/' . rawurlencode($pageScript);
@@ -179,5 +180,11 @@ main > .section .media-infos p { margin: 4px 0 0; font-size: .92rem; line-height
 <a href="<?= BASE_URL ?>/dons.php" class="bouton bouton-dore don-flottant">
     <i class="fa-solid fa-hand-holding-heart icone" aria-hidden="true"></i> Faire un don
 </a>
+<?php if ($liveSessionActive): ?>
+<a href="<?= BASE_URL ?>/live.php" class="live-flottant" aria-label="Questions en direct : participer au live">
+    <i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i>
+    <span>LIVE</span>
+</a>
+<?php endif; ?>
 
 <main id="contenu-principal">

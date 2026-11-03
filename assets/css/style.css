@@ -654,6 +654,46 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 }
 .don-flottant:hover { background: var(--laiton-300); box-shadow: var(--ombre-forte); }
 
+.live-flottant {
+    position: fixed;
+    right: 20px;
+    bottom: 76px;
+    z-index: 91;
+    display: flex;
+    width: 72px;
+    height: 72px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    background: #c62828;
+    box-shadow: 0 4px 16px rgba(90, 12, 12, 0.35);
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    isolation: isolate;
+}
+.live-flottant::before, .live-flottant::after {
+    position: absolute;
+    z-index: -1;
+    inset: -5px;
+    border: 2px solid rgba(198, 40, 40, 0.72);
+    border-radius: 50%;
+    content: "";
+    animation: live-impulsion 1.8s ease-out infinite;
+}
+.live-flottant::after { animation-delay: 0.9s; }
+.live-flottant > i { font-size: 1.2rem; }
+.live-flottant:hover, .live-flottant:focus-visible { color: #fff; background: #a71f1f; }
+@keyframes live-impulsion {
+    0% { opacity: 0.75; transform: scale(0.9); }
+    100% { opacity: 0; transform: scale(1.45); }
+}
+
 /* ==========================================================================
    Divers : pages intérieures, table admin
    ========================================================================== */
@@ -693,6 +733,37 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 .discussion-admin-entete { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
 .discussion-admin-entete h2 { margin: 0 0 4px; }
 .discussion-reponse-admin { margin-left: 0; }
+.live-conteneur { max-width: 1080px; }
+.live-bandeau { margin-bottom: 28px; padding: 24px; border-radius: 8px; color: var(--plâtre-50); background: var(--mint-950); }
+.live-bandeau h2, .live-bandeau p { color: inherit; }
+.live-bandeau h2 { margin: 12px 0 8px; }
+.live-bandeau p { margin-bottom: 0; color: #ffffff; }
+.live-bandeau-description  { color: #ffffff; font-size: 0.9rem; }
+.live-indicateur, .live-admin-indicateur { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.live-indicateur { color: #ffd5d1; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.8rem; }
+.live-indicateur span { width: 9px; height: 9px; border-radius: 50%; background: #e55045; box-shadow: 0 0 0 4px rgba(229, 80, 69, 0.2); }
+.live-grille { display: grid; grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.25fr); gap: 36px; align-items: start; }
+.live-questions h2 { margin-top: 0; }
+.live-liste-questions { display: grid; gap: 14px; }
+.live-question { padding: 18px; border: 1px solid var(--plâtre-200); border-radius: 8px; background: #fff; }
+.live-question .discussion-meta { margin-bottom: 8px; }
+.live-question .discussion-message { margin-bottom: 0; }
+.live-question-lue { border-color: var(--eucalyptus-400); background: var(--eucalyptus-100); }
+.live-question-statut { display: flex; align-items: center; gap: 7px; margin: 12px 0 0; color: var(--mint-800); font-size: 0.9rem; font-weight: 700; }
+.live-vide { color: var(--encre-600); }
+.live-inactif { padding: 48px 24px; border: 1px solid var(--plâtre-200); border-radius: 8px; text-align: center; background: #fff; }
+.live-inactif > i { color: var(--mint-700); font-size: 2rem; }
+.live-inactif h2 { margin: 14px 0 8px; }
+.live-inactif p { max-width: 600px; margin: 0 auto; color: var(--encre-600); }
+.live-admin-demarrer { display: grid; min-width: min(320px, 100%); gap: 8px; }
+.live-admin-demarrer label { font-weight: 700; }
+.live-admin-liste { display: grid; gap: 14px; margin-top: 22px; }
+.live-admin-question { padding: 16px; border: 1px solid var(--plâtre-200); border-radius: 6px; background: #fff; }
+.live-admin-question-lue { border-color: var(--eucalyptus-400); background: var(--eucalyptus-100); }
+.live-admin-question .discussion-meta { margin-bottom: 0; }
+.live-admin-question .discussion-message { margin: 12px 0; }
+.live-admin-question > form { display: flex; justify-content: flex-end; }
+.live-admin-attente { color: var(--encre-600); font-size: 0.85rem; font-weight: 700; }
 
 .barre-progression { background: var(--plâtre-200); border-radius: 100px; height: 8px; overflow: hidden; }
 .barre-progression span { display: block; height: 100%; background: var(--eucalyptus-600); }
@@ -737,8 +808,15 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
     .section { padding: 52px 0; }
     .vers-haut { right: 14px; bottom: 14px; width: 40px; height: 40px; }
     .don-flottant { left: 14px; bottom: 14px; padding: 10px 14px; }
+    .live-flottant { right: 14px; bottom: 70px; width: 66px; height: 66px; }
     .discussions-conteneur { grid-template-columns: 1fr; gap: 28px; }
+    .live-grille { grid-template-columns: 1fr; gap: 28px; }
     .discussion-admin-entete { flex-direction: column; }
+    .live-admin-demarrer { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .live-flottant::before, .live-flottant::after { animation: none; }
 }
 
 @media (max-width: 420px) {

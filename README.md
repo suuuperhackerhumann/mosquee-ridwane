@@ -60,6 +60,8 @@ La page d’accueil affiche également un verset coranique en français et en ar
 
 La rubrique « Discussion » est accessible sans compte : les visiteurs peuvent publier un sujet et y répondre sous leur nom, un pseudonyme ou anonymement. Les publications apparaissent immédiatement. Les administrateurs disposant de la permission « Gérer les discussions » peuvent supprimer les sujets et réponses inappropriés.
 
+La page « Questions en direct » permet à un administrateur de lancer et terminer une séance de questions-réponses. Le bouton flottant circulaire « LIVE » apparaît uniquement pendant une séance active. Les visiteurs posent leurs questions sous leur nom ou anonymement ; l’imam répond oralement au micro. Depuis l’administration > Discussions, l’équipe peut marquer une question comme lue et indiquer ainsi aux participants que l’imam prévoit d’y répondre. Les questions et leur statut s’actualisent automatiquement pendant la séance. Pour une base déjà installée, importer une seule fois `database/migration-live-questions.sql` après avoir sélectionné la base. Pour une nouvelle installation, `database/schema.sql` contient déjà ces tables.
+
 Les vidéos locales de la médiathèque sont lues directement sur le site. La taille maximale dépend de `upload_max_filesize` et `post_max_size` dans la configuration PHP ; elle est affichée dans le formulaire d’administration. Sur cette installation XAMPP, la limite actuelle est de **2 Mo**. Pour envoyer des vidéos plus lourdes, règle par exemple `upload_max_filesize = 100M` et `post_max_size = 110M` dans le `php.ini` utilisé par Apache, puis redémarre Apache. Vérifie également les limites de ton hébergeur en production.
 
 ## 4. Structure du projet
