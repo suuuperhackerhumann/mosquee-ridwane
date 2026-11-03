@@ -1,6 +1,13 @@
 <?php
-$errorHomeUrl = rtrim(BASE_URL, '/') . '/index.php';
-$errorAdminUrl = rtrim(BASE_URL, '/') . '/admin/dashboard.php';
+$errorScriptPath = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
+$errorScriptPath = preg_replace('~/(?:admin|config|includes)(?:/.*)?$~', '', $errorScriptPath);
+$errorBaseUrl = defined('BASE_URL') ? rtrim(BASE_URL, '/') : rtrim($errorScriptPath, '/');
+$errorSiteName = defined('SITE_NOM') ? SITE_NOM : 'Mosquée Ridwane';
+$errorEscape = static function ($value) {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+};
+$errorHomeUrl = $errorBaseUrl . '/index.php';
+$errorAdminUrl = $errorBaseUrl . '/admin/dashboard.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -9,9 +16,9 @@ $errorAdminUrl = rtrim(BASE_URL, '/') . '/admin/dashboard.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#0e2d29">
-    <title><?= (int) $errorCode ?> — <?= h($errorTitle) ?> | <?= h(SITE_NOM) ?></title>
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+    <title><?= (int) $errorCode ?> — <?= $errorEscape($errorTitle) ?> | <?= $errorEscape($errorSiteName) ?></title>
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= $errorEscape($errorBaseUrl) ?>/assets/img/favicon-32.png">
+    <link rel="stylesheet" href="<?= $errorEscape($errorBaseUrl) ?>/assets/css/style.css">
     <style>
         .erreur-page { min-height: 100vh; display: grid; place-items: center; padding: 28px 16px; background: radial-gradient(ellipse at top right, var(--mint-700), var(--mint-950) 70%); }
         .erreur-carte { width: min(100%, 560px); padding: clamp(24px, 6vw, 48px); border: 1px solid rgba(216, 184, 116, .4); border-radius: 12px; background: var(--plâtre-50); text-align: center; box-shadow: var(--ombre-forte); }
@@ -28,19 +35,19 @@ $errorAdminUrl = rtrim(BASE_URL, '/') . '/admin/dashboard.php';
 <body>
     <main class="erreur-page">
         <section class="erreur-carte" aria-labelledby="titre-erreur">
-            <img class="erreur-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="">
+            <img class="erreur-logo" src="<?= $errorEscape($errorBaseUrl) ?>/assets/img/logo-mosquee.png" alt="">
             <p class="erreur-code"><?= (int) $errorCode ?></p>
-            <h1 id="titre-erreur"><?= h($errorTitle) ?></h1>
-            <p><?= h($errorMessage) ?></p>
+            <h1 id="titre-erreur"><?= $errorEscape($errorTitle) ?></h1>
+            <p><?= $errorEscape($errorMessage) ?></p>
             <div class="erreur-actions">
-                <a class="bouton bouton-emeraude" href="<?= h($errorHomeUrl) ?>">Retour au site officiel</a>
+                <a class="bouton bouton-emeraude" href="<?= $errorEscape($errorHomeUrl) ?>">Retour au site officiel</a>
                 <?php if (!empty($errorReturnUrl) && !empty($errorReturnLabel)): ?>
-                <a class="erreur-lien-secondaire" href="<?= h($errorReturnUrl) ?>"><?= h($errorReturnLabel) ?></a>
+                <a class="erreur-lien-secondaire" href="<?= $errorEscape($errorReturnUrl) ?>"><?= $errorEscape($errorReturnLabel) ?></a>
                 <?php elseif ($errorCode === 403 && function_exists('isAdminLoggedIn') && isAdminLoggedIn()): ?>
-                <a class="erreur-lien-secondaire" href="<?= h($errorAdminUrl) ?>">Tableau de bord admin</a>
+                <a class="erreur-lien-secondaire" href="<?= $errorEscape($errorAdminUrl) ?>">Tableau de bord admin</a>
                 <?php endif; ?>
             </div>
-            <span class="erreur-marque"><?= h(SITE_NOM) ?> · Riviera Abatta, Abidjan</span>
+            <span class="erreur-marque"><?= $errorEscape($errorSiteName) ?> · Riviera Abatta, Abidjan</span>
         </section>
     </main>
 </body>

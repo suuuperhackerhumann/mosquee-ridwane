@@ -1,2 +1,6 @@
 ErrorDocument 403 /mosquee-ridwane/403.php
 ErrorDocument 404 /mosquee-ridwane/404.php
+ErrorDocument 500 /mosquee-ridwane/erreur-serveur.php
+ErrorDocument 502 /mosquee-ridwane/erreur-serveur.php
+ErrorDocument 503 /mosquee-ridwane/erreur-serveur.php
+ErrorDocument 504 /mosquee-ridwane/erreur-serveur.php

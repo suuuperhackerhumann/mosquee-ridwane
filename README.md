@@ -11,7 +11,7 @@ Site institutionnel en **PHP + MySQL**, sans framework, pensé pour être simple
 5. Passe `MODE_DEBUG` à `false` dans `config/config.php` une fois le site en ligne.
 6. Vérifie que `SITE_URL` dans `config/config.php` correspond au domaine public canonique avant l’indexation par les moteurs de recherche. Le logo partagé par Open Graph, les données structurées, le sitemap et les URL canoniques utilisent cette valeur ; adapte aussi l’URL du sitemap dans `robots.txt` si le domaine change.
 7. Après la mise en ligne, vérifie le domaine dans **Google Search Console**, soumets `https://ton-domaine.tld/sitemap.php`, puis inspecte les pages principales et les images de partage avec les validateurs de résultats enrichis et d’aperçus sociaux.
-8. Les chemins `ErrorDocument` de [.htaccess](./.htaccess) sont réglés pour XAMPP sous `/mosquee-ridwane/`. Si tu déploies le site à la racine du domaine, remplace-les par `/403.php` et `/404.php`. Dans un autre sous-dossier, adapte-les avec le chemin public correspondant.
+8. Les chemins `ErrorDocument` de [.htaccess](./.htaccess) sont réglés pour XAMPP sous `/mosquee-ridwane/`. Si tu déploies le site à la racine du domaine, remplace-les par `/403.php`, `/404.php` et `/erreur-serveur.php`. Dans un autre sous-dossier, adapte-les avec le chemin public correspondant. La page serveur autonome gère les erreurs 500, 502, 503 et 504, et la connexion à la base affiche la réponse 503 en cas d’indisponibilité.
 
 ### Référencement et visibilité locale
 
