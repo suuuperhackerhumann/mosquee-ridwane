@@ -34,15 +34,16 @@ $socialImageSize = getimagesize(dirname(__DIR__) . '/' . $socialImagePath);
 $socialImageWidth = $socialImageSize[0] ?? 1200;
 $socialImageHeight = $socialImageSize[1] ?? 630;
 $ogType = isset($page_og_type) && $page_og_type === 'article' ? 'article' : 'website';
+$mosqueLogoUrl = $siteUrlSeo . '/assets/img/logo-mosquee.png';
 $structuredData = [[
-    '@type' => 'PlaceOfWorship',
+    '@type' => 'Mosque',
     '@id' => $siteUrlSeo . '/#mosquee',
     'name' => SITE_NOM,
     'url' => $siteUrlSeo . '/',
-    'image' => $socialImageUrl,
+    'image' => $mosqueLogoUrl,
     'logo' => [
         '@type' => 'ImageObject',
-        'url' => $siteUrlSeo . '/assets/img/logo-mosquee.png',
+        'url' => $mosqueLogoUrl,
     ],
     'description' => SITE_DESCRIPTION,
     'telephone' => SITE_TELEPHONE,
