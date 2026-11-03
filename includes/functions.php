@@ -121,13 +121,15 @@ function isAdminLoggedIn() {
     $maintenant = time();
     $debutSession = (int) ($_SESSION['admin_session_started_at'] ?? 0);
     $derniereActivite = (int) ($_SESSION['admin_last_activity'] ?? 0);
+    $delaiInactivite = defined('ADMIN_SESSION_IDLE_TIMEOUT') ? ADMIN_SESSION_IDLE_TIMEOUT : 1800;
+    $dureeMaximale = defined('ADMIN_SESSION_MAX_LIFETIME') ? ADMIN_SESSION_MAX_LIFETIME : 28800;
     if (
         !$debutSession
         || !$derniereActivite
         || $debutSession > $maintenant
         || $derniereActivite > $maintenant
-        || $maintenant - $derniereActivite >= ADMIN_SESSION_IDLE_TIMEOUT
-        || $maintenant - $debutSession >= ADMIN_SESSION_MAX_LIFETIME
+        || $maintenant - $derniereActivite >= $delaiInactivite
+        || $maintenant - $debutSession >= $dureeMaximale
     ) {
         foreach (array_keys($_SESSION) as $cle) {
             if (strpos($cle, 'admin_') === 0) {
