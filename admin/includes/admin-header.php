@@ -19,7 +19,7 @@ $page_admin = $page_admin ?? '';
 </head>
 <body class="admin-body">
 <div class="admin-layout">
-    <aside class="admin-sidebar">
+    <aside class="admin-sidebar" id="admin-navigation">
         <a class="admin-marque" href="<?= BASE_URL ?>/admin/dashboard">
             <img class="admin-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="">
             <span class="marque">Mosquée Ridwane</span>
@@ -45,4 +45,11 @@ $page_admin = $page_admin ?? '';
             </li>
         </ul>
     </aside>
+    <button type="button" class="admin-sidebar-overlay" aria-label="Fermer le menu d'administration"></button>
     <main class="admin-main">
+        <div class="admin-mobile-bar">
+            <button type="button" class="admin-menu-toggle" aria-controls="admin-navigation" aria-expanded="false" aria-label="Ouvrir le menu d'administration">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <span>Administration</span>
+        </div>

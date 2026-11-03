@@ -597,6 +597,21 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
 .footer-grille a { transition: color var(--duree-micro) ease; }
 .footer-grille a:hover { color: var(--eucalyptus-400); }
 .footer-grille address { font-style: normal; }
+.footer-contact-list li { margin-bottom: 8px; }
+.footer-contact-action {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid rgba(126, 201, 168, 0.16);
+    border-radius: var(--rayon);
+    overflow-wrap: anywhere;
+}
+.footer-contact-action > i { flex: 0 0 16px; padding-top: 3px; color: var(--eucalyptus-400); text-align: center; }
+.footer-contact-action:hover { background: rgba(126, 201, 168, 0.1); border-color: rgba(126, 201, 168, 0.4); }
+.footer-contact-whatsapp { background: rgba(126, 201, 168, 0.12); border-color: rgba(126, 201, 168, 0.4); }
+.footer-contact-whatsapp > i { color: #58d68d; }
 .footer-mosquee-logo {
     width: 88px;
     height: 88px;

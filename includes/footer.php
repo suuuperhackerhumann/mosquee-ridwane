@@ -39,14 +39,49 @@
                 </div>
                 <div>
                     <h4>Contact</h4>
-                    <ul>
-                        <li><address><?= h(SITE_ADRESSE) ?></address></li>
-                        <li><a href="tel:<?= h(preg_replace('/\s+/', '', SITE_TELEPHONE)) ?>"><?= h(SITE_TELEPHONE) ?></a></li>
-                        <li><a href="<?= h(SITE_WHATSAPP) ?>" target="_blank" rel="noopener noreferrer">WhatsApp : <?= h(SITE_TELEPHONE) ?></a></li>
-                        <li>Imam : <a href="tel:<?= h(preg_replace('/\s+/', '', SITE_IMAM_TELEPHONE)) ?>"><?= h(SITE_IMAM_TELEPHONE) ?></a></li>
-                        <li>Secrétaire : <a href="tel:<?= h(preg_replace('/\s+/', '', SITE_SECRETAIRE_TELEPHONE)) ?>"><?= h(SITE_SECRETAIRE_TELEPHONE) ?></a></li>
-                        <li>Président : <a href="tel:<?= h(preg_replace('/\s+/', '', SITE_PRESIDENT_TELEPHONE)) ?>"><?= h(SITE_PRESIDENT_TELEPHONE) ?></a></li>
-                        <li><a href="mailto:<?= h(SITE_EMAIL) ?>"><?= h(SITE_EMAIL) ?></a></li>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <a class="footer-contact-action" href="https://www.google.com/maps/search/?api=1&amp;query=<?= rawurlencode(SITE_ADRESSE) ?>" target="_blank" rel="noopener noreferrer">
+                                <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                                <span><?= h(SITE_ADRESSE) ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="footer-contact-action footer-contact-whatsapp" href="<?= h(SITE_WHATSAPP) ?>" target="_blank" rel="noopener noreferrer">
+                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                                <span>Écrire sur WhatsApp</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="footer-contact-action" href="tel:<?= h(preg_replace('/\s+/', '', SITE_TELEPHONE)) ?>">
+                                <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                                <span>Téléphone : <?= h(SITE_TELEPHONE) ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="footer-contact-action" href="tel:<?= h(preg_replace('/\s+/', '', SITE_IMAM_TELEPHONE)) ?>">
+                                <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                                <span>Imam : <?= h(SITE_IMAM_TELEPHONE) ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="footer-contact-action" href="tel:<?= h(preg_replace('/\s+/', '', SITE_SECRETAIRE_TELEPHONE)) ?>">
+                                <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                                <span>Secrétaire : <?= h(SITE_SECRETAIRE_TELEPHONE) ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="footer-contact-action" href="tel:<?= h(preg_replace('/\s+/', '', SITE_PRESIDENT_TELEPHONE)) ?>">
+                                <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                                <span>Président : <?= h(SITE_PRESIDENT_TELEPHONE) ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="footer-contact-action" href="mailto:<?= h(SITE_EMAIL) ?>">
+                                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                                <span><?= h(SITE_EMAIL) ?></span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
