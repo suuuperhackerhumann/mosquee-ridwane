@@ -13,6 +13,9 @@
  *  - hash le mot de passe avec password_hash() (bcrypt), jamais en clair
  */
 
+$nomSessionSite = session_name();
+setcookie($nomSessionSite, '', time() - 3600, '/');
+session_name('RIDWANE_SETUP');
 session_start();
 
 // ============================================================

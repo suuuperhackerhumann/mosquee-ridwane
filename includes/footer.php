@@ -41,7 +41,7 @@
                     <h4>Contact</h4>
                     <ul class="footer-contact-list">
                         <li>
-                            <a class="footer-contact-action" href="https://www.google.com/maps/search/?api=1&amp;query=<?= rawurlencode(SITE_ADRESSE) ?>" target="_blank" rel="noopener noreferrer">
+                            <a class="footer-contact-action" href="https://www.google.com/maps/search/?api=1&amp;query=<?= rawurlencode('Mosquée Ridwane Riviéra Abatta') ?>" target="_blank" rel="noopener noreferrer">
                                 <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
                                 <span><?= h(SITE_ADRESSE) ?></span>
                             </a>

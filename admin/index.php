@@ -92,7 +92,7 @@ if ($connexionEnCours) {
         <div class="alerte alerte-erreur"><?= h($erreur) ?></div>
         <?php endif; ?>
 
-        <form method="post" action="<?= BASE_URL ?>/admin">
+        <form method="post" action="<?= BASE_URL ?>/admin/">
             <input type="hidden" name="csrf_token" value="<?= h(csrfToken()) ?>">
             <div class="champ">
                 <label for="email">E-mail</label>
