@@ -60,6 +60,17 @@ INSERT INTO pages_contenu (cle, titre, contenu) VALUES
 ('dons_zakat_fitr', 'Zakat al-Fitr', 'Informations sur le montant et les modalités de la Zakat al-Fitr, mises à jour chaque année avant l''Aïd al-Fitr.'),
 ('contact_adresse', 'Adresse', 'À compléter depuis l''espace d''administration.');
 
+CREATE TABLE IF NOT EXISTS instances_dirigeantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    groupe VARCHAR(30) NOT NULL,
+    nom VARCHAR(150) NOT NULL,
+    fonction VARCHAR(150) NOT NULL,
+    description TEXT,
+    photo VARCHAR(255),
+    date_maj DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_instances_groupe (groupe)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS horaires_prieres (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date_jour DATE NOT NULL UNIQUE,

@@ -72,6 +72,8 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="hero-actions">
                     <a href="<?= BASE_URL ?>/horaires.php" class="bouton bouton-dore">Voir les horaires de prière</a>
                     <a href="<?= BASE_URL ?>/a-propos.php" class="bouton bouton-contour">Découvrir la mosquée</a>
+                    <a href="https://www.hadj-ci.org/" class="bouton bouton-contour" target="_blank" rel="noopener noreferrer">Commissariat du Hadj <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    <a href="https://www.cosim-ci.org/" class="bouton bouton-contour" target="_blank" rel="noopener noreferrer">COSIM <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
                 </div>
             </div>
 
@@ -109,6 +111,10 @@ require_once __DIR__ . '/includes/header.php';
                 <div data-heure-priere="<?= formatHeure($horaires['isha']) ?>">
                     <div class="nom">Isha</div>
                     <div class="heure"><?= formatHeure($horaires['isha']) ?></div>
+                </div>
+                <div data-heure-priere="<?= formatHeure($horaires['jumuah'] ?? null) ?>">
+                    <div class="nom">Jumu'ah</div>
+                    <div class="heure"><?= formatHeure($horaires['jumuah'] ?? null) ?></div>
                 </div>
             </div>
         </div>

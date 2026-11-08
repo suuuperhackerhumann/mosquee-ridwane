@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS instances_dirigeantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    groupe VARCHAR(30) NOT NULL,
+    nom VARCHAR(150) NOT NULL,
+    fonction VARCHAR(150) NOT NULL,
+    description TEXT,
+    photo VARCHAR(255),
+    date_maj DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_instances_groupe (groupe)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

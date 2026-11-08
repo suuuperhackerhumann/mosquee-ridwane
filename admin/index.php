@@ -44,14 +44,14 @@ if ($connexionEnCours) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="refresh" content="2;url=<?= h($dashboardUrl) ?>">
     <title>Connexion réussie — Mosquée Ridwane</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png?v=20261108">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
     </head>
     <body class="admin-body">
     <main class="login-page">
         <section class="login-carte" aria-labelledby="titre-connexion-reussie">
-            <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="">
+            <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png?v=20261108" alt="">
             <h1 id="titre-connexion-reussie" style="text-align:center;">Connexion réussie</h1>
             <p class="login-message" role="status">Ouverture de votre espace d’administration…</p>
             <div class="login-progression" aria-hidden="true"><span></span></div>
@@ -74,8 +74,8 @@ if ($connexionEnCours) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Connexion admin — Mosquée Ridwane</title>
-<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png?v=20261108">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png?v=20261108">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Karla:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
@@ -84,7 +84,7 @@ if ($connexionEnCours) {
 <body class="admin-body">
 <div class="login-page">
     <div class="login-carte">
-        <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Mosquée Ridwane">
+        <img class="login-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png?v=20261108" alt="Emblème de la Mosquée Ridwane">
         <h1 style="text-align:center;">Connexion admin</h1>
         <p style="text-align:center; color:var(--encre-600); font-size:0.9rem; margin-bottom:18px;">Mosquée Ridwane</p>
 

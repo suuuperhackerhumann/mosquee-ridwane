@@ -17,7 +17,7 @@ $errorAdminUrl = $errorBaseUrl . '/admin/dashboard.php';
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#0e2d29">
     <title><?= (int) $errorCode ?> — <?= $errorEscape($errorTitle) ?> | <?= $errorEscape($errorSiteName) ?></title>
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= $errorEscape($errorBaseUrl) ?>/assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= $errorEscape($errorBaseUrl) ?>/assets/img/favicon-32.png?v=20261108">
     <link rel="stylesheet" href="<?= $errorEscape($errorBaseUrl) ?>/assets/css/style.css">
     <style>
         .erreur-page { min-height: 100vh; display: grid; place-items: center; padding: 28px 16px; background: radial-gradient(ellipse at top right, var(--mint-700), var(--mint-950) 70%); }
@@ -35,7 +35,7 @@ $errorAdminUrl = $errorBaseUrl . '/admin/dashboard.php';
 <body>
     <main class="erreur-page">
         <section class="erreur-carte" aria-labelledby="titre-erreur">
-            <img class="erreur-logo" src="<?= $errorEscape($errorBaseUrl) ?>/assets/img/logo-mosquee.png" alt="">
+            <img class="erreur-logo" src="<?= $errorEscape($errorBaseUrl) ?>/assets/img/logo-mosquee.png?v=20261108" alt="">
             <p class="erreur-code"><?= (int) $errorCode ?></p>
             <h1 id="titre-erreur"><?= $errorEscape($errorTitle) ?></h1>
             <p><?= $errorEscape($errorMessage) ?></p>

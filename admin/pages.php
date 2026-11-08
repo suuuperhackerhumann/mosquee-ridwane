@@ -39,7 +39,7 @@ require_once __DIR__ . '/includes/admin-header.php';
 <?php foreach ($groupes as $label => $prefixe): ?>
 <div class="admin-carte">
     <h3 style="margin-top:0;"><?= h($label) ?></h3>
-    <?php foreach ($blocs as $b): if (strpos($b['cle'], $prefixe) !== 0) continue; ?>
+    <?php foreach ($blocs as $b): if (strpos($b['cle'], $prefixe) !== 0 || in_array($b['cle'], ['apropos_imam', 'apropos_equipe'], true)) continue; ?>
     <div class="champ" style="border-top:1px solid var(--plâtre-200); padding-top:14px; margin-top:14px;">
         <label><?= h($b['cle']) ?></label>
         <input type="text" name="blocs[<?= h($b['cle']) ?>][titre]" value="<?= h($b['titre']) ?>" placeholder="Titre" style="margin-bottom:8px;">

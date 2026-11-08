@@ -9,9 +9,9 @@ $page_admin = $page_admin ?? '';
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= h($titre_admin ?? 'Administration') ?> — Espace admin</title>
 <meta name="theme-color" content="#0e2d29">
-<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
-<link rel="shortcut icon" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png?v=20261108">
+<link rel="shortcut icon" href="<?= BASE_URL ?>/assets/img/favicon-32.png?v=20261108">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png?v=20261108">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Karla:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
@@ -21,7 +21,7 @@ $page_admin = $page_admin ?? '';
 <div class="admin-layout">
     <aside class="admin-sidebar" id="admin-navigation">
         <a class="admin-marque" href="<?= BASE_URL ?>/admin/dashboard">
-            <img class="admin-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="">
+            <img class="admin-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png?v=20261108" alt="">
             <span class="marque">Mosquée Ridwane</span>
         </a>
         <span class="sous-marque">Espace d'administration</span>
@@ -31,6 +31,7 @@ $page_admin = $page_admin ?? '';
             <?php if (hasAdminPermission('evenements')): ?><li><a href="<?= BASE_URL ?>/admin/evenements" class="<?= $page_admin === 'evenements' ? 'actif' : '' ?>"><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> Événements</a></li><?php endif; ?>
             <?php if (hasAdminPermission('horaires')): ?><li><a href="<?= BASE_URL ?>/admin/horaires" class="<?= $page_admin === 'horaires' ? 'actif' : '' ?>"><i class="fa-regular fa-clock" aria-hidden="true"></i> Horaires de prière</a></li><?php endif; ?>
             <?php if (hasAdminPermission('pages')): ?><li><a href="<?= BASE_URL ?>/admin/pages" class="<?= $page_admin === 'pages' ? 'actif' : '' ?>"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Contenu des pages</a></li><?php endif; ?>
+            <?php if (hasAdminPermission('pages')): ?><li><a href="<?= BASE_URL ?>/admin/instances" class="<?= $page_admin === 'instances' ? 'actif' : '' ?>"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Instances dirigeantes</a></li><?php endif; ?>
             <?php if (hasAdminPermission('media')): ?><li><a href="<?= BASE_URL ?>/admin/media" class="<?= $page_admin === 'media' ? 'actif' : '' ?>"><i class="fa-solid fa-photo-film" aria-hidden="true"></i> Médiathèque</a></li><?php endif; ?>
             <?php if (hasAdminPermission('messages')): ?><li><a href="<?= BASE_URL ?>/admin/messages" class="<?= $page_admin === 'messages' ? 'actif' : '' ?>"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages de contact</a></li><?php endif; ?>
             <?php if (hasAdminPermission('discussions')): ?><li><a href="<?= BASE_URL ?>/admin/discussions" class="<?= $page_admin === 'discussions' || $page_admin === 'live' ? 'actif' : '' ?>"><i class="fa-regular fa-comments" aria-hidden="true"></i> Discussions et live</a></li><?php endif; ?>

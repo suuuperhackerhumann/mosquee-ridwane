@@ -55,7 +55,7 @@ Depuis « Utilisateurs et rôles », l’administrateur peut définir ou modifie
 
 Chaque utilisateur connecté peut changer son mot de passe depuis le menu d’administration, après vérification de son mot de passe actuel. Les changements et suppressions sont traités par des formulaires POST protégés contre les requêtes CSRF.
 
-Pour une base déjà installée, importer une seule fois `database/migration-roles.sql` et `database/migration-discussions.sql` dans phpMyAdmin après avoir sélectionné la base. La migration des rôles préserve les accès existants. Pour une nouvelle installation, `database/schema.sql` inclut directement les tables nécessaires.
+Pour une base déjà installée, importer une seule fois `database/migration-roles.sql`, `database/migration-discussions.sql` et `database/migration-instances-dirigeantes.sql` dans phpMyAdmin après avoir sélectionné la base. La migration des rôles préserve les accès existants. Pour une nouvelle installation, `database/schema.sql` inclut directement les tables nécessaires.
 
 La page d’accueil affiche également un verset coranique en français et en arabe, renouvelé automatiquement chaque jour.
 

@@ -411,7 +411,7 @@ p { margin: 0 0 1em; }
 }
 .grille-horaires-hero {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 12px;
     text-align: center;
 }
@@ -451,6 +451,162 @@ p { margin: 0 0 1em; }
     transition: color var(--duree-panneau) ease;
 }
 
+/* ==========================================================================
+   Instances dirigeantes — un panneau par instance
+   ========================================================================== */
+.instances-titre { font-size: clamp(2rem, 3.5vw, 3rem); margin: 8px 0 28px; }
+
+/* Navigation rapide */
+.instances-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 44px;
+}
+.instances-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    font-family: var(--police-donnee);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--mint-800);
+    background: var(--plâtre-50);
+    border: 1px solid var(--plâtre-200);
+    border-radius: 100px;
+    transition: background var(--duree-micro) ease, border-color var(--duree-micro) ease, transform var(--duree-micro) var(--ease-doux);
+}
+.instances-nav a i { color: var(--laiton-500); font-size: 0.85em; }
+.instances-nav a:hover {
+    background: var(--eucalyptus-100);
+    border-color: var(--eucalyptus-400);
+    transform: translateY(-2px);
+}
+
+/* Panneau d'une instance */
+.instance-bloc {
+    margin-bottom: 40px;
+    background: var(--plâtre-50);
+    border: 1px solid var(--plâtre-200);
+    border-radius: var(--rayon-lg);
+    box-shadow: var(--ombre-legere);
+    overflow: hidden;
+    scroll-margin-top: 96px;
+}
+.instance-bloc-entete {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 26px 32px;
+    color: var(--plâtre-50);
+    background: radial-gradient(ellipse at top right, var(--mint-700), var(--mint-950) 70%);
+    border-bottom: 2px solid var(--laiton-500);
+}
+.instance-bloc-icone {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    font-size: 1.35rem;
+    color: var(--laiton-300);
+    border: 1px solid rgba(216, 184, 116, 0.55);
+    border-radius: 12px;
+    background: rgba(250, 247, 240, 0.06);
+}
+.instance-bloc-titres { flex: 1; min-width: 0; }
+.instance-bloc-titres h3 { margin: 0 0 4px; font-size: 1.5rem; color: var(--plâtre-50); }
+.instance-bloc-titres p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #fff;
+    max-width: 62ch;
+}.instance-bloc-badge {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    font-family: var(--police-donnee);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mint-950);
+    background: var(--laiton-300);
+    border-radius: 100px;
+}
+.instance-bloc-corps { padding: 32px; }
+
+/* Sous-groupes (comité des jeunes) */
+.instances-sous-groupe + .instances-sous-groupe { margin-top: 34px; }
+.sous-groupe-titre {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 18px;
+    font-family: var(--police-donnee);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--eucalyptus-600);
+}
+.sous-groupe-titre::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--plâtre-200);
+}
+
+/* Cartes des membres */
+.instances-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+.instance-carte {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--plâtre-200);
+    border-radius: 8px;
+    transition: box-shadow var(--duree-panneau) var(--ease-doux), transform var(--duree-panneau) var(--ease-doux), border-color var(--duree-panneau) ease;
+}
+.instance-carte:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--ombre);
+    border-color: var(--eucalyptus-200);
+}
+.instance-carte > img,
+.instance-photo-vide {
+    display: grid;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--eucalyptus-100);
+    color: var(--mint-500);
+    place-items: center;
+}
+.instance-photo-vide i { font-size: 2.2rem; }
+.instance-contenu { padding: 16px 18px 20px; }
+.instance-contenu h4 { margin: 0 0 4px; font-size: 1.1rem; }
+.instance-fonction {
+    margin: 0 0 8px;
+    font-family: var(--police-donnee);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--laiton-500);
+}
+.instance-desc { margin: 0; font-size: 0.9rem; color: var(--encre-600); }
+.instance-vide { grid-column: 1 / -1; margin: 0; color: var(--encre-600); font-style: italic; }
+
+@media (max-width: 760px) {
+    .instance-bloc-entete { flex-wrap: wrap; padding: 20px; gap: 14px; }
+    .instance-bloc-titres { flex-basis: calc(100% - 76px); }
+    .instance-bloc-badge { margin-left: 70px; }
+    .instance-bloc-corps { padding: 20px; }
+}
 /* ==========================================================================
    Sections génériques
    ========================================================================== */
@@ -849,4 +1005,8 @@ a.carte:hover .carte-image { filter: saturate(1.08); }
     .tableau-horaires th, .tableau-horaires td { padding: 12px 10px; }
     .discussion-formulaire { padding: 18px 16px; }
     .discussion-reponse, .discussion-repondre { margin-left: 8px; }
+}
+
+.instances-section .instance-bloc-entete .instance-bloc-titres p {
+    color: #fff !important;
 }

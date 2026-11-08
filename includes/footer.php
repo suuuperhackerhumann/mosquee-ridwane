@@ -7,7 +7,7 @@
             </svg>
             <div class="footer-grille">
                 <div>
-                    <img class="footer-mosquee-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Communauté Musulmane de la Riviera Abatta" loading="lazy">
+                    <img class="footer-mosquee-logo" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png?v=20261108" alt="Emblème de la Communauté Musulmane de la Riviera Abatta" loading="lazy">
                     <h4 style="margin-top:0;">Mosquée Ridwane</h4>
                     <p style="font-size:0.92rem; max-width:280px;"><?= h(SITE_DESCRIPTION) ?></p>
                     <div class="footer-social">

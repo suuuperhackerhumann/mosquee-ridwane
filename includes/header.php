@@ -26,7 +26,7 @@ if (
 ) {
     $socialImagePath = ltrim($fallbackSocialImage, '/');
 }
-$socialImageUrl = $siteUrlSeo . '/' . implode('/', array_map('rawurlencode', explode('/', $socialImagePath)));
+$socialImageUrl = $siteUrlSeo . '/' . implode('/', array_map('rawurlencode', explode('/', $socialImagePath))) . '?v=20261108';
 $socialImageAlt = isset($page_og_image_alt) && is_string($page_og_image_alt)
     ? $page_og_image_alt
     : 'Emblème de la Communauté Musulmane de la Riviera Abatta';
@@ -34,7 +34,7 @@ $socialImageSize = getimagesize(dirname(__DIR__) . '/' . $socialImagePath);
 $socialImageWidth = $socialImageSize[0] ?? 1200;
 $socialImageHeight = $socialImageSize[1] ?? 630;
 $ogType = isset($page_og_type) && $page_og_type === 'article' ? 'article' : 'website';
-$mosqueLogoUrl = $siteUrlSeo . '/assets/img/logo-mosquee.png';
+$mosqueLogoUrl = $siteUrlSeo . '/assets/img/logo-mosquee.png?v=20261108';
 $structuredData = [[
     '@type' => 'Mosque',
     '@id' => $siteUrlSeo . '/#mosquee',
@@ -107,9 +107,9 @@ $liens_nav = [
 <meta name="theme-color" content="#0e2d29">
 <meta name="site-revision" content="<?= h(publicRevision()) ?>">
 <meta name="site-revision-url" content="<?= h(BASE_URL . '/public-revision') ?>">
-<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
-<link rel="shortcut icon" href="<?= BASE_URL ?>/assets/img/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon-32.png?v=20261108">
+<link rel="shortcut icon" href="<?= BASE_URL ?>/assets/img/favicon-32.png?v=20261108">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/apple-touch-icon.png?v=20261108">
 <link rel="manifest" href="<?= BASE_URL ?>/site.webmanifest">
 <link rel="sitemap" type="application/xml" href="<?= h($siteUrlSeo . '/sitemap') ?>">
 <meta property="og:type" content="<?= h($ogType) ?>">
@@ -161,7 +161,7 @@ main > .section .media-infos p { margin: 4px 0 0; font-size: .92rem; line-height
 <header class="site-header" id="entete">
     <div class="conteneur header-bar">
         <a href="<?= BASE_URL ?>/" class="logo">
-            <img class="logo-marque logo-emplacement" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png" alt="Emblème de la Communauté Musulmane de la Riviera Abatta">
+            <img class="logo-marque logo-emplacement" src="<?= BASE_URL ?>/assets/img/logo-mosquee.png?v=20261108" alt="Emblème de la Communauté Musulmane de la Riviera Abatta">
             <span>
                 Mosquée Ridwane
                 <span class="logo-sub">Foi · Savoir · Communauté</span>
