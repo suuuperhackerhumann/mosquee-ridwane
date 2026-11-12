@@ -90,6 +90,69 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    var mediaPreviewDialog = document.getElementById('media-preview-dialog');
+    if (mediaPreviewDialog) {
+        var mediaPreviewImage = document.getElementById('media-preview-image');
+        var mediaPreviewCaption = document.getElementById('media-preview-caption');
+        var videoDialogPlayer = document.getElementById('video-preview-player');
+        var videoDialogEmbed = document.getElementById('video-preview-embed');
+        mediaPreviewDialog.querySelector('.media-preview-dialog-fermer').addEventListener('click', function () {
+            mediaPreviewDialog.close();
+        });
+        document.querySelectorAll('.media-photo-ouvrir').forEach(function (lien) {
+            lien.addEventListener('click', function (event) {
+                event.preventDefault();
+                var image = lien.querySelector('img');
+                mediaPreviewImage.hidden = false;
+                videoDialogPlayer.hidden = true;
+                videoDialogEmbed.hidden = true;
+                videoDialogEmbed.removeAttribute('src');
+                mediaPreviewImage.src = lien.href;
+                mediaPreviewImage.alt = image.alt;
+                mediaPreviewCaption.textContent = image.alt;
+                mediaPreviewDialog.showModal();
+            });
+        });
+        document.querySelectorAll('.media-video-ouvrir').forEach(function (bouton) {
+            bouton.addEventListener('click', function () {
+                mediaPreviewImage.hidden = true;
+                mediaPreviewImage.removeAttribute('src');
+                mediaPreviewCaption.textContent = bouton.dataset.videoTitre;
+                if (bouton.dataset.videoEmbed) {
+                    videoDialogPlayer.hidden = true;
+                    videoDialogPlayer.pause();
+                    videoDialogPlayer.removeAttribute('src');
+                    videoDialogPlayer.load();
+                    videoDialogEmbed.hidden = false;
+                    videoDialogEmbed.title = bouton.dataset.videoTitre;
+                    videoDialogEmbed.src = bouton.dataset.videoEmbed;
+                } else {
+                    videoDialogEmbed.hidden = true;
+                    videoDialogEmbed.removeAttribute('src');
+                    videoDialogPlayer.hidden = false;
+                    videoDialogPlayer.src = bouton.dataset.videoSrc;
+                    videoDialogPlayer.load();
+                }
+                mediaPreviewDialog.showModal();
+                if (!bouton.dataset.videoEmbed) {
+                    videoDialogPlayer.play().catch(function (error) {
+                        console.error('La lecture de la vidéo est impossible :', error);
+                    });
+                }
+            });
+        });
+        mediaPreviewDialog.addEventListener('click', function (event) {
+            if (event.target === mediaPreviewDialog) mediaPreviewDialog.close();
+        });
+        mediaPreviewDialog.addEventListener('close', function () {
+            mediaPreviewImage.removeAttribute('src');
+            videoDialogPlayer.pause();
+            videoDialogPlayer.removeAttribute('src');
+            videoDialogPlayer.load();
+            videoDialogEmbed.removeAttribute('src');
+        });
+    }
+
     // Mise en évidence de la prochaine prière.
     var items = document.querySelectorAll('[data-heure-priere]');
     if (items.length) {

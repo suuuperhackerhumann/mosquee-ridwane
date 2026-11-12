@@ -60,57 +60,127 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($type === 'video') {
         $modeVideo = $_POST['mode_video'] ?? 'lien';
         if ($modeVideo === 'fichier') {
-            $video = $_FILES['video_file'] ?? null;
+            $videoFichiers = $_FILES['video_files'] ?? null;
             if (
-                !$video
-                || !isset($video['name'], $video['tmp_name'], $video['error'], $video['size'])
-                || !is_string($video['name'])
-                || !is_string($video['tmp_name'])
-                || !is_int($video['error'])
-                || $video['error'] === UPLOAD_ERR_NO_FILE
+                !$videoFichiers
+                || !isset($videoFichiers['name'], $videoFichiers['tmp_name'], $videoFichiers['error'], $videoFichiers['size'])
+                || !is_array($videoFichiers['name'])
+                || !is_array($videoFichiers['tmp_name'])
+                || !is_array($videoFichiers['error'])
+                || !is_array($videoFichiers['size'])
             ) {
-                $erreur = 'Merci de choisir un fichier vidéo.';
-            } elseif ($video['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($video['tmp_name'])) {
-                if ($video['error'] === UPLOAD_ERR_INI_SIZE || $video['error'] === UPLOAD_ERR_FORM_SIZE) {
-                    $erreur = 'La vidéo dépasse la limite autorisée par le serveur. Réduisez sa taille ou augmentez upload_max_filesize et post_max_size dans PHP.';
-                } elseif ($video['error'] === UPLOAD_ERR_PARTIAL) {
-                    $erreur = 'Le téléversement de la vidéo a été interrompu. Réessayez.';
-                } elseif ($video['error'] === UPLOAD_ERR_NO_TMP_DIR || $video['error'] === UPLOAD_ERR_CANT_WRITE) {
-                    $erreur = 'Le serveur ne peut pas enregistrer temporairement la vidéo. Contactez l’administrateur.';
-                } else {
-                    $erreur = 'La vidéo n’a pas pu être téléversée. Vérifiez le fichier et réessayez.';
-                }
-            } elseif ($video['size'] > MAX_UPLOAD_FILE_SIZE) {
-                $erreur = 'La vidéo ne doit pas dépasser 100 Mo.';
+                $erreur = 'La sélection des vidéos est invalide.';
             } else {
-                $extension = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
-                $mime = (new finfo(FILEINFO_MIME_TYPE))->file($video['tmp_name']);
-                $formatsVideo = [
-                    'mp4' => 'video/mp4',
-                    'webm' => 'video/webm',
-                    'ogv' => 'video/ogg',
-                    'ogg' => 'video/ogg',
-                ];
-                if (!isset($formatsVideo[$extension]) || $mime !== $formatsVideo[$extension]) {
-                    $erreur = 'Format vidéo invalide. Formats acceptés : MP4, WebM ou OGG.';
-                } elseif (!is_dir(__DIR__ . '/../assets/uploads') || !is_writable(__DIR__ . '/../assets/uploads')) {
-                    $erreur = 'Le dossier de téléversement est indisponible. Contactez l’administrateur du site.';
-                } else {
-                    $nomFichier = 'video-' . bin2hex(random_bytes(8)) . '.' . $extension;
-                    $cheminFichier = __DIR__ . '/../assets/uploads/' . $nomFichier;
-                    if (!move_uploaded_file($video['tmp_name'], $cheminFichier)) {
-                        $erreur = 'La vidéo n’a pas pu être enregistrée. Veuillez réessayer.';
-                    } else {
-                        try {
-                            $stmt = $pdo->prepare("INSERT INTO mediatheque (titre, type, fichier, album) VALUES (?, 'video', ?, ?)");
-                            $stmt->execute([$titre, '/assets/uploads/' . $nomFichier, $album]);
-                        } catch (Throwable $e) {
-                            if (is_file($cheminFichier) && !unlink($cheminFichier)) {
-                                throw new RuntimeException('Impossible de nettoyer le fichier vidéo après l’échec de son enregistrement.', 0, $e);
-                            }
-                            throw $e;
+                $videos = [];
+                foreach ($videoFichiers['name'] as $index => $nomOriginal) {
+                    if (!is_string($nomOriginal)) {
+                        $erreur = 'La sélection des vidéos est invalide.';
+                        break;
+                    }
+                    if ($nomOriginal !== '') {
+                        $videos[] = $index;
+                    }
+                }
+
+                if (!$erreur && !$videos) {
+                    $erreur = 'Merci de choisir au moins une vidéo.';
+                } elseif (!$erreur && count($videos) > 10) {
+                    $erreur = 'Vous pouvez ajouter au maximum 10 vidéos par envoi.';
+                } elseif (!$erreur) {
+                    $extensionsVideos = [];
+                    $formatsVideo = [
+                        'mp4' => 'video/mp4',
+                        'webm' => 'video/webm',
+                        'ogv' => 'video/ogg',
+                        'ogg' => 'video/ogg',
+                    ];
+                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                    foreach ($videos as $index) {
+                        if (
+                            !isset($videoFichiers['tmp_name'][$index], $videoFichiers['error'][$index], $videoFichiers['size'][$index])
+                            || !is_string($videoFichiers['tmp_name'][$index])
+                            || !is_int($videoFichiers['error'][$index])
+                        ) {
+                            $erreur = 'La sélection des vidéos est invalide.';
+                            break;
                         }
-                        $modificationPublique = true;
+
+                        if ($videoFichiers['error'][$index] !== UPLOAD_ERR_OK) {
+                            if ($videoFichiers['error'][$index] === UPLOAD_ERR_INI_SIZE || $videoFichiers['error'][$index] === UPLOAD_ERR_FORM_SIZE) {
+                                $erreur = 'Une vidéo dépasse la limite autorisée par le serveur. Vérifiez upload_max_filesize et post_max_size dans PHP.';
+                            } elseif ($videoFichiers['error'][$index] === UPLOAD_ERR_PARTIAL) {
+                                $erreur = 'Le téléversement d’une vidéo a été interrompu. Réessayez.';
+                            } elseif ($videoFichiers['error'][$index] === UPLOAD_ERR_NO_TMP_DIR || $videoFichiers['error'][$index] === UPLOAD_ERR_CANT_WRITE) {
+                                $erreur = 'Le serveur ne peut pas enregistrer temporairement une vidéo. Contactez l’administrateur.';
+                            } else {
+                                $erreur = 'Une vidéo n’a pas pu être téléversée. Vérifiez le fichier et réessayez.';
+                            }
+                            break;
+                        }
+
+                        if (!is_uploaded_file($videoFichiers['tmp_name'][$index])) {
+                            $erreur = 'Une vidéo n’a pas pu être téléversée. Vérifiez le fichier et réessayez.';
+                            break;
+                        }
+
+                        if ($videoFichiers['size'][$index] > MAX_UPLOAD_FILE_SIZE) {
+                            $erreur = 'Chaque vidéo ne doit pas dépasser 100 Mo.';
+                            break;
+                        }
+
+                        $extension = strtolower(pathinfo($videoFichiers['name'][$index], PATHINFO_EXTENSION));
+                        if (!isset($formatsVideo[$extension]) || $finfo->file($videoFichiers['tmp_name'][$index]) !== $formatsVideo[$extension]) {
+                            $erreur = 'Format vidéo invalide. Formats acceptés : MP4, WebM ou OGG.';
+                            break;
+                        }
+                        $extensionsVideos[$index] = $extension;
+                    }
+
+                    $dossierUploads = __DIR__ . '/../assets/uploads';
+                    if (!$erreur && (!is_dir($dossierUploads) || !is_writable($dossierUploads))) {
+                        $erreur = 'Le dossier de téléversement est indisponible. Contactez l’administrateur du site.';
+                    }
+
+                    if (!$erreur) {
+                        $fichiersDeplaces = [];
+                        foreach ($videos as $index) {
+                            $nomFichier = 'video-' . bin2hex(random_bytes(8)) . '.' . $extensionsVideos[$index];
+                            if (!move_uploaded_file($videoFichiers['tmp_name'][$index], $dossierUploads . '/' . $nomFichier)) {
+                                $erreur = 'Une vidéo n’a pas pu être enregistrée. Veuillez réessayer.';
+                                break;
+                            }
+                            $fichiersDeplaces[] = $nomFichier;
+                        }
+
+                        if ($erreur) {
+                            foreach ($fichiersDeplaces as $nomFichier) {
+                                $cheminFichier = $dossierUploads . '/' . $nomFichier;
+                                if (is_file($cheminFichier) && !unlink($cheminFichier)) {
+                                    throw new RuntimeException('Impossible de nettoyer une vidéo après l’échec du téléversement.');
+                                }
+                            }
+                        } else {
+                            try {
+                                $pdo->beginTransaction();
+                                $stmt = $pdo->prepare("INSERT INTO mediatheque (titre, type, fichier, album) VALUES (?, 'video', ?, ?)");
+                                foreach ($fichiersDeplaces as $nomFichier) {
+                                    $stmt->execute([$titre, '/assets/uploads/' . $nomFichier, $album]);
+                                }
+                                $pdo->commit();
+                                $modificationPublique = true;
+                            } catch (Throwable $e) {
+                                if ($pdo->inTransaction()) {
+                                    $pdo->rollBack();
+                                }
+                                foreach ($fichiersDeplaces as $nomFichier) {
+                                    $cheminFichier = $dossierUploads . '/' . $nomFichier;
+                                    if (is_file($cheminFichier) && !unlink($cheminFichier)) {
+                                        throw new RuntimeException('Impossible de nettoyer une vidéo après l’échec de son enregistrement.', 0, $e);
+                                    }
+                                }
+                                throw $e;
+                            }
+                        }
                     }
                 }
             }
@@ -320,9 +390,9 @@ require_once __DIR__ . '/includes/admin-header.php';
                 <input type="url" id="url_video" name="url_video" placeholder="https://...">
             </div>
             <div class="champ" id="champ-video-fichier" hidden>
-                <label for="video-file">Fichier vidéo</label>
-                <input type="file" id="video-file" name="video_file" accept=".mp4,.webm,.ogv,.ogg,video/mp4,video/webm,video/ogg" disabled>
-                <small>Formats acceptés : MP4, WebM et OGG. Taille maximale : 100 Mo par fichier, sous réserve de la configuration du serveur (actuellement <?= h($tailleMaxUploadTexte) ?>).</small>
+                <label for="video-file">Fichiers vidéo (10 maximum par envoi)</label>
+                <input type="file" id="video-file" name="video_files[]" accept=".mp4,.webm,.ogv,.ogg,video/mp4,video/webm,video/ogg" multiple disabled>
+                <small>Formats acceptés : MP4, WebM et OGG. Jusqu’à 10 vidéos par envoi, 100 Mo maximum par fichier selon la configuration du serveur (actuellement <?= h($tailleMaxUploadTexte) ?>).</small>
             </div>
         </div>
         <button type="submit" class="bouton bouton-emeraude">Ajouter</button>
@@ -399,6 +469,9 @@ const champVideoLien = document.getElementById('champ-video-lien');
 const champVideoFichier = document.getElementById('champ-video-fichier');
 const champUrlVideo = document.getElementById('url_video');
 const champFichierVideo = document.getElementById('video-file');
+champFichierVideo.addEventListener('change', () => {
+    champFichierVideo.setCustomValidity(champFichierVideo.files.length > 10 ? 'Vous pouvez ajouter au maximum 10 vidéos par envoi.' : '');
+});
 const actualiserTypeMedia = () => {
     const estVideo = typeMedia.value === 'video';
     document.getElementById('champ-photo').hidden = estVideo;
