@@ -80,6 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $erreur = 'La vidéo n’a pas pu être téléversée. Vérifiez le fichier et réessayez.';
                 }
+            } elseif ($video['size'] > MAX_UPLOAD_FILE_SIZE) {
+                $erreur = 'La vidéo ne doit pas dépasser 100 Mo.';
             } else {
                 $extension = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
                 $mime = (new finfo(FILEINFO_MIME_TYPE))->file($video['tmp_name']);
@@ -148,18 +150,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!$erreur && !$photos) {
                 $erreur = "Merci de choisir au moins une photo à téléverser.";
-            } elseif (!$erreur && count($photos) > 10) {
-                $erreur = "Vous pouvez ajouter au maximum 10 photos par envoi.";
+            } elseif (!$erreur && count($photos) > 100) {
+                $erreur = "Vous pouvez ajouter au maximum 100 photos par envoi.";
             } elseif (!$erreur) {
                 $extensions = [];
                 foreach ($photos as $index) {
                     if (
-                        !isset($fichiers['tmp_name'][$index], $fichiers['error'][$index])
+                        !isset($fichiers['tmp_name'][$index], $fichiers['error'][$index], $fichiers['size'][$index])
                         || !is_string($fichiers['tmp_name'][$index])
                         || $fichiers['error'][$index] !== UPLOAD_ERR_OK
                         || !is_uploaded_file($fichiers['tmp_name'][$index])
                     ) {
                         $erreur = "Une photo n'a pas pu être téléversée. Vérifiez la taille des fichiers et réessayez.";
+                        break;
+                    }
+
+                    if ($fichiers['size'][$index] > MAX_UPLOAD_FILE_SIZE) {
+                        $erreur = "Chaque photo ne doit pas dépasser 100 Mo.";
                         break;
                     }
 
@@ -296,9 +303,9 @@ require_once __DIR__ . '/includes/admin-header.php';
             </select>
         </div>
         <div class="champ" id="champ-photo">
-            <label for="fichiers">Photos (10 maximum par envoi)</label>
+            <label for="fichiers">Photos (100 maximum par envoi, 100 Mo par fichier)</label>
             <input type="file" id="fichiers" name="fichiers[]" accept=".jpg,.jpeg,.png,.webp" multiple>
-            <small>Formats acceptés : JPG, PNG et WEBP. Vous pouvez sélectionner jusqu’à 10 photos à la fois.</small>
+            <small>Formats acceptés : JPG, PNG et WEBP. Vous pouvez sélectionner jusqu’à 100 photos à la fois (100 Mo maximum par photo).</small>
         </div>
         <div id="champ-video" hidden>
             <div class="champ">
@@ -315,7 +322,7 @@ require_once __DIR__ . '/includes/admin-header.php';
             <div class="champ" id="champ-video-fichier" hidden>
                 <label for="video-file">Fichier vidéo</label>
                 <input type="file" id="video-file" name="video_file" accept=".mp4,.webm,.ogv,.ogg,video/mp4,video/webm,video/ogg" disabled>
-                <small>Formats acceptés : MP4, WebM et OGG. Taille maximale actuelle du serveur : <?= h($tailleMaxUploadTexte) ?> par fichier.</small>
+                <small>Formats acceptés : MP4, WebM et OGG. Taille maximale : 100 Mo par fichier, sous réserve de la configuration du serveur (actuellement <?= h($tailleMaxUploadTexte) ?>).</small>
             </div>
         </div>
         <button type="submit" class="bouton bouton-emeraude">Ajouter</button>

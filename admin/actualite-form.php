@@ -29,7 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Upload d'image (optionnel)
         if (!empty($_FILES['image']['name'])) {
             $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-            if (in_array($ext, ['jpg','jpeg','png','webp'])) {
+            if (($_FILES['image']['size'] ?? 0) > MAX_UPLOAD_FILE_SIZE) {
+                $erreur = "L'image ne doit pas dépasser 100 Mo.";
+            } elseif (in_array($ext, ['jpg','jpeg','png','webp'])) {
                 $nomFichier = 'actu-' . time() . '-' . rand(1000,9999) . '.' . $ext;
                 move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../assets/uploads/' . $nomFichier);
                 $actu['image'] = '/assets/uploads/' . $nomFichier;
@@ -99,6 +101,7 @@ require_once __DIR__ . '/includes/admin-header.php';
             <label for="image">Image</label>
             <?php if ($actu['image']): ?><img src="<?= h(siteAssetUrl($actu['image'])) ?>" style="max-width:200px; border-radius:4px; margin-bottom:10px;"><?php endif; ?>
             <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png,.webp">
+            <small>100 Mo maximum.</small>
         </div>
         <button type="submit" class="bouton bouton-emeraude">Enregistrer</button>
         <a href="<?= BASE_URL ?>/admin/actualites.php" class="bouton bouton-contour" style="color:var(--emeraude-800); border-color:var(--plâtre-200);">Annuler</a>

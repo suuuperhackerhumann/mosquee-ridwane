@@ -3,6 +3,8 @@
  * Fonctions utilitaires — Mosquée Ridwane
  */
 
+define('MAX_UPLOAD_FILE_SIZE', 100 * 1024 * 1024);
+
 // Échappement HTML rapide
 function h($texte) {
     return htmlspecialchars($texte ?? '', ENT_QUOTES, 'UTF-8');

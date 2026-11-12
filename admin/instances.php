@@ -67,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$erreur && $fichierPhoto && ($fichierPhoto['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
             if (($fichierPhoto['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file($fichierPhoto['tmp_name'] ?? '')) {
                 $erreur = 'Le portrait n’a pas pu être téléversé. Vérifiez le fichier et réessayez.';
-            } elseif (($fichierPhoto['size'] ?? 0) > 5 * 1024 * 1024) {
-                $erreur = 'Le portrait ne doit pas dépasser 5 Mo.';
+            } elseif (($fichierPhoto['size'] ?? 0) > MAX_UPLOAD_FILE_SIZE) {
+                $erreur = 'Le portrait ne doit pas dépasser 100 Mo.';
             } else {
                 $extension = strtolower(pathinfo($fichierPhoto['name'], PATHINFO_EXTENSION));
                 $image = @getimagesize($fichierPhoto['tmp_name']);
@@ -176,7 +176,7 @@ require_once __DIR__ . '/includes/admin-header.php';
             <textarea id="instance-description" name="description" rows="4" maxlength="3000"><?= h($instanceCourante['description'] ?? '') ?></textarea>
         </div>
         <div class="champ">
-            <label for="instance-photo">Portrait (JPG, PNG ou WebP, 5 Mo maximum)</label>
+            <label for="instance-photo">Portrait (JPG, PNG ou WebP, 100 Mo maximum)</label>
             <input id="instance-photo" type="file" name="photo" accept="image/jpeg,image/png,image/webp">
             <?php if (!empty($instanceCourante['photo'])): ?><p>Un portrait est déjà enregistré. Choisissez une nouvelle image pour le remplacer.</p><?php endif; ?>
         </div>
