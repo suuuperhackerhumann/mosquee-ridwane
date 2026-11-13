@@ -10,14 +10,21 @@ if ($adminConnecte && !$connexionEnCours) {
 $erreur = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     checkCsrf();
-    $email = trim($_POST['email'] ?? '');
-    $motdepasse = $_POST['mot_de_passe'] ?? '';
+    $email = is_string($_POST['email'] ?? null) ? trim($_POST['email']) : '';
+    $motdepasse = is_string($_POST['mot_de_passe'] ?? null) ? $_POST['mot_de_passe'] : '';
 
-    $stmt = $pdo->prepare("SELECT a.*, r.role_key FROM admins a JOIN roles r ON r.id = a.role_id WHERE a.email = ?");
-    $stmt->execute([$email]);
-    $admin = $stmt->fetch();
+    $blocageRestant = adminLoginBlocageRestant();
+    $admin = false;
+    if ($blocageRestant === 0) {
+        $stmt = $pdo->prepare("SELECT a.*, r.role_key FROM admins a JOIN roles r ON r.id = a.role_id WHERE a.email = ?");
+        $stmt->execute([$email]);
+        $admin = $stmt->fetch();
+    }
 
-    if ($admin && password_verify($motdepasse, $admin['mot_de_passe'])) {
+    if ($blocageRestant > 0) {
+        $erreur = "Trop de tentatives de connexion. Réessayez dans " . (int) ceil($blocageRestant / 60) . " minute(s).";
+    } elseif ($admin && password_verify($motdepasse, $admin['mot_de_passe'])) {
+        adminLoginReinitialiser();
         session_regenerate_id(true);
         $_SESSION['admin_id'] = $admin['id'];
         $_SESSION['admin_nom'] = $admin['nom'];
@@ -29,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['admin_login_pending'] = true;
         redirect('/admin');
     } else {
+        adminLoginEnregistrerEchec();
         $erreur = "E-mail ou mot de passe incorrect.";
     }
 }

@@ -7,6 +7,11 @@ $erreur = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     checkCsrf();
+    foreach (['nom', 'email', 'telephone', 'sujet', 'message'] as $champ) {
+        if (isset($_POST[$champ]) && !is_string($_POST[$champ])) {
+            $_POST[$champ] = '';
+        }
+    }
     $nom = trim($_POST['nom'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $telephone = trim($_POST['telephone'] ?? '');

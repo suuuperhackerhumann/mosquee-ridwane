@@ -12,7 +12,9 @@ Site institutionnel en **PHP + MySQL**, sans framework, pensé pour être simple
 6. Vérifie que `SITE_URL` dans `config/config.php` correspond au domaine public canonique avant l’indexation par les moteurs de recherche. Le logo partagé par Open Graph, les données structurées, le sitemap et les URL canoniques utilisent cette valeur ; adapte aussi l’URL du sitemap dans `robots.txt` si le domaine change.
 7. Après la mise en ligne, vérifie le domaine dans **Google Search Console**, soumets `https://ton-domaine.tld/sitemap`, puis inspecte les pages principales et les images de partage avec les validateurs de résultats enrichis et d’aperçus sociaux.
 8. Les règles Apache de [.htaccess](./.htaccess) séparent les routes admin et publiques. Elles sont réglées pour XAMPP sous `/mosquee-ridwane/` ; à la racine du domaine, adapte les chemins `ErrorDocument` en `/403.php`, `/404.php` et `/erreur-serveur.php`. Les URLs sans extension nécessitent `mod_rewrite` et l’autorisation des règles `.htaccess` (`AllowOverride`). **Nginx ne lit pas `.htaccess`** : utilise le modèle distinct [config/nginx-server.conf](./config/nginx-server.conf), adapte `server_name`, `root` et `fastcgi_pass`, puis charge-le dans la configuration Nginx et teste-la avec `nginx -t` avant de recharger le service. Ne copie pas les règles Apache dans la configuration Nginx. Ne préfixe pas le `location /admin/` avec `^~`, car PHP ne serait alors plus transmis à PHP-FPM. Vérifie que le bloc `server` modifié est celui réellement chargé par Nginx (`nginx -T`). La page serveur autonome gère les erreurs 500, 502, 503 et 504, et une panne de connexion à la base affiche la réponse 503.
-9. L’administration utilise des sessions limitées à 30 minutes d’inactivité et 8 heures au total. Les pages admin sont envoyées sans cache navigateur.
+9. L’administration utilise des sessions limitées à 30 minutes d’inactivité et 8 heures au total. Les pages admin sont envoyées sans cache navigateur. Après **5 tentatives de connexion échouées**, l’adresse IP concernée est bloquée **15 minutes** (réglable via `ADMIN_LOGIN_MAX_TENTATIVES` et `ADMIN_LOGIN_DUREE_BLOCAGE` dans `includes/functions.php`).
+10. **Supprime `setup-admin.php` du serveur** une fois le premier compte créé. Tant qu’il est en ligne, quiconque connaît sa clé `SETUP_SECRET_KEY` peut créer un compte administrateur complet ; si tu dois le garder temporairement, change cette clé.
+11. Le [.htaccess](./.htaccess) redirige automatiquement vers **HTTPS** en production (la redirection est ignorée sur `localhost`). Après la mise en ligne, ouvre le site en `http://` pour vérifier la redirection ; si l’hébergeur force déjà HTTPS et qu’une boucle de redirection apparaît, supprime le bloc « Forcer HTTPS ».
 
 ### Référencement et visibilité locale
 
@@ -30,7 +32,7 @@ Compte créé par défaut dans `database/schema.sql` :
 - **E-mail** : `admin@mosquee-ridwane.org`
 - **Mot de passe** : `Admin123!`
 
-**Change ce mot de passe dès la première connexion** (ou avant la mise en ligne) en générant un nouveau hash :
+**Change ce mot de passe dès la première connexion** (ou avant la mise en ligne) : ce mot de passe est public puisqu’il figure dans ce fichier. Le plus simple est de passer par le menu « Mot de passe » de l’administration ; sinon, génère un nouveau hash :
 
 ```bash
 php -r "echo password_hash('ton-nouveau-mot-de-passe', PASSWORD_DEFAULT);"
@@ -63,7 +65,7 @@ La rubrique « Discussion » est accessible sans compte : les visiteurs peuvent 
 
 La page « Questions en direct » permet à un administrateur de lancer et terminer une séance de questions-réponses. Le bouton flottant circulaire « LIVE » apparaît uniquement pendant une séance active. Les visiteurs posent leurs questions sous leur nom ou anonymement ; l’imam répond oralement au micro. Depuis l’administration > Discussions, l’équipe peut marquer une question comme lue et indiquer ainsi aux participants que l’imam prévoit d’y répondre. Les questions et leur statut s’actualisent automatiquement pendant la séance. Pour une base déjà installée, importer une seule fois `database/migration-live-questions.sql` après avoir sélectionné la base. Pour une nouvelle installation, `database/schema.sql` contient déjà ces tables.
 
-Les vidéos locales de la médiathèque sont lues directement sur le site. La taille maximale dépend de `upload_max_filesize` et `post_max_size` dans la configuration PHP ; elle est affichée dans le formulaire d’administration. Sur cette installation XAMPP, la limite actuelle est de **2 Mo**. Pour envoyer des vidéos plus lourdes, règle par exemple `upload_max_filesize = 100M` et `post_max_size = 110M` dans le `php.ini` utilisé par Apache, puis redémarre Apache. Vérifie également les limites de ton hébergeur en production.
+Les images et vidéos téléversées depuis l’administration sont limitées à **100 Mo par fichier**. La médiathèque accepte jusqu’à **100 photos** ou **10 vidéos par envoi**. La taille maximale effective dépend aussi de `upload_max_filesize` et `post_max_size` dans la configuration PHP ; elle est affichée dans le formulaire de la médiathèque. Pour autoriser un fichier de 100 Mo, règle par exemple `upload_max_filesize = 100M`, `post_max_size = 110M` et `max_file_uploads = 100` dans le `php.ini` utilisé par Apache, puis redémarre Apache. La taille totale d’un envoi multiple reste soumise à `post_max_size`. Vérifie également les limites de ton hébergeur et de son serveur web en production.
 
 ## 4. Structure du projet
 
@@ -88,4 +90,12 @@ Paiement en ligne pour les dons, calculateur de Zakat, espace membre, newsletter
 - Protection CSRF sur les formulaires et actions d’administration, notamment les créations, modifications, suppressions, changements de mot de passe et déconnexions.
 - Requêtes SQL préparées (PDO) partout — aucune concaténation de variables dans les requêtes.
 - `.htaccess` interdisant l'accès direct à `/config`, `/includes`, `/database`, et l'exécution de PHP dans `/assets/uploads`.
-- Pense à activer HTTPS (souvent gratuit via Let's Encrypt chez la plupart des hébergeurs) et à changer le mot de passe admin par défaut avant la mise en ligne.
+- Échappement HTML systématique (`h()`) de tout contenu affiché, y compris les messages publics des discussions et questions en direct.
+- Sessions admin sécurisées : cookie `HttpOnly` et `SameSite=Lax`, mode strict, régénération de l’identifiant à la connexion, expiration après inactivité.
+- Limitation des tentatives de connexion admin : blocage de 15 minutes par adresse IP après 5 échecs.
+- Téléversements contrôlés : extension autorisée **et** contenu réel vérifié (`getimagesize` pour les images, `finfo` pour les vidéos), noms de fichiers aléatoires.
+- Formulaires publics robustes : champs de type inattendu rejetés proprement, statuts limités aux valeurs autorisées (`publie` / `brouillon`).
+- En-têtes de sécurité HTTP envoyés par `.htaccess` (nécessite `mod_headers`) : `X-Frame-Options` et `frame-ancestors` contre le clickjacking, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, et `Strict-Transport-Security` en HTTPS.
+- Redirection automatique vers HTTPS en production. Active un certificat (souvent gratuit via Let's Encrypt chez la plupart des hébergeurs).
+- **Avec Nginx**, ces en-têtes et la redirection HTTPS ne sont pas lus depuis `.htaccess` : ajoute les directives `add_header` équivalentes et une redirection `return 301 https://...` dans [config/nginx-server.conf](./config/nginx-server.conf).
+- Avant la mise en ligne : changer le mot de passe admin par défaut, supprimer `setup-admin.php` et passer `MODE_DEBUG` à `false`.

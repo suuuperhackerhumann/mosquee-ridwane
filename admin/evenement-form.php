@@ -19,11 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     checkCsrf();
     $ev['titre'] = trim($_POST['titre'] ?? '');
     $ev['description'] = trim($_POST['description'] ?? '');
-    $ev['categorie_id'] = $_POST['categorie_id'] ?: null;
+    $ev['categorie_id'] = (int)($_POST['categorie_id'] ?? 0) ?: null;
     $ev['date_evenement'] = $_POST['date_evenement'] ?? '';
-    $ev['heure_evenement'] = $_POST['heure_evenement'] ?: null;
+    $ev['heure_evenement'] = ($_POST['heure_evenement'] ?? '') ?: null;
     $ev['lieu'] = trim($_POST['lieu'] ?? '');
-    $ev['statut'] = $_POST['statut'] ?? 'publie';
+    $ev['statut'] = in_array($_POST['statut'] ?? '', ['publie', 'brouillon'], true) ? $_POST['statut'] : 'publie';
 
     if ($ev['titre'] === '' || $ev['date_evenement'] === '') {
         $erreur = "Le titre et la date sont obligatoires.";
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
             if (($_FILES['image']['size'] ?? 0) > MAX_UPLOAD_FILE_SIZE) {
                 $erreur = "L'image ne doit pas dépasser 100 Mo.";
-            } elseif (in_array($ext, ['jpg','jpeg','png','webp'])) {
+            } elseif (in_array($ext, ['jpg','jpeg','png','webp']) && @getimagesize($_FILES['image']['tmp_name']) !== false) {
                 $nomFichier = 'evt-' . time() . '-' . rand(1000,9999) . '.' . $ext;
                 move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../assets/uploads/' . $nomFichier);
                 $ev['image'] = '/assets/uploads/' . $nomFichier;

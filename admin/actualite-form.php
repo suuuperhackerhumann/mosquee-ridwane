@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $actu['titre'] = trim($_POST['titre'] ?? '');
     $actu['resume'] = trim($_POST['resume'] ?? '');
     $actu['contenu'] = trim($_POST['contenu'] ?? '');
-    $actu['categorie_id'] = $_POST['categorie_id'] ?: null;
-    $actu['statut'] = $_POST['statut'] ?? 'publie';
+    $actu['categorie_id'] = (int)($_POST['categorie_id'] ?? 0) ?: null;
+    $actu['statut'] = in_array($_POST['statut'] ?? '', ['publie', 'brouillon'], true) ? $_POST['statut'] : 'publie';
 
     if ($actu['titre'] === '' || $actu['contenu'] === '') {
         $erreur = "Le titre et le contenu sont obligatoires.";
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
             if (($_FILES['image']['size'] ?? 0) > MAX_UPLOAD_FILE_SIZE) {
                 $erreur = "L'image ne doit pas dépasser 100 Mo.";
-            } elseif (in_array($ext, ['jpg','jpeg','png','webp'])) {
+            } elseif (in_array($ext, ['jpg','jpeg','png','webp']) && @getimagesize($_FILES['image']['tmp_name']) !== false) {
                 $nomFichier = 'actu-' . time() . '-' . rand(1000,9999) . '.' . $ext;
                 move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../assets/uploads/' . $nomFichier);
                 $actu['image'] = '/assets/uploads/' . $nomFichier;

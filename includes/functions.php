@@ -141,6 +141,54 @@ function whatsappMessageUrl($message) {
     return SITE_WHATSAPP . '?text=' . rawurlencode($message);
 }
 
+// --- Limitation des tentatives de connexion admin (par adresse IP) ---
+define('ADMIN_LOGIN_MAX_TENTATIVES', 5);
+define('ADMIN_LOGIN_DUREE_BLOCAGE', 900); // 15 minutes
+
+function adminLoginThrottlePath() {
+    $ip = (string) ($_SERVER['REMOTE_ADDR'] ?? 'inconnue');
+    return rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR)
+        . DIRECTORY_SEPARATOR
+        . 'mosquee-ridwane-login-' . hash('sha256', dirname(__DIR__) . '|' . $ip) . '.json';
+}
+
+function adminLoginThrottleData() {
+    $path = adminLoginThrottlePath();
+    if (!is_file($path)) {
+        return ['echecs' => 0, 'debut' => 0];
+    }
+    $data = json_decode((string) @file_get_contents($path), true);
+    if (!is_array($data) || time() - (int) ($data['debut'] ?? 0) >= ADMIN_LOGIN_DUREE_BLOCAGE) {
+        return ['echecs' => 0, 'debut' => 0];
+    }
+    return ['echecs' => (int) ($data['echecs'] ?? 0), 'debut' => (int) ($data['debut'] ?? 0)];
+}
+
+// Nombre de secondes restantes avant de pouvoir réessayer (0 = autorisé)
+function adminLoginBlocageRestant() {
+    $data = adminLoginThrottleData();
+    if ($data['echecs'] < ADMIN_LOGIN_MAX_TENTATIVES) {
+        return 0;
+    }
+    return max(0, ADMIN_LOGIN_DUREE_BLOCAGE - (time() - $data['debut']));
+}
+
+function adminLoginEnregistrerEchec() {
+    $data = adminLoginThrottleData();
+    if ($data['echecs'] === 0) {
+        $data['debut'] = time();
+    }
+    $data['echecs']++;
+    @file_put_contents(adminLoginThrottlePath(), json_encode($data), LOCK_EX);
+}
+
+function adminLoginReinitialiser() {
+    $path = adminLoginThrottlePath();
+    if (is_file($path)) {
+        @unlink($path);
+    }
+}
+
 // --- Authentification admin ---
 function isAdminLoggedIn() {
     if (!isset($_SESSION['admin_id'])) {

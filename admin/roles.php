@@ -106,9 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->fetch()) {
                 $erreur = 'Cette adresse e-mail est déjà utilisée.';
             } else {
-                $stmt = $pdo->prepare('SELECT id FROM roles WHERE id = ?');
+                $stmt = $pdo->prepare('SELECT id, role_key FROM roles WHERE id = ?');
                 $stmt->execute([$roleId]);
-                if (!$stmt->fetch()) {
+                $role = $stmt->fetch();
+                if (!$role) {
                     $erreur = 'Sélectionnez un rôle valide.';
                 } else {
                     $legacyRole = $role['role_key'] === 'administrateur' ? 'super_admin' : 'admin';
