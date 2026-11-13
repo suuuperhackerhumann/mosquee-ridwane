@@ -145,10 +145,15 @@ $liens_nav = [
 
 /* Header toujours visible au scroll (bouton hamburger inclus). */
 .site-header {
-    position: sticky;
+    position: fixed !important;
     top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     z-index: 1000;
 }
+body { padding-top: 72px; }
+.site-header .header-bar { min-height: 72px; }
 
 /* Menu mobile : panneau compact au lieu de plein écran. */
 @media (max-width: 1360px) {
