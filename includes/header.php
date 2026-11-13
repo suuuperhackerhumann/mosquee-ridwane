@@ -142,7 +142,35 @@ $liens_nav = [
 @media (max-width: 760px) {
     .don-flottant { position: static; display: flex; width: 100%; border-radius: 0; box-shadow: none; }
 }
-@media (max-width: 1360px) { .nav-principale { top: 72px; } }
+
+/* Header toujours visible au scroll (bouton hamburger inclus). */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Menu mobile : panneau compact au lieu de plein écran. */
+@media (max-width: 1360px) {
+    .nav-principale {
+        position: fixed;
+        top: 72px;
+        right: 12px;
+        left: auto;
+        bottom: auto;
+        width: min(320px, calc(100vw - 24px));
+        height: auto;
+        max-height: calc(100dvh - 84px);
+        overflow-y: auto;
+        border-radius: 14px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .25);
+    }
+    .nav-principale ul {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
 /* Informations visibles sous les médias, quelle que soit leur taille. */
 .media-carte { min-width: 0; overflow: hidden; border: 1px solid var(--plâtre-200); border-radius: 10px; background: #fffef8; }
 .media-carte .carte-media { border-radius: 0; }
